@@ -7,6 +7,9 @@ from factiva.core import APIKeyUser
 from factiva.news.snapshot import (
     Snapshot
 )
+from factiva.news.snapshot.query import (
+    SnapshotQuery
+)
 
 
 _ARTICLES_STAT_FIELDS = ['an', 'company_codes', 'company_codes_about',
