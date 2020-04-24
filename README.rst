@@ -16,20 +16,21 @@ To install this library, run the following commands.
 
 .. code-block::
 
-    $ pip install factiva-news
+    $ pip install --upgrade factiva-news
 
 Using Library services
 ======================
 Create a new snapshot and download to a local repository just require a few lines of code.
 
-.. code-block::Python
+.. code-block:: python
 
-    from factiva.news import Snapshot as sn
+    from factiva.news import Snapshot
     my_query = {
                 "query": {
                     "where" : "publication_datetime >= '2020-01-01 00:00:00' LOWER(language_code) = 'en'"
                 }
                }
-    my_snapshot = sn.Snapshot(my_query, api_key='abc123abc123abc123abc123', full_process=True)
+    my_snapshot = Snapshot(my_query, api_key='abc123abc123abc123abc123')
+    news_articles = my_snapshot.process_extract()
 
-In the previous code a new snapshot is created using my_query as selection criteria and api_key for user authentication. After the job is being validated internally, a Snapshot Id is obtained along with the list of files to download. Files are automatically downloaded to a folder named equal to the snapshot ID, and contents are loaded as a Pandas DataFrame to the variable my_snapshot. This process may take several minutes, but automates the extraction process significantly.
+In the previous code a new snapshot is created using my_query as selection criteria and api_key for user authentication. After the job is being validated internally, a Snapshot Id is obtained along with the list of files to download. Files are automatically downloaded to a folder named equal to the snapshot ID, and contents are loaded as a Pandas DataFrame to the variable news_articles. This process may take several minutes, but automates the extraction process significantly.
