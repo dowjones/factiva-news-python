@@ -1,11 +1,11 @@
-from setuptools import setup
+from setuptools import setup  # , find_namespace_packages
 
 with open("README.rst", "r") as fh:
     long_desc = fh.read()
 
 setup(
     name='factiva-news',
-    version='0.0.1',
+    version='0.0.8',  # TODO: Migrate the version to something that suports __version__ and handles it in a more automatic way.
     description='Python package to interact with Factiva news-related APIs. Services are described in the Dow Jones Developer Platform.',
     long_description=long_desc,
     long_description_content_type='text/x-rst',
@@ -13,7 +13,8 @@ setup(
     author_email='miguel.ballesteros@dowjones.com',
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
-    packages=['factiva.news'],
+    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream'],
+    # packages=find_namespace_packages(include=['factiva.news.*']),
     # package_data={'': ['*.csv']},
     url='https://github.com/dowjones/factiva-news-python',
 
