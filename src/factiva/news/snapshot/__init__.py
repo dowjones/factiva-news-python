@@ -1,8 +1,10 @@
+__all__ = ['query']
+
 import time
 from datetime import datetime
 from factiva.core import const
 from factiva.news.bulknews import BulkNewsBase, BulkNewsJob
-from factiva.news.snapshot.query import SnapshotQuery
+from .query import SnapshotQuery
 
 
 class Snapshot(BulkNewsBase):
@@ -98,6 +100,49 @@ class Snapshot(BulkNewsBase):
         return True
 
     def process_analytics(self):
+        self.submit_analytics_job()
+        self.get_analytics_job_results()
+        while(True):
+            if self.last_analytics_job.job_state not in const.EXPECTED_JOB_STATES:
+                raise RuntimeError('Unexpected analytics job state')
+            if self.last_analytics_job.job_state == 'JOB_STATE_DONE':
+                break
+            elif self.last_analytics_job.job_state == 'JOB_STATE_FAILED':
+                raise Exception('Analytics job failed')
+            else:
+                time.sleep(const.ACTIVE_WAIT_SPACING)
+                self.get_analytics_job_results()
+        return self.last_analytics_job.data
+
+    def submit_extraction_job(self):
+        analytics_url = f'{const.DJ_API_HOST}{const.DJ_API_ANALYTICS_BASEPATH}'
+        self.last_analytics_job.submitted_datetime = datetime.now()
+        response = self.submit_job(endpoint_url=analytics_url, payload=self.query.get_analytics_query())
+        if response.status_code == 201:
+            self.last_analytics_job.job_id = response.json()['data']['id'],
+            self.last_analytics_job.job_state = response.json()['data']['attributes']['current_state']
+            self.last_analytics_job.link = response.json()['links']['self']
+        else:
+            raise RuntimeError('API Request returned an unexpected HTTP status')
+        return True
+
+    def get_extraction_job_results(self):
+        if self.last_analytics_job.link == '':
+            raise RuntimeError('Analytics job has not yet been submitted')
+        response = self.get_job_results(self.last_analytics_job.link)
+        if response.status_code == 200:
+            self.last_analytics_job.job_state = response.json()['data']['attributes']['current_state']
+            if self.last_analytics_job.job_state == 'JOB_STATE_DONE':
+                self.last_analytics_job.data = response.json()['data']['attributes']['results']
+        else:
+            raise RuntimeError('API request returned an unexpected HTTP status')
+        # TODO: Transform results to Pandas DataFrame
+        return True
+
+    def download_extraction_files(self):
+        pass
+
+    def process_extraction(self):
         self.submit_analytics_job()
         self.get_analytics_job_results()
         while(True):
