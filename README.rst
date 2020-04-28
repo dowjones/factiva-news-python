@@ -24,13 +24,9 @@ Create a new snapshot and download to a local repository just require a few line
 
 .. code-block:: python
 
-    from factiva.news import Snapshot
-    my_query = {
-                "query": {
-                    "where" : "publication_datetime >= '2020-01-01 00:00:00' LOWER(language_code) = 'en'"
-                }
-               }
-    my_snapshot = Snapshot(my_query, api_key='abc123abc123abc123abc123')
-    news_articles = my_snapshot.process_extract()
+    from factiva.news.snapshot import Snapshot
+    my_query = "publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'"
+    my_snapshot = Snapshot(api_user='abcd1234abcd1234abcd1234abcd1234', query=my_query)
+    news_articles = my_snapshot.process_extract()  # This operation can take several minutes to complete
 
 In the previous code a new snapshot is created using my_query as selection criteria and api_key for user authentication. After the job is being validated internally, a Snapshot Id is obtained along with the list of files to download. Files are automatically downloaded to a folder named equal to the snapshot ID, and contents are loaded as a Pandas DataFrame to the variable news_articles. This process may take several minutes, but automates the extraction process significantly.
