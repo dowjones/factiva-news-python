@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name='factiva-news',
-    version='0.0.8',  # TODO: Migrate the version to something that suports __version__ and handles it in a more automatic way.
+    version='0.1.1',  # TODO: Migrate the version to something that suports __version__ and handles it in a more automatic way.
     description='Python package to interact with Factiva news-related APIs. Services are described in the Dow Jones Developer Platform.',
     long_description=long_desc,
     long_description_content_type='text/x-rst',
