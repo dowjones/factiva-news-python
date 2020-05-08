@@ -19,7 +19,9 @@ _ARTICLE_DELETE_FIELDS = ['art', 'credit', 'document_type']
 
 
 def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.DataFrame:
-    """Reads a single Dow Jones snapshot datafile
+    """
+    Reads a single Dow Jones snapshot datafile
+
     Parameters
     ----------
     filepath : str
@@ -30,10 +32,11 @@ def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.D
     merge_body : bool, optional
         Specifies if the body field should be merged with the snippet and this last column being dropped.
         (default is True)
+
     Returns
     -------
     pandas.DataFrame
-        A single Pandas Dataframe with the file content
+        A single Pandas Dataframe with the file's content
     """
     with open(filepath, "rb") as fp:
         reader = fastavro.reader(fp)
@@ -61,23 +64,27 @@ def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.D
 
 
 def read_snapshot_folder(self, folderpath, file_format='AVRO', only_stats=True, merge_body=True) -> pd.DataFrame:
-    """Scans a folder and reads the content of all files matching the format (file_format)
+    """
+    Scans a folder and reads the content of all files matching the format (file_format)
+
     Parameters
     ----------
     folderpath : str
         Relative or absolute folder path
     file_format : str, optional
         Supported file format. Current options are AVRO, JSON or CSV. (default is AVRO)
-    only_stats : bool, optional
-        Specifies if only file metadata is loaded (True), or if the full article content is loaded (False). On average,
-        only_stats loads about 1/10 and is recommended for quick metadata-based analysis. (Default is True)
-    merge_body : bool, optional
-        Specifies if the body field should be merged with the snippet and this last column being dropped.
-        (default is True)
+    only_stats : bool, optional (Default: True)
+        Specifies if only file metadata is loaded (True), or if the full article
+        content is loaded (False). On average, only_stats loads about 1/10 and is
+        recommended for quick metadata-based analysis.
+    merge_body : bool, optional (Default: True)
+        Specifies if the body field should be merged with the snippet and this last
+        column being dropped.
+
     Returns
     -------
     pandas.DataFrame
-        A single Pandas Dataframe with the content from all read files.
+        A single Pandas Dataframe with the content from all read files within the folder.
     """
     format_suffix = file_format.lower()
     r_df = pd.DataFrame()
