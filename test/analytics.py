@@ -17,6 +17,7 @@ st1 = Snapshot(query=querystr)
 # st1.last_analytics_job = historic_analytics_job
 # st1.get_analytics_job_results()
 
-analytics_data = st1.process_analytics()
+st1.process_analytics()
+st1.last_analytics_job.data.head()
 
 print('Done!')
