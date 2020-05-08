@@ -80,7 +80,7 @@ class SnapshotQuery(BulkNewsQuery):
         query_dict['query'].update({'top': self.top})
         return query_dict
 
-    def get_extract_query(self):
+    def get_extraction_query(self):
         query_dict = self.get_base_query()
 
         if self.limit > 0:

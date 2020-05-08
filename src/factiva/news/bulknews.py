@@ -47,8 +47,13 @@ class BulkNewsBase(object):
         response = helper.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
         return response
 
-    def download_files(self):
-        pass
+    def download_file(self, endpoint_url, local_path):
+        headers_dict = {
+                'user-key': self.api_user.api_key
+            }
+        response = helper.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
+        open(local_path, 'wb').write(response.content)
+        return response
 
     def load_data(self):
         pass
