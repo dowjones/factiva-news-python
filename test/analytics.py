@@ -1,5 +1,5 @@
 from datetime import datetime
-from factiva.news import Snapshot
+from factiva.news.snapshot import Snapshot
 from factiva.news.snapshot import AnalyticsJob
 
 querystr = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-01-10 00:00:00' AND LOWER(language_code) = 'en'"
