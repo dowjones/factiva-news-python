@@ -108,7 +108,7 @@ class Snapshot(BulkNewsBase):
             self.last_explain_job.job_id = response.json()['data']['id']
             self.last_explain_job.job_state = response.json()['data']['attributes']['current_state']
             self.last_explain_job.link = response.json()['links']['self']
-        else:
+        else:  # TODO: Add InvalidQuery, invalid syntax error which returns a 400
             raise RuntimeError('API Request returned an unexpected HTTP status')
         return True
 
@@ -176,7 +176,7 @@ class Snapshot(BulkNewsBase):
             self.last_analytics_job.job_id = response.json()['data']['id']
             self.last_analytics_job.job_state = response.json()['data']['attributes']['current_state']
             self.last_analytics_job.link = response.json()['links']['self']
-        else:
+        else:  # TODO: Add InvalidQuery, invalid syntax error which returns a 400
             raise RuntimeError('API Request returned an unexpected HTTP status')
         return True
 
@@ -244,7 +244,7 @@ class Snapshot(BulkNewsBase):
             self.last_extraction_job.job_id = response.json()['data']['id'].split('-')[-1]
             self.last_extraction_job.job_state = response.json()['data']['attributes']['current_state']
             self.last_extraction_job.link = response.json()['links']['self']
-        else:
+        else:  # TODO: Add InvalidQuery, invalid syntax error which returns a 400
             raise RuntimeError('API Request returned an unexpected HTTP status')
         return True
 

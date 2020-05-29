@@ -17,9 +17,9 @@ class SnapshotQuery(BulkNewsQuery):
         excludes=None,
         select_fields=None,
         limit=0,
-        file_format='avro',
-        frequency='MONTH',
-        date_field='publication_datetime',
+        file_format="avro",
+        frequency="MONTH",
+        date_field="publication_datetime",
         group_by_source_code=False,
         top=10
     ):
@@ -74,18 +74,18 @@ class SnapshotQuery(BulkNewsQuery):
 
     def get_analytics_query(self):
         query_dict = self.get_base_query()
-        query_dict['query'].update({'frequency': self.frequency})
-        query_dict['query'].update({'date_field': self.date_field})
-        query_dict['query'].update({'group_by_source_code': self.group_by_source_code})
-        query_dict['query'].update({'top': self.top})
+        query_dict["query"].update({"frequency": self.frequency})
+        query_dict["query"].update({"date_field": self.date_field})
+        query_dict["query"].update({"group_by_source_code": self.group_by_source_code})
+        query_dict["query"].update({"top": self.top})
         return query_dict
 
     def get_extraction_query(self):
         query_dict = self.get_base_query()
 
         if self.limit > 0:
-            query_dict['query'].update({'limit': self.limit})
+            query_dict["query"].update({"limit": self.limit})
 
-        query_dict['query'].update({'format': self.file_format})
+        query_dict["query"].update({"format": self.file_format})
 
         return query_dict

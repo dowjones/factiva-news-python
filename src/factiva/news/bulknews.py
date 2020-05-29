@@ -78,10 +78,10 @@ class BulkNewsBase(object):
 
 class BulkNewsQuery(object):
 
-    where = ''
-    includes = ''
-    excludes = ''
-    select_fields = ''
+    where = ""
+    includes = ""
+    excludes = ""
+    select_fields = ""
 
     def __init__(
         self,
@@ -121,19 +121,19 @@ class BulkNewsQuery(object):
 
     def get_base_query(self):
         query_dict = {
-            'query': {
-                'where': self.where
+            "query": {
+                "where": self.where
             }
         }
 
         if self.select_fields:
-            query_dict['query'].update({'select': self.select_fields})
+            query_dict["query"].update({"select": self.select_fields})
 
         if self.includes:
-            query_dict['query'].update({'includes': self.includes})
+            query_dict["query"].update({"includes": self.includes})
 
         if self.excludes:
-            query_dict['query'].update({'excludes': self.excludes})
+            query_dict["query"].update({'excludes': self.excludes})
 
         return query_dict
 
