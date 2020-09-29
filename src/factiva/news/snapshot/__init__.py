@@ -20,15 +20,19 @@ class Snapshot(BulkNewsBase):
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the FACTIVA_APIKEY
         environment variable.
-    request_info : boolean, optional (Default: False)
+    request_userinfo : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation
         fills account detail properties along with maximum, used and remaining
         values. It may take several seconds to complete.
-    query : str or SnapshotQuery, required
+    query : str or SnapshotQuery, optional
         Query used to run any of the Snapshot-related operations. If a str is
         provided, a simple query with a `where` clause is created. If other
         query fields are required, either provide the SnapshotQuery object at
-        creation, or set the appropriate object values after creation.
+        creation, or set the appropriate object values after creation. This
+        parameter is not compatible with snapshot_id.
+    snapshot_id: str, optional
+        String containing the 10-character long Snapshot ID. This parameter is
+        not compatible with query.
 
     See Also
     --------
@@ -76,20 +80,30 @@ class Snapshot(BulkNewsBase):
         self,
         api_user=None,
         request_userinfo=False,
-        query=None
+        query=None,
+        snapshot_id=None
     ):
         super().__init__(api_user=api_user, request_userinfo=request_userinfo)
 
         self.last_explain_job = ExplainJob()
         self.last_analytics_job = AnalyticsJob()
-        self.last_extraction_job = ExtractionJob()
 
-        if type(query) == SnapshotQuery:
-            self.query = query
-        elif type(query) == str:
-            self.query = SnapshotQuery(query)
-        else:
-            raise ValueError("Unexpected value for where_clause")
+        if query and snapshot_id:
+            raise Exception("The query and snapshot_id parameters cannot be set simultaneously")
+
+        if query:
+            if type(query) == SnapshotQuery:
+                self.query = query
+            elif type(query) == str:
+                self.query = SnapshotQuery(query)
+            else:
+                raise ValueError("Unexpected value for the query-where clause")
+            self.last_extraction_job = ExtractionJob()
+
+        if snapshot_id:
+            self.query = SnapshotQuery('')
+            self.last_extraction_job = ExtractionJob(snapshot_id=snapshot_id, api_key=self.api_user.api_key)
+            self.get_extraction_job_results()
 
     def submit_explain_job(self):
         """
@@ -259,7 +273,7 @@ class Snapshot(BulkNewsBase):
             otherwise.
         """
         if self.last_extraction_job.link == '':
-            raise RuntimeError('Extraction job has not yet been submitted or job ID was not set')
+            raise RuntimeError('Extraction job has not yet been submitted or job ID was not set.')
         response = self.get_job_results(self.last_extraction_job.link)
         if response.status_code == 200:
             self.last_extraction_job.job_state = response.json()['data']['attributes']['current_state']
@@ -269,8 +283,10 @@ class Snapshot(BulkNewsBase):
                 self.last_extraction_job.files = []
                 for file_item in file_list:
                     self.last_extraction_job.files.append(file_item['uri'])
+        elif response.status_code == 404:
+            raise RuntimeError('Job ID does not exist.')
         else:
-            raise RuntimeError('API request returned an unexpected HTTP status')
+            raise RuntimeError('API request returned an unexpected HTTP status.')
         return True
 
     def download_extraction_files(self):
@@ -317,6 +333,42 @@ class Snapshot(BulkNewsBase):
         self.download_extraction_files()
         return True
 
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        pprop = self.__dict__.copy()
+        child_prefix = '  |    |-'
+        ret_val = str(self.__class__) + '\n'
+
+        ret_val += f'{prefix}api_user: '
+        ret_val += self.api_user.__str__(detailed=False, prefix=child_prefix)
+        del pprop['api_user']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}query: '
+        ret_val += self.query.__str__(detailed=False, prefix=child_prefix)
+        del pprop['query']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_explain_job: '
+        ret_val += self.last_explain_job.__str__(detailed=False, prefix=child_prefix)
+        del pprop['last_explain_job']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_analytics_job: '
+        ret_val += self.last_analytics_job.__str__(detailed=False, prefix=child_prefix)
+        del pprop['last_analytics_job']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_extraction_job: '
+        ret_val += self.last_extraction_job.__str__(detailed=False, prefix=child_prefix)
+        del pprop['last_extraction_job']
+        ret_val += '\n'
+
+        ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
+        return ret_val
+
 
 class ExplainJob(BulkNewsJob):
     document_volume = 0
@@ -324,6 +376,19 @@ class ExplainJob(BulkNewsJob):
     def __init__(self):
         super().__init__()
         self.document_volume = 0
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        pprop = self.__dict__.copy()
+        ret_val = str(self.__class__)
+        ret_val += '\n'
+        if self.job_id == '':
+            ret_val += f'{prefix}<Empty>'
+        else:
+            ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
+        return ret_val
 
 
 class AnalyticsJob(BulkNewsJob):
@@ -333,12 +398,41 @@ class AnalyticsJob(BulkNewsJob):
         super().__init__()
         self.data = []
 
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        pprop = self.__dict__.copy()
+        ret_val = str(self.__class__)
+        ret_val += '\n'
+        if self.job_id == '':
+            ret_val += f'{prefix}<Empty>'
+        else:
+            ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
+        return ret_val
+
 
 class ExtractionJob(BulkNewsJob):
     files = []
     file_format = ''
 
-    def __init__(self):
+    def __init__(self, snapshot_id=None, api_key=None):
         super().__init__()
         self.files = []
         self.file_format = ''
+        if snapshot_id and api_key:
+            self.job_id = snapshot_id
+            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{api_key}-{snapshot_id}'
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        pprop = self.__dict__.copy()
+        ret_val = str(self.__class__)
+        ret_val += '\n'
+        if self.job_id == '':
+            ret_val += f'{prefix}<Empty>'
+        else:
+            ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
+        return ret_val
