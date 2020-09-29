@@ -18,6 +18,6 @@ st1 = Snapshot(query=querystr)
 # st1.get_analytics_job_results()
 
 st1.process_analytics()
-st1.last_analytics_job.data.head()
+print(st1.last_analytics_job.data)
 
 print('Done!')

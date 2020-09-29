@@ -16,7 +16,6 @@ st1 = Snapshot(query=querystr)
 # st1.get_explain_job_results()
 
 st1.process_explain()
-
-print(f'Doc Volume: {st1.last_explain_job.document_volume} for Explain ID {st1.last_explain_job.job_id}')
+print(st1.last_explain_job)
 
 print('Done!')
