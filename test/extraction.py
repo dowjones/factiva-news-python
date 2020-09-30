@@ -17,10 +17,11 @@ st1 = Snapshot(query=querystr)  # Takes the user key from the FACTIVA_APIKEY env
 # st1.get_extraction_job_results()
 
 # st1.download_extraction_files()
+# st1.query.file_format = 'json'
+# st1.process_extraction()
 
-st1.process_extraction()
-
-# sn_dw = Snapshot(snapshot_id='3kxgjdg7ix')
-# print(sn_dw)
+sn_dw = Snapshot(snapshot_id='tthb9cxch9')
+sn_dw.download_extraction_files()
+print(sn_dw)
 
 print('Done!')
