@@ -1,4 +1,4 @@
-from factiva.news import Snapshot, SnapshotQuery
+from factiva.news.snapshot import Snapshot, SnapshotQuery
 
 querystr = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-01-10 00:00:00' AND LOWER(language_code) = 'en'"
 st1 = Snapshot(query=querystr)

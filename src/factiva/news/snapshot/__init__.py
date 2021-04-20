@@ -286,10 +286,20 @@ class Snapshot(BulkNewsBase):
         elif response.status_code == 404:
             raise RuntimeError('Job ID does not exist.')
         else:
-            raise RuntimeError('API request returned an unexpected HTTP status.')
+            det_text = response.text
+            raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{det_text}]')
         return True
 
     def download_extraction_files(self):
+        """
+        Downloads the list of files listed in the Snapshot.last_extraction_job.files
+        property, and store them in a folder with the same name as the snapshot ID.
+
+        Returns
+        -------
+        Boolean : True if the files were correctly downloaded, False otherwise.
+        """
+        # TODO: Accept an alternative location to store the downloaded files.
         base_path = os.path.join(os.getcwd(), self.last_extraction_job.job_id)
         Path(base_path).mkdir(parents=True, exist_ok=True)
         if len(self.last_extraction_job.files) > 0:
@@ -322,11 +332,11 @@ class Snapshot(BulkNewsBase):
         self.get_extraction_job_results()
         while(True):
             if self.last_extraction_job.job_state not in const.API_JOB_EXPECTED_STATES:
-                raise RuntimeError('Unexpected analytics job state')
+                raise RuntimeError('Unexpected Extraction job state')
             if self.last_extraction_job.job_state == 'JOB_STATE_DONE':
                 break
             elif self.last_extraction_job.job_state == 'JOB_STATE_FAILED':
-                raise Exception('Analytics job failed')
+                raise Exception('Extraction job failed')
             else:
                 time.sleep(const.API_JOB_ACTIVE_WAIT_SPACING)
                 self.get_extraction_job_results()

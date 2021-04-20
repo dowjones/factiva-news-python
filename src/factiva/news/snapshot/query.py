@@ -93,7 +93,7 @@ class SnapshotQuery(BulkNewsQuery):
     def __repr__(self):
         return self.__str__()
 
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+    def __str__(self, detailed=False, prefix='  |-', root_prefix=''):
         pprop = self.__dict__.copy()
 
         ret_val = f'{root_prefix}{str(self.__class__)}\n'
@@ -103,4 +103,6 @@ class SnapshotQuery(BulkNewsQuery):
             ret_val += f'{prefix}where: '
             ret_val += (self.where[:77] + '...') if len(self.where) > 80 else self.where
             ret_val += f'\n{prefix}...'
+            del pprop['where']
+            ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
         return ret_val
