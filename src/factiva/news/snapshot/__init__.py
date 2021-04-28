@@ -1,4 +1,4 @@
-__all__ = ['query']
+__all__ = ['query', 'files']
 
 import os
 import time
