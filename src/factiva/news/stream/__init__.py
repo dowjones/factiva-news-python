@@ -1,5 +1,6 @@
-from factiva.news import BulkNewsBase
+"""Describe modules included for Stream Class definition."""
+__all__ = ['stream']
 
-
-class Stream(BulkNewsBase):
-    pass
+from .stream import Stream
+from .listener import Listener
+from .subscription import Subscription
