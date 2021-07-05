@@ -1,8 +1,26 @@
+"""Implement query class definition."""
+from factiva.core import const
+from factiva.helper import validate_type
 from factiva.news.bulknews import BulkNewsQuery
 
 
-class SnapshotQuery(BulkNewsQuery):
+def validate_field_options(field, available_options):
+    """Validate that field is among the available options.
 
+    Parameters
+    ----------
+    field:
+        field to be validated, could be any type.
+    available_options:
+        options amongst field should be located.
+
+    """
+    if field not in available_options:
+        raise ValueError(f'Value of file_format is not within the allowed options: {available_options}')
+
+
+class SnapshotQuery(BulkNewsQuery):
+    """Implement Snapshot Query class definition."""
     limit = 0
     file_format = ''
     frequency = ''
@@ -10,6 +28,7 @@ class SnapshotQuery(BulkNewsQuery):
     group_by_source_code = False
     top = 0
 
+    # pylint: disable=too-many-arguments
     def __init__(
         self,
         where,
@@ -17,62 +36,52 @@ class SnapshotQuery(BulkNewsQuery):
         excludes=None,
         select_fields=None,
         limit=0,
-        file_format="avro",
-        frequency="MONTH",
-        date_field="publication_datetime",
+        file_format=const.API_AVRO_FORMAT,
+        frequency=const.API_MONTH_PERIOD,
+        date_field=const.API_PUBLICATION_DATETIME_FIELD,
         group_by_source_code=False,
         top=10
     ):
+        """Initialize query class instance."""
         super().__init__(where=where, includes=includes, excludes=excludes, select_fields=select_fields)
 
-        if type(limit) == int:
-            if limit >= 0:
-                self.limit = limit
-            else:
-                raise ValueError("Limit value is not valid or not positive")
+        validate_type(limit, int, "Unexpected value for limit")
+        if limit >= 0:
+            self.limit = limit
         else:
-            raise ValueError("Unexpected value for limit")
+            raise ValueError("Limit value is not valid or not positive")
 
-        if type(file_format) == str:
-            file_format = file_format.lower().strip()
-            if file_format not in ['avro', 'json', 'csv']:
-                raise ValueError('Value of file_format is not within the allowed options: avro, json, csv')
-            self.file_format = file_format
-        else:
-            raise ValueError("Unexpected value for file_format")
+        validate_type(file_format, str, "Unexpected value for file_format")
+        file_format = file_format.lower().strip()
+        validate_field_options(file_format, const.API_EXTRACTION_FILE_FORMATS)
+        self.file_format = file_format
 
-        if type(frequency) == str:
-            frequency = frequency.upper().strip()
-            if frequency not in ['DAY', 'MONTH', 'YEAR']:
-                raise ValueError('Value of frequency is not within the allowed options: DAY, MONTH, YEAR')
-            self.frequency = frequency
-        else:
-            raise ValueError("Unexpected value for frequency")
+        validate_type(frequency, str, "Unexpected value for frequency")
+        frequency = frequency.upper().strip()
+        validate_field_options(frequency, const.API_DATETIME_PERIODS)
+        self.frequency = frequency
 
-        if type(date_field) == str:
-            date_field = date_field.lower().strip()
-            if date_field not in ['publication_datetime', 'modification_datetime', 'ingestion_datetime']:
-                raise ValueError('Value of date_field is not within the allowed options: publication_datetime, modification_datetime, ingestion_datetime')
-            self.date_field = date_field
-        else:
-            raise ValueError("Unexpected value for date_field")
+        validate_type(date_field, str, "Unexpected value for date_field")
+        date_field = date_field.lower().strip()
+        validate_field_options(date_field, const.API_DATETIME_FIELDS)
+        self.date_field = date_field
 
-        if type(group_by_source_code) == bool:
-            self.group_by_source_code = group_by_source_code
-        else:
-            raise ValueError("Unexpected value for group_by_source_code")
+        validate_type(group_by_source_code, bool, "Unexpected value for group_by_source_code")
+        self.group_by_source_code = group_by_source_code
 
-        if type(top) == int:
-            if top >= 0:
-                self.top = top
+        validate_type(top, int, "Unexpected value for top")
+        if top >= 0:
+            self.top = top
         else:
-            raise ValueError("Unexpected value for top")
+            raise ValueError('Top value is not valid')
 
     def get_explain_query(self):
+        """Obtain Base Query."""
         query_dict = self.get_base_query()
         return query_dict
 
     def get_analytics_query(self):
+        """Obtain analytics Query."""
         query_dict = self.get_base_query()
         query_dict["query"].update({"frequency": self.frequency})
         query_dict["query"].update({"date_field": self.date_field})
@@ -81,6 +90,7 @@ class SnapshotQuery(BulkNewsQuery):
         return query_dict
 
     def get_extraction_query(self):
+        """Obtain the string querying Factiva."""
         query_dict = self.get_base_query()
 
         if self.limit > 0:
@@ -91,9 +101,11 @@ class SnapshotQuery(BulkNewsQuery):
         return query_dict
 
     def __repr__(self):
+        """Create string representation for Query Class."""
         return self.__str__()
 
     def __str__(self, detailed=False, prefix='  |-', root_prefix=''):
+        """Create string representation for Query Class."""
         pprop = self.__dict__.copy()
 
         ret_val = f'{root_prefix}{str(self.__class__)}\n'

@@ -1,8 +1,12 @@
-__all__ = ['snapshot', 'stream', 'bulknews']
+
+"""Init file for news module."""
+__all__ = ['snapshot', 'stream', 'bulknews', 'taxonomy']
 
 import os
 import pandas as pd
 import fastavro
+
+from factiva.news.taxonomy.taxonomy import Taxonomy
 
 
 _ARTICLES_STAT_FIELDS = ['an', 'company_codes', 'company_codes_about',
@@ -18,9 +22,8 @@ _ARTICLES_STAT_FIELDS = ['an', 'company_codes', 'company_codes_about',
 _ARTICLE_DELETE_FIELDS = ['art', 'credit', 'document_type']
 
 
-def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.DataFrame:
-    """
-    Reads a single Dow Jones snapshot datafile
+def read_snapshot_file(filepath, only_stats=True, merge_body=True) -> pd.DataFrame:
+    """Read a single Dow Jones snapshot datafile.
 
     Parameters
     ----------
@@ -37,14 +40,15 @@ def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.D
     -------
     pandas.DataFrame
         A single Pandas Dataframe with the file's content
+
     """
-    with open(filepath, "rb") as fp:
-        reader = fastavro.reader(fp)
-        records = [r for r in reader]
+    with open(filepath, "rb") as fp_reader:
+        reader = fastavro.reader(fp_reader)
+        records = list(reader)
         r_df = pd.DataFrame.from_records(records)
 
     if only_stats is True:
-        r_df = r_df[self._ARTICLES_STAT_FIELDS]
+        r_df = r_df[_ARTICLES_STAT_FIELDS]
 
     if (only_stats is False) & (merge_body is True):
         r_df['body'] = r_df['snippet'] + '\n\n' + r_df['body']
@@ -52,7 +56,7 @@ def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.D
 
     r_df['body'] = r_df[['body']].apply(lambda x: '{}'.format(x[0]), axis=1)
 
-    for d_field in self._ARTICLE_DELETE_FIELDS:
+    for d_field in _ARTICLE_DELETE_FIELDS:
         if d_field in r_df.columns:
             r_df.drop(d_field, axis=1, inplace=True)
     r_df['publication_date'] = r_df['publication_date'].astype('datetime64[ms]')
@@ -63,9 +67,8 @@ def read_snapshot_file(self, filepath, only_stats=True, merge_body=True) -> pd.D
     return r_df
 
 
-def read_snapshot_folder(self, folderpath, file_format='AVRO', only_stats=True, merge_body=True) -> pd.DataFrame:
-    """
-    Scans a folder and reads the content of all files matching the format (file_format)
+def read_snapshot_folder(folderpath, file_format='AVRO', only_stats=True, merge_body=True) -> pd.DataFrame:
+    """Scan a folder and reads the content of all files matching the format (file_format).
 
     Parameters
     ----------
@@ -85,11 +88,12 @@ def read_snapshot_folder(self, folderpath, file_format='AVRO', only_stats=True, 
     -------
     pandas.DataFrame
         A single Pandas Dataframe with the content from all read files within the folder.
+
     """
     format_suffix = file_format.lower()
     r_df = pd.DataFrame()
     for filename in os.listdir(folderpath):
         if filename.lower().endswith("." + format_suffix):
-            t_df = self.read_file(folderpath + "/" + filename, only_stats, merge_body)
+            t_df = read_snapshot_file(folderpath + "/" + filename, only_stats, merge_body)
             r_df = pd.concat([r_df, t_df])
     return r_df

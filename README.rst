@@ -1,5 +1,6 @@
 Dow Jones Factiva News Python Library
 #####################################
+.. image:: https://github.com/wizeline/factiva-news-python/actions/workflows/dev_branch_linting_testing.yml/badge.svg
 
 This library simplifies the integration to Factiva API services for news-related services.
 
@@ -32,3 +33,17 @@ Create a new snapshot and download to a local repository just require a few line
 After the process completes, the output files are stored in a subfolder named as the Extraction Job ID.
 
 In the previous code a new snapshot is created using my_query as selection criteria and api_key for user authentication. After the job is being validated internally, a Snapshot Id is obtained along with the list of files to download. Files are automatically downloaded to a folder named equal to the snapshot ID, and contents are loaded as a Pandas DataFrame to the variable news_articles. This process may take several minutes, but automates the extraction process significantly.
+
+.. code-block:: python
+
+    from factiva.news.stream import Stream
+
+    stream_query = Stream(
+        api_user='abcd1234abcd1234abcd1234abcd1234',
+        request_info=True,
+        query="publication_datetime >= '2021-04-01 00:00:00' AND LOWER(language_code)='en' AND UPPER(source_code) = 'DJDN'",
+        )
+    
+    print(stream_query.create())
+
+This examples creates a stream based on a Dataflow query (ZETASQL syntax). The status with all the information is shown
