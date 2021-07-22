@@ -21,6 +21,10 @@ To install this library, run the following commands.
 
 Using Library services
 ======================
+Both services, Snapshots and Streams are implemented in this library.
+
+Snapshots
+---------
 Create a new snapshot and download to a local repository just require a few lines of code.
 
 .. code-block:: python
@@ -34,6 +38,10 @@ After the process completes, the output files are stored in a subfolder named as
 
 In the previous code a new snapshot is created using my_query as selection criteria and api_key for user authentication. After the job is being validated internally, a Snapshot Id is obtained along with the list of files to download. Files are automatically downloaded to a folder named equal to the snapshot ID, and contents are loaded as a Pandas DataFrame to the variable news_articles. This process may take several minutes, but automates the extraction process significantly.
 
+Streams
+-------
+Create a stream instance and get the details to configure the stream client and listen the content as it is delivered.
+
 .. code-block:: python
 
     from factiva.news.stream import Stream
@@ -45,5 +53,3 @@ In the previous code a new snapshot is created using my_query as selection crite
         )
     
     print(stream_query.create())
-
-This examples creates a stream based on a Dataflow query (ZETASQL syntax). The status with all the information is shown
