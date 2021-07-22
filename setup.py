@@ -3,19 +3,25 @@ from setuptools import setup  # , find_namespace_packages
 with open("README.rst", "r") as fh:
     long_desc = fh.read()
 
+with open('src/factiva/news/__version__.py') as f:
+    for line in f:
+        if line.find("__version__") >= 0:
+            version = line.split("=")[1].strip()
+            version = version.strip('"')
+            version = version.strip("'")
+            continue
+
 setup(
     name='factiva-news',
-    version='0.1.3',  # TODO: Migrate the version to something that suports __version__ and handles it in a more automatic way.
+    version=version,
     description='Python package to interact with Factiva news-related APIs. Services are described in the Dow Jones Developer Platform.',
     long_description=long_desc,
     long_description_content_type='text/x-rst',
-    author='Miguel Ballesteros',
-    author_email='miguel.ballesteros@dowjones.com',
+    author='Dos Jones Customer Engineers',
+    author_email='customer.solutions@dowjones.com',
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
-    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream'],
-    # packages=find_namespace_packages(include=['factiva.news.*']),
-    # package_data={'': ['*.csv']},
+    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy'],
     url='https://github.com/dowjones/factiva-news-python',
 
     classifiers=[  # Optional
@@ -37,13 +43,11 @@ setup(
 
         'License :: OSI Approved :: MIT License',
 
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
     keywords='news, news aggregator, risk, compliance, nlp, alternative data',
-    python_requires='>=3.5',
-    install_requires=['factiva-core', 'fastavro']
+    python_requires='>=3.6',
+    install_requires=['factiva-core', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub']
 )
