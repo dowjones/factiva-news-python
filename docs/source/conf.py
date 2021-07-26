@@ -12,9 +12,10 @@
 #
 import os
 import sys
+from factiva.news.__version__ import __version__
 sys.path.insert(0, os.path.abspath('../../src'))
 sys.path.insert(0, os.path.abspath('../../src/factiva'))
-
+sys.path.insert(0, os.path.abspath('../../src/factiva/core'))
 
 # -- Project information -----------------------------------------------------
 
@@ -23,7 +24,8 @@ copyright = '2021, Dow Jones'
 author = 'Dow Jones'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = __version__
+version = __version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -43,13 +45,15 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+# Master Doc name
+master_doc = 'index'
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

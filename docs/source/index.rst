@@ -3,27 +3,22 @@ Dow Jones Factiva News Python Library
 
 This package simplifies the integration process to the Dow Jones Snapshots and Streams services.
 
-Snapshots
-=========
-Contains classes and methods to easily execute Explains and Analytics requests for exploration purposes. It also contains classes and methods to run an extraction.
-
-
-Streams
-=======
-Contains classes and methods to create a Stream definition from a query or an existing snapshot. It also contains the necessary components to run a minimum stream client that fitst into the Collect and Update News pattern, described in the Dow Jones Developer Portal.
-
-Contents
-========
+Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com>`_ for more information about the available services.
 
 .. toctree::
-   :maxdepth: 4
-   
-   news
+   :maxdepth: 2
+   :caption: Overview
+   :glob:
 
+   overview/index
+   overview/installation
+   overview/quickstart
 
-Indices and tables
-==================
+.. toctree::
+   :maxdepth: 2
+   :caption: Package Reference
+   :glob:
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   factiva.news/snapshot
+   factiva.news/stream
+   factiva.news/taxonomy
