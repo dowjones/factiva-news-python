@@ -11,11 +11,11 @@ class Snapshot(BulkNewsBase):
 
     Parameters
     ----------
-    api_user : str or APIKeyUser
+    user_key : str or APIKeyUser
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the FACTIVA_APIKEY
         environment variable.
-    request_userinfo : boolean, optional (Default: False)
+    user_stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation
         fills account detail properties along with maximum, used and remaining
         values. It may take several seconds to complete.
@@ -35,23 +35,21 @@ class Snapshot(BulkNewsBase):
 
     Examples
     --------
-    Creating a new Snapshot with an key string and a Where statement. Then,
-    running a full Explain process.
+    Creating a new Snapshot with an key string and a Where statement. Then, running a full Explain process.
         >>> from factiva.news.snapshot import Snapshot
         >>> my_key = "abcd1234abcd1234abcd1234abcd1234"
         >>> my_query = "publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'"
-        >>> my_snapshot = Snapshot(api_key=my_key, query=my_query)
+        >>> my_snapshot = Snapshot(user_key=my_key, query=my_query)
         >>> my_snapshot.process_explain()
         106535
 
-    Creating a new Snapshot from an APIKeyUser and a SnapshotQuery instances.
-    Then, running a full Analytics process.
+    Creating a new Snapshot from an APIKeyUser and a SnapshotQuery instances. Then, running a full Analytics process.
         >>> my_user = APIKeyUser()
         >>> my_query = SnapshotQuery("publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'")
         >>> my_query.frequency = 'YEAR'
         >>> my_query.group_by_source_code = True
         >>> my_query.top = 20
-        >>> my_snapshot = Snapshot(api_user=my_user, query=my_query)
+        >>> my_snapshot = Snapshot(user_key=my_user, query=my_query)
         >>> analytics_df = my_snapshot.process_analytics()
         >>> analytics_df.head()
               count  publication_datetime  source_code
@@ -74,16 +72,16 @@ class Snapshot(BulkNewsBase):
 
     def __init__(
         self,
-        api_user=None,
-        request_userinfo=False,
+        user_key=None,
+        user_stats=False,
         query=None,
         snapshot_id=None
     ):
         """Instantiate class."""
-        super().__init__(api_user=api_user, request_userinfo=request_userinfo)
+        super().__init__(user_key=user_key, user_stats=user_stats)
 
-        self.last_explain_job = ExplainJob(api_user=self.api_user)
-        self.last_analytics_job = AnalyticsJob(api_user=self.api_user)
+        self.last_explain_job = ExplainJob(user_key=self.user_key)
+        self.last_analytics_job = AnalyticsJob(user_key=self.user_key)
 
         if query and snapshot_id:
             raise Exception("The query and snapshot_id parameters cannot be set simultaneously")
@@ -95,18 +93,18 @@ class Snapshot(BulkNewsBase):
                 self.query = SnapshotQuery(query)
             else:
                 raise ValueError("Unexpected value for the query-where clause")
-            self.last_extraction_job = ExtractionJob(api_user=self.api_user)
+            self.last_extraction_job = ExtractionJob(user_key=self.user_key)
 
         if snapshot_id:
             self.query = SnapshotQuery('')
-            self.last_extraction_job = ExtractionJob(snapshot_id=snapshot_id, api_user=self.api_user)
+            self.last_extraction_job = ExtractionJob(snapshot_id=snapshot_id, user_key=self.user_key)
             self.get_extraction_job_results()
 
     def submit_explain_job(self):
         """Submit an Explain job to the Factiva Snapshots API.
 
         Submits an Explain job to the Factiva Snapshots API, using the
-        assigned user in the `api_user`, and SnapshotQuery in the `query`
+        assigned user in the `user_key`, and SnapshotQuery in the `query`
         properties.
 
         Returns
@@ -147,7 +145,7 @@ class Snapshot(BulkNewsBase):
         --------
         Process explain job from snapshot
             >>> query_clause = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-01-02 00:00:00' AND LOWER(language_code) = 'en'"
-            >>> my_snapshot = Snapshot(api_user='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
+            >>> my_snapshot = Snapshot(user_key='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
             >>> try:
             ... 	my_snapshot.process_explain()
             >>> except RuntimeError:
@@ -163,7 +161,7 @@ class Snapshot(BulkNewsBase):
         """Submit an Analytics job to the Factiva Snapshots API.
 
         Submits an Analytics job to the Factiva Snapshots API, using the
-        assigned user in the `api_user`, and SnapshotQuery in the `query`
+        assigned user in the `user_key`, and SnapshotQuery in the `query`
         properties.
 
         Returns
@@ -204,7 +202,7 @@ class Snapshot(BulkNewsBase):
         --------
         Process analytics job
             >>> query_clause = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-01-02 00:00:00' AND LOWER(language_code) = 'en'"
-            >>> my_snapshot = Snapshot(api_user='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
+            >>> my_snapshot = Snapshot(user_key='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
             >>> my_snapshot.process_analytics()
             >>> print(my_snapshot.last_analytics_job.data)
                 publication_datetime   count
@@ -228,7 +226,7 @@ class Snapshot(BulkNewsBase):
         """Submit an Extraction job to the Factiva Snapshots API.
 
         Submits an Extraction job to the Factiva Snapshots API, using the
-        assigned user in the `api_user`, and SnapshotQuery in the `query`
+        assigned user in the `user_key`, and SnapshotQuery in the `query`
         properties.
 
         Returns
@@ -310,7 +308,7 @@ class Snapshot(BulkNewsBase):
         --------
         Process extraction job.
             >>> query_clause = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-01-02 00:00:00' AND LOWER(language_code) = 'en'"
-            >>> my_snapshot = Snapshot(api_user='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
+            >>> my_snapshot = Snapshot(user_key='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
             >>> my_snapshot.process_extraction(path='../downloads/data')
 
         """
@@ -320,7 +318,7 @@ class Snapshot(BulkNewsBase):
         """Submit an Update Job to the Factiva Snapshots API.
 
         Submits an Update Job to the Factiva Snapshots API, using the
-        assigned user in the `api_user` and `snapshot_id` asigned to
+        assigned user in the `user_key` and `snapshot_id` asigned to
         the instance and the `update_type` passed as parameter. Assigns
         the submitted job to the `last_update_job` property.
 
@@ -420,7 +418,7 @@ class Snapshot(BulkNewsBase):
         Examples
         --------
         Process update job with type 'additions'
-            >>> previous_snapshot = Snapshot(api_user=my_user, snapshot_id='sdjjekl93j')
+            >>> previous_snapshot = Snapshot(user_key=my_user, snapshot_id='sdjjekl93j')
             >>> previous_snapshot.process_update('additions', download_path=f'./{previous_snapshot.snapshot_id}/additions/')
 
         """
@@ -437,9 +435,9 @@ class Snapshot(BulkNewsBase):
         child_prefix = '  |    |-'
         ret_val = str(self.__class__) + '\n'
 
-        ret_val += f'{prefix}api_user: '
-        ret_val += self.api_user.__str__()
-        del pprop['api_user']
+        ret_val += f'{prefix}user_key: '
+        ret_val += self.user_key.__str__()
+        del pprop['user_key']
         ret_val += '\n'
 
         ret_val += f'{prefix}query: '

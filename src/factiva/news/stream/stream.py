@@ -1,7 +1,7 @@
 """Implement Stream Class definition."""
 from typing import List
 
-from factiva.core import StreamUser, StreamResponse, const
+from factiva.core import UserKey, StreamResponse, const
 from factiva.news.bulknews import BulkNewsQuery
 from factiva import helper
 
@@ -25,35 +25,35 @@ class Stream:
         represents a query
         if exists it will be used
         to create a new stream
-    stream_user: Stream User
+    user_key: Stream User
         constructor will asign a stream user which has the access
         to Pubsub client, authentication headers and urls
 
     Auth method 1 (All required)
-    api_key_user: str
-        if the stream_user is not passed
+    user_key: str
+        if the user_key is not passed
         it can be created based on the api key param
-    request_userinfo: bool
-        if the stream_user is not passed
+    user_stats: bool
+        if the user_key is not passed
         it can be created based on the request info param
 
     Auth method 2 (All required)
     user_id: str
-        if the stream_user is not passed
+        if the user_key is not passed
         it can be created based on the user id param
     client_id: str
-        if the stream_user is not passed
+        if the user_key is not passed
         it can be created based on the client id param
     password: str
-        if the stream_user is not passed
+        if the user_key is not passed
         it can be created based on the password param
 
     Examples
     --------
     Creating a new Stream directly:
         >>> stream_query_test = Stream(
-            api_key_user='abcd1234abcd1234abcd1234abcd1234',
-            request_userinfo=True,
+            user_key='abcd1234abcd1234abcd1234abcd1234',
+            user_stats=True,
             snapshot_id='<snapshot-id>',
             )
         >>> print(stream_query_test.create())
@@ -63,7 +63,7 @@ class Stream:
 
     """
     stream_id = None
-    stream_user = None
+    user_key = None
     snapshot_id = None
     listener = None
     subscriptions = dict()
@@ -74,9 +74,8 @@ class Stream:
         stream_id=None,
         snapshot_id=None,
         query='',
-        stream_user=None,
-        api_key_user=None,
-        request_userinfo=False
+        user_key=None,
+        user_stats=False
     ):
         """Construct Stream class."""
         if (stream_id and (snapshot_id or query)):
@@ -86,14 +85,8 @@ class Stream:
         self.stream_id = stream_id
         self.snapshot_id = snapshot_id
         self.query = BulkNewsQuery(query)
-        if isinstance(stream_user, StreamUser):
-            self.stream_user = stream_user
-        else:
-            self.stream_user = StreamUser(
-                api_key=api_key_user,
-                request_info=request_userinfo,
-            )
-        if not self.stream_user:
+        self.user_key = UserKey.create_user_key(user_key, user_stats)
+        if not self.user_key:
             raise RuntimeError('Undefined Stream User')
 
         if stream_id:
@@ -127,10 +120,13 @@ class Stream:
         if not self.stream_id:
             raise const.UNDEFINED_STREAM_ID_ERROR
         uri = '{}/{}'.format(self.stream_url, self.stream_id)
+        headers = {
+                'user-key': self.user_key.key
+            }
         response = helper.api_send_request(
             method='GET',
             endpoint_url=uri,
-            headers=self.stream_user.get_authentication_headers()
+            headers=headers
         )
         if response.status_code == 200:
             response = response.json()
@@ -158,8 +154,10 @@ class Stream:
             raise const.UNDEFINED_STREAM_ID_ERROR
 
         uri = f'{self.stream_url}/{self.stream_id}'
-        headers = self.stream_user.get_authentication_headers()
-        headers['Content-Type'] = 'application/json'
+        headers = {
+                'user-key': self.user_key.key,
+                'content-type': 'application/json'
+            }
         response = helper.api_send_request(
             method='DELETE',
             endpoint_url=uri,
@@ -213,10 +211,13 @@ class Stream:
         """
         try:
             new_subscription = Subscription(stream_id=self.stream_id)
+            headers = {
+                'user-key': self.user_key.key
+            }
             new_subscription.create(
-                headers=self.stream_user.get_authentication_headers()
+                headers=headers
             )
-            new_subscription.create_listener(self.stream_user)
+            new_subscription.create_listener(self.user_key)
             self.subscriptions[new_subscription.id] = new_subscription
             return new_subscription.id
         except Exception as error:
@@ -251,7 +252,7 @@ class Stream:
             raise const.INVALID_SUBSCRIPTION_ID_ERROR
         try:
             if self.subscriptions[sus_id].delete(
-                headers=self.stream_user.get_authentication_headers()
+                headers={'user-key': self.user_key.key}
             ):
                 del self.subscriptions[sus_id]
                 return True
@@ -277,7 +278,7 @@ class Stream:
                 stream_id=self.stream_id,
                 subscription_type=subscription['type'],
                 )
-            subscription_obj.create_listener(self.stream_user)
+            subscription_obj.create_listener(self.user_key)
             self.subscriptions[subscription_obj.id] = subscription_obj
 
     def set_all_subscriptions(self):
@@ -295,10 +296,13 @@ class Stream:
         if not self.stream_id:
             raise const.UNDEFINED_STREAM_ID_ERROR
         uri = '{}/{}'.format(self.stream_url, self.stream_id)
+        headers = {
+                'user-key': self.user_key.key
+            }
         response = helper.api_send_request(
             method='GET',
             endpoint_url=uri,
-            headers=self.stream_user.get_authentication_headers()
+            headers=headers
         )
         if response.status_code == 200:
             response = response.json()
@@ -391,8 +395,10 @@ class Stream:
         if not self.snapshot_id:
             raise ValueError('create fails: snaphot_id undefined')
 
-        headers = self.stream_user.get_authentication_headers()
-        headers['Content-Type'] = 'application/json'
+        headers = {
+                'user-key': self.user_key.key,
+                'content-type': 'application/json'
+            }
         uri = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/{self.snapshot_id}/streams'
         response = helper.api_send_request(
             method='POST',
@@ -433,8 +439,10 @@ class Stream:
                 }
             }
 
-        headers = self.stream_user.get_authentication_headers()
-        headers['Content-Type'] = 'application/json'
+        headers = {
+                'user-key': self.user_key.key,
+                'content-type': 'application/json'
+            }
         response = helper.api_send_request(
                 method='POST',
                 endpoint_url=self.stream_url,

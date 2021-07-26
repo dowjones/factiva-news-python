@@ -12,8 +12,8 @@ class Subscription:
 
     Class that represents a Subscription inside a stream.
     There a two possible operations for a Subscription:
-        Create new one based on an existing Stream
-        Delete an existing subscription from a Stream
+    - Create new one based on an existing Stream
+    - Delete an existing subscription from a Stream
 
     Parameters
     ----------

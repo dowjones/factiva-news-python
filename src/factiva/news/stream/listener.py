@@ -37,7 +37,7 @@ class Listener:
     Creating a new Listener directly:
         >>> listener = Listener(
                 stream_user=StreamUser(
-                    api_key='****************************1234',
+                    user_key='****************************1234',
                     request_info=False,
                     user_id='******-svcaccount@dowjones.com',
                     client_id='****************************5678',
@@ -75,7 +75,7 @@ class Listener:
     _check_exceeds_thread = None
     FIRST_OBJECT = 0
 
-    def __init__(self, subscription_id=None, stream_user=None):
+    def __init__(self, subscription_id=None, user_key=None):
         """Instantiate listener class constructor."""
         if not subscription_id:
             try:
@@ -83,10 +83,10 @@ class Listener:
             except Exception:
                 raise const.UNDEFINED_SUBSCRIPTION_ERROR
 
-        if not stream_user:
-            raise ValueError('Undefined stream_user')
+        if not user_key:
+            raise ValueError('Undefined user_key')
 
-        self.stream_user = stream_user
+        self.user_key = user_key
         self.subscription_id = subscription_id
         self.is_consuming = True
         self.limit_msg = None
@@ -94,7 +94,7 @@ class Listener:
     @property
     def stream_id_uri(self):
         """Property for retrieving the stream id uri."""
-        host = self.stream_user.get_uri_context()
+        host = self.user_key.get_uri_context()
         stream_id = '-'.join(self.subscription_id.split("-")[:-2])
         return f'{host}/streams/{stream_id}'
 
@@ -106,9 +106,10 @@ class Listener:
         RuntimeError: When HTTP API Response is unexpected
 
         """
-        host = self.stream_user.get_uri_context()
-        headers = self.stream_user.get_authentication_headers()
-        limits_uri = f'{host}/accounts/{self.stream_user.api_key}'
+        # TODO: Implement using UserKey.get_stats()
+        host = self.user_key.get_uri_context()
+        headers = self.user_key.get_authentication_headers()
+        limits_uri = f'{host}/accounts/{self.user_key.user_key}'
         limit_response = helper.api_send_request(
             method='GET',
             endpoint_url=limits_uri,
@@ -136,7 +137,7 @@ class Listener:
         RuntimeError: When HTTP API Response is unexpected
 
         """
-        headers = self.stream_user.get_authentication_headers()
+        headers = self.user_key.get_authentication_headers()
         response = helper.api_send_request(
             method='GET',
             endpoint_url=self.stream_id_uri,
@@ -279,10 +280,10 @@ class Listener:
         if not maximum_messages:
             raise ValueError('undefined maximum messages to proceed')
 
-        pubsub_client = self.stream_user.get_client_subscription()
+        pubsub_client = self.user_key.get_client_subscription()
         self.check_exceeded_thread()
 
-        streaming_credentials = self.stream_user.fetch_credentials()
+        streaming_credentials = self.user_key.fetch_credentials()
         subscription_path = pubsub_client.subscription_path(
             streaming_credentials['project_id'],
             self.subscription_id
@@ -331,7 +332,7 @@ class Listener:
                     '''
                     )
                 time.sleep(const.PUBSUB_MESSAGES_WAIT_SPACING)
-                pubsub_client = self.stream_user.get_client_subscription()
+                pubsub_client = self.user_key.get_client_subscription()
 
         self.is_consuming = False
 
@@ -361,10 +362,10 @@ class Listener:
             if ack_enabled:
                 message.ack()
 
-        pubsub_client = self.stream_user.get_client_subscription()
+        pubsub_client = self.user_key.get_client_subscription()
         self.check_exceeded_thread()
 
-        streaming_credentials = self.stream_user.fetch_credentials()
+        streaming_credentials = self.user_key.fetch_credentials()
         subscription_path = pubsub_client.subscription_path(
             streaming_credentials['project_id'],
             self.subscription_id
