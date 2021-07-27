@@ -276,7 +276,7 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_extraction_job.download_job_files(download_path)
 
-    def process_extraction(self, download_path):
+    def process_extraction(self, download_path=None):
         """Submit an Extraction job to the Factiva Snapshots API.
 
         Submits an Extraction job to the Factiva Snapshots API, using the same
