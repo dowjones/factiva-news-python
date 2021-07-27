@@ -8,7 +8,7 @@ VALID_QUERY = "publication_datetime >= '2018-01-01 00:00:00' AND publication_dat
 INVALID_WHERE_STATEMENT = "publecation_datetime >= '2018-01-01 00:00:00'"  # date field name is misspelled on purpose
 
 
-def test_analytics_job(): 
+def test_analytics_job():
     s = Snapshot(query=VALID_QUERY)
     assert s.user_key.key == ENVIRONMENT_USER_KEY
     assert s.query.get_base_query() == {'query': {'where': VALID_QUERY}}

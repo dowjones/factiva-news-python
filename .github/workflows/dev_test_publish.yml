@@ -1,14 +1,15 @@
-name: "Test and Publish"
+name: "DEV Test and Publish"
 
 on:
   push:
+    branches:
+      - dev
 
 env:
-  FACTIVA_USERKEY: ${{secrets.FACTIVA_APIKEY}}
+  FACTIVA_USERKEY: ${{secrets.FACTIVA_USERKEY}}
   FACTIVA_SNAPSHOTID: ${{secrets.FACTIVA_SNAPSHOTID}}
   FACTIVA_SNAPSHOT_UPDATEID: ${{secrets.FACTIVA_SNAPSHOT_UPDATEID}}
-  FACTIVA_STREAM_ID: ${{secrets.FACTIVA_STREAM_ID}}
-
+  FACTIVA_STREAMID: ${{secrets.FACTIVA_STREAMID}}
 
 jobs:
   # linting:
@@ -106,7 +107,6 @@ jobs:
           run: |
             python setup.py bdist_wheel
             python setup.py sdist
-            
         - uses: actions/upload-artifact@v2
           with:
             name: Wheel_library
