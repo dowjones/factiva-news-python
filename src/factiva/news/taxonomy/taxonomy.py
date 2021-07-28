@@ -2,7 +2,7 @@
 from io import StringIO
 
 import pandas as pd
-from factiva.core import APIKeyUser
+from factiva.core import UserKey
 from factiva.core import const
 from factiva import helper
 
@@ -12,31 +12,31 @@ class Taxonomy():
 
     Parameters
     ----------
-    api_user : str or APIKeyUser
+    user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the FACTIVA_APIKEY
         environment variable.
-    request_userinfo : boolean, optional (Default: False)
-        Indicates if user data has to be pulled from the server. This operation
+    user_stats : boolean, optional (Default: False)
+        Indicates if user statistics have to be pulled from the API. This operation
         fills account detail properties along with maximum, used and remaining
         values. It may take several seconds to complete.
 
     Examples
     --------
     Creating a taxonomy instance providing the user key
-        >>> taxonomy_instance = Taxonomy(api_user='abcd1234abcd1234abcd1234abcd1234')
+        >>> t = Taxonomy(u='abcd1234abcd1234abcd1234abcd1234')
 
-    Creating a taxonomy instance with an existing APIKeyUser instance
-        >>> my_api_user = APIKeyUser('abcd1234abcd1234abcd1234abcd1234')
-        >>> taxonomy = Taxonomy(api_user=my_api_user)
+    Creating a taxonomy instance with an existing UserKey instance
+        >>> u = UserKey('abcd1234abcd1234abcd1234abcd1234')
+        >>> t = Taxonomy(user_key=u)
 
     """
 
     categories = []
 
-    def __init__(self, api_user=None, request_userinfo=False):
+    def __init__(self, user_key=None, user_stats=False):
         """Class initializer."""
-        self.api_user = APIKeyUser.create_api_user(api_user, request_userinfo)
+        self.user_key = UserKey.create_user_key(user_key, user_stats)
         self.categories = self.get_categories()
 
     def get_categories(self):
@@ -64,7 +64,7 @@ class Taxonomy():
 
         """
         headers_dict = {
-            'user-key': self.api_user.api_key
+            'user-key': self.user_key.key
         }
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}'
@@ -112,7 +112,7 @@ class Taxonomy():
         response_format = 'csv'
 
         headers_dict = {
-            'user-key': self.api_user.api_key
+            'user-key': self.user_key.key
         }
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
@@ -156,7 +156,7 @@ class Taxonomy():
         helper.validate_type(company_code, str, 'Unexpected value: company must be str')
 
         headers_dict = {
-            'user-key': self.api_user.api_key
+            'user-key': self.user_key.key
         }
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}/{company_code}'
@@ -169,7 +169,7 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
-    def get_multiple_companies(self, code_type, companies_codes):
+    def get_multiple_companies(self, code_type, company_codes):
         """Request information about a list of companies.
 
         Parameters
@@ -200,18 +200,18 @@ class Taxonomy():
 
         """
         helper.validate_type(code_type, str, 'Unexpected value: code_type must be str')
-        helper.validate_type(companies_codes, list, 'Unexpected value: companies must be list')
-        for single_company_code in companies_codes:
+        helper.validate_type(company_codes, list, 'Unexpected value: companies must be list')
+        for single_company_code in company_codes:
             helper.validate_type(single_company_code, str, 'Unexpected value: each company in companies must be str')
 
         headers_dict = {
-            'user-key': self.api_user.api_key
+            'user-key': self.user_key.key
         }
 
         payload_dict = {
             "data": {
                 "attributes": {
-                    "ids": companies_codes
+                    "ids": company_codes
                 }
             }
         }

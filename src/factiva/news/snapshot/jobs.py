@@ -11,9 +11,9 @@ class ExplainJob(BulkNewsJob):
 
     document_volume = 0
 
-    def __init__(self, api_user):
+    def __init__(self, user_key):
         """Initialize class."""
-        super().__init__(api_user=api_user)
+        super().__init__(user_key=user_key)
         self.document_volume = 0
 
     # It's important for these methods to be class methods since they
@@ -37,9 +37,9 @@ class AnalyticsJob(BulkNewsJob):
     """Represent the operation of creating Analtyics from Factiva Snapshots API."""
     data = []
 
-    def __init__(self, api_user):
+    def __init__(self, user_key):
         """Initialize class."""
-        super().__init__(api_user=api_user)
+        super().__init__(user_key=user_key)
         self.data = []
 
     # pylint: disable=no-self-use
@@ -62,15 +62,15 @@ class ExtractionJob(BulkNewsJob):
     files = []
     file_format = ''
 
-    def __init__(self, snapshot_id=None, api_user=None):
+    def __init__(self, snapshot_id=None, user_key=None):
         """Initialize class."""
-        super().__init__(api_user=api_user)
+        super().__init__(user_key=user_key)
         self.files = []
         self.file_format = ''
 
-        if snapshot_id and api_user:
+        if snapshot_id and user_key:
             self.job_id = snapshot_id
-            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.api_user.api_key}-{snapshot_id}'
+            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{snapshot_id}'
 
     # pylint: disable=no-self-use
     def get_endpoint_url(self):
@@ -119,7 +119,8 @@ class UpdateJob(ExtractionJob):
     snapshot_id: str, Optional
         String containing the id of the snapshot that is being updated. Requires update_type to be provided as well. Not compatible with update_id
     update_id: str, Optional
-        String containing the id of an update job that has been created previously. Both update_type and snapshot_id can be obtained from this value. Not compatible with update_type nor snapshot_id
+        String containing the id of an update job that has been created previously. Both update_type and snapshot_id can be obtained from this value.
+        Not compatible with update_type nor snapshot_id
 
     Raises
     ------
@@ -129,9 +130,9 @@ class UpdateJob(ExtractionJob):
     update_type = None
     snapshot_id = None
 
-    def __init__(self, update_type=None, snapshot_id=None, update_id=None, api_user=None):
+    def __init__(self, update_type=None, snapshot_id=None, update_id=None, user_key=None):
         """Construct class instance."""
-        super().__init__(api_user=api_user)
+        super().__init__(user_key=user_key)
 
         if update_id and (update_type or snapshot_id):
             raise Exception('update_id parameter is not compatible with update_type and snapshot id')
@@ -140,7 +141,7 @@ class UpdateJob(ExtractionJob):
             self.job_id = update_id
             self.update_type = update_id.split('-')[1]
             self.snapshot_id = update_id.split('-')[0]
-            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.api_user.api_key}-{update_id}'
+            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{update_id}'
             self.get_job_results()
 
         elif update_type and snapshot_id:
@@ -151,10 +152,9 @@ class UpdateJob(ExtractionJob):
 
     def get_endpoint_url(self):
         """Get endpoint URL."""
-        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.api_user.api_key}-{self.snapshot_id}/{self.update_type}'
+        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.user_key}-{self.snapshot_id}/{self.update_type}'
 
     def get_job_id(self, source):
         """Get job ID from source."""
         # UPDATE_ID FORMAT: {API_URL}/dj-synhub-extraction-{USER-KEY}-{SNAPSHOT_ID}-{UPDATE_TYPE}-{DATETIME}
         return '-'.join(source['data']['id'].split('-')[-3:])
-    

@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-from factiva.core import const, APIKeyUser
+from factiva.core import const, UserKey
 from factiva.helper import mask_string
 from factiva import helper
 
@@ -41,27 +41,27 @@ class BulkNewsBase():
 
     Parameters
     ----------
-    api_user : str or APIKeyUser
+    key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the constructor will try to obtain its
         value from the FACTIVA_APIKEY environment variable.
-    request_userinfo : boolean, optional (Default: False)
+    stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation fills account detail properties
         along with maximum, used and remaining values. It may take several seconds to complete.
 
     """
 
-    api_user = None
+    user_key = None
 
     _request_datetime = ''
     _job_status = ''
 
     def __init__(
         self,
-        api_user=None,
-        request_userinfo=False
+        user_key=None,
+        user_stats=False
     ):
         """Initialize class constructor."""
-        self.api_user = APIKeyUser.create_api_user(api_user, request_userinfo)
+        self.user_key = UserKey.create_user_key(user_key, user_stats)
 
     def load_data(self):
         """Load generic data."""
@@ -74,12 +74,12 @@ class BulkNewsBase():
     def __str__(self):
         """Create string representation for BulkNewsBase Class."""
         pprop = self.__dict__.copy()
-        del pprop['api_user']
-        masked_key = mask_string(self.api_user.api_key)
-        user_class = str(self.api_user.__class__)
+        del pprop['user_key']
+        masked_key = mask_string(self.user_key.user_key)
+        user_class = str(self.user_key.__class__)
 
         ret_val = str(self.__class__) + '\n'
-        ret_val += f'  api_User = {masked_key} ({user_class})\n'
+        ret_val += f'  user_key = {masked_key} ({user_class})\n'
         ret_val += '  '.join(('{} = {}\n'.format(item, pprop[item]) for item in pprop))
         return ret_val
 
@@ -185,12 +185,12 @@ class BulkNewsJob():
 
     Parameters
     ----------
-    api_user:
-        api_user : str or APIKeyUser
+    user_key:
+        user_key : str or APIKeyUser
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the FACTIVA_APIKEY
         environment variable.
-    request_userinfo : boolean, optional (Default: False)
+    user_key_stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation
         fills account detail properties along with maximum, used and remaining
         values. It may take several seconds to complete.
@@ -203,13 +203,13 @@ class BulkNewsJob():
     link = ''
     files = []
 
-    def __init__(self, api_user=None, request_userinfo=False):
+    def __init__(self, user_key=None, user_key_stats=False):
         """Initialize Bulk news job class."""
         self.job_id = ''
         self.job_state = ''
         self.submitted_datetime = datetime.now()
         self.link = ''
-        self.api_user = APIKeyUser.create_api_user(api_user, request_userinfo)
+        self.user_key = UserKey.create_user_key(user_key, user_key_stats)
 
     def get_endpoint_url(self) -> str:
         """Create the URL for the API endpoint to send the request to sumbit a job, according to the kind of job that is being created.
@@ -291,7 +291,7 @@ class BulkNewsJob():
         self.submitted_datetime = datetime.now()
 
         headers_dict = {
-                'user-key': self.api_user.api_key,
+                'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
         response = helper.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
@@ -327,7 +327,7 @@ class BulkNewsJob():
             raise RuntimeError('Job has not yet been submitted or Job ID was not set')
 
         headers_dict = {
-            'user-key': self.api_user.api_key,
+            'user-key': self.user_key.key,
             'Content-Type': 'application/json'
         }
 
@@ -399,7 +399,7 @@ class BulkNewsJob():
 
         """
         headers_dict = {
-                'user-key': self.api_user.api_key
+                'user-key': self.user_key.key
             }
         response = helper.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
 

@@ -1,0 +1,2 @@
+factiva-core
+sphinx-rtd-theme

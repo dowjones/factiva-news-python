@@ -2,41 +2,41 @@ Snapshot Package
 ################
 
 Snapshot
------------------------------
+--------
 
-.. autoclass:: news.snapshot.Snapshot
+.. autoclass:: factiva.news.snapshot.Snapshot
    :members:
    :undoc-members:
    :show-inheritance:
 
 
 Snapshot Jobs
--------------------------
+-------------
 
-.. autoclass:: news.snapshot.ExplainJob
+.. autoclass:: factiva.news.snapshot.ExplainJob
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: news.snapshot.AnalyticsJob
+.. autoclass:: factiva.news.snapshot.AnalyticsJob
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: news.snapshot.ExtractionJob
+.. autoclass:: factiva.news.snapshot.ExtractionJob
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: news.snapshot.UpdateJob
+.. autoclass:: factiva.news.snapshot.UpdateJob
    :members:
    :undoc-members:
    :show-inheritance:
 
 Snapshot Query
---------------------------
+--------------
 
-.. autoclass:: news.snapshot.SnapshotQuery
+.. autoclass:: factiva.news.snapshot.SnapshotQuery
    :members:
    :undoc-members:
    :show-inheritance:
