@@ -6,8 +6,9 @@ from threading import Thread
 
 from google.api_core.exceptions import GoogleAPICallError, NotFound
 
-from factiva import helper
+from factiva.core.tools import load_environment_value
 from factiva.core import const
+from factiva.core import req
 
 
 def default_callback(message, subscription_id):
@@ -79,7 +80,7 @@ class Listener:
         """Instantiate listener class constructor."""
         if not subscription_id:
             try:
-                subscription_id = helper.load_environment_value('FACTIVA_STREAM_SUBSCRIPTION_ID')
+                subscription_id = load_environment_value('FACTIVA_STREAM_SUBSCRIPTION_ID')
             except Exception:
                 raise const.UNDEFINED_SUBSCRIPTION_ERROR
 
@@ -110,7 +111,7 @@ class Listener:
         host = self.user_key.get_uri_context()
         headers = self.user_key.get_authentication_headers()
         limits_uri = f'{host}/accounts/{self.user_key.user_key}'
-        limit_response = helper.api_send_request(
+        limit_response = req.api_send_request(
             method='GET',
             endpoint_url=limits_uri,
             headers=headers
@@ -138,7 +139,7 @@ class Listener:
 
         """
         headers = self.user_key.get_authentication_headers()
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='GET',
             endpoint_url=self.stream_id_uri,
             headers=headers

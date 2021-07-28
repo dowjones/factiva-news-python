@@ -67,12 +67,9 @@ jobs:
         run: |
           python -m pip install pytest pytest-cov factiva-core google-cloud-core google-cloud-pubsub fastavro
 
-      # - name: checkout DowJones Factiva Core repository
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: 'wizeline/factiva-core-python'
-      #     ref: 'development'
-      #     path: 'main'
+      - name: Setup factiva-news <MASTER> (this repo)
+        run: |
+          python -m pip install -e .
 
       - name: pytest
         run: pytest test/

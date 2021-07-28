@@ -11,9 +11,9 @@ class Snapshot(BulkNewsBase):
 
     Parameters
     ----------
-    user_key : str or APIKeyUser
+    user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_APIKEY
+        constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
     user_stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation
@@ -43,8 +43,8 @@ class Snapshot(BulkNewsBase):
         >>> my_snapshot.process_explain()
         106535
 
-    Creating a new Snapshot from an APIKeyUser and a SnapshotQuery instances. Then, running a full Analytics process.
-        >>> my_user = APIKeyUser()
+    Creating a new Snapshot from an UserKey and a SnapshotQuery instances. Then, running a full Analytics process.
+        >>> my_user = UserKey()
         >>> my_query = SnapshotQuery("publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'")
         >>> my_query.frequency = 'YEAR'
         >>> my_query.group_by_source_code = True

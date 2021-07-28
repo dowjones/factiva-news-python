@@ -6,8 +6,8 @@ from pathlib import Path
 from datetime import datetime
 
 from factiva.core import const, UserKey
-from factiva.helper import mask_string
-from factiva import helper
+from factiva.core.tools import mask_string
+from factiva.core import req
 
 
 def parse_field(field, field_name):
@@ -43,7 +43,7 @@ class BulkNewsBase():
     ----------
     key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the constructor will try to obtain its
-        value from the FACTIVA_APIKEY environment variable.
+        value from the FACTIVA_USERKEY environment variable.
     stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation fills account detail properties
         along with maximum, used and remaining values. It may take several seconds to complete.
@@ -186,9 +186,9 @@ class BulkNewsJob():
     Parameters
     ----------
     user_key:
-        user_key : str or APIKeyUser
+        user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_APIKEY
+        constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
     user_key_stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation
@@ -294,7 +294,7 @@ class BulkNewsJob():
                 'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
-        response = helper.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
+        response = req.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
 
         if response.status_code == 201:
             response_data = response.json()
@@ -331,7 +331,7 @@ class BulkNewsJob():
             'Content-Type': 'application/json'
         }
 
-        response = helper.api_send_request(method='GET', endpoint_url=self.link, headers=headers_dict)
+        response = req.api_send_request(method='GET', endpoint_url=self.link, headers=headers_dict)
 
         if response.status_code == 200:
             response_data = response.json()
@@ -401,7 +401,7 @@ class BulkNewsJob():
         headers_dict = {
                 'user-key': self.user_key.key
             }
-        response = helper.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
+        response = re.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
 
         if response.status_code == 200:
             with open(download_path, 'wb') as download_file_path:

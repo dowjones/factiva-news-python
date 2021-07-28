@@ -1,7 +1,7 @@
 # Test notes for the factiva-news Python package
 General notes that describe the context the package is expected to be tested, and other considerations.
 
-## Environment
+## Runtime
 The environment is conditioned by the main dependencies: requests and pandas. As per the Pandas documentation, the preference is to use [Python version 3.7.1](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html#python-version-support) and above, and requests work with almost any version of Python.
 
 The code has been writen using features like f-string which are available since Python 3.6, thus, that's the minimum supported version. As per Pandas guidelines, Python 3.7.1 or above is preferred.
@@ -22,9 +22,11 @@ The initial goal is to test a full sequence of steps for each operation separate
 
 In each test file it is possible to find specific considerations as comments.
 
+## Environment Variables
 Before starting the test, set the following enviroment variables with values like this:
 ```
-FACTIVA_APIKEY='abcd1234abcd1234abcd1234abcd1234'
+FACTIVA_USERKEY='abcd1234abcd1234abcd1234abcd1234'
 FACTIVA_SNAPSHOTID='pdsdakabfd'
 FACTIVA_SNAPSHOT_UPDATEID='pdsdakabfd-additions-20210513060214'
+FACTIVA_STREAMID='hnrvryxkpo'
 ```

@@ -3,7 +3,7 @@ import pytest
 # import time
 
 from factiva.core import UserKey  # , StreamResponse
-from factiva.helper import load_environment_value
+from factiva.core.tools import load_environment_value
 from factiva.news.stream import Stream
 
 # [MB] This file needs to test mainly constructor outputs. Specific

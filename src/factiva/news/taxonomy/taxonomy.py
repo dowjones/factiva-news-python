@@ -2,9 +2,8 @@
 from io import StringIO
 
 import pandas as pd
-from factiva.core import UserKey
-from factiva.core import const
-from factiva import helper
+from factiva.core import UserKey, const, req
+from factiva.core.tools import validate_type
 
 
 class Taxonomy():
@@ -14,7 +13,7 @@ class Taxonomy():
     ----------
     user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_APIKEY
+        constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
     user_stats : boolean, optional (Default: False)
         Indicates if user statistics have to be pulled from the API. This operation
@@ -69,7 +68,7 @@ class Taxonomy():
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}'
 
-        response = helper.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
         if response.status_code == 200:
             return [entry['attributes']['name'] for entry in response.json()['data']]
@@ -107,7 +106,7 @@ class Taxonomy():
             4       i643     Pharmacies/Drug Stores
 
         """
-        helper.validate_type(category, str, 'Unexpected value: category value must be string')
+        validate_type(category, str, 'Unexpected value: category value must be string')
 
         response_format = 'csv'
 
@@ -117,7 +116,7 @@ class Taxonomy():
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
 
-        response = helper.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
         if response.status_code == 200:
             return pd.read_csv(StringIO(response.content.decode()))
@@ -152,8 +151,8 @@ class Taxonomy():
             0  ABCNMST00394  ABCYT  Systemy Company S.A.
 
         """
-        helper.validate_type(code_type, str, 'Unexpected value: code_type must be str')
-        helper.validate_type(company_code, str, 'Unexpected value: company must be str')
+        validate_type(code_type, str, 'Unexpected value: code_type must be str')
+        validate_type(company_code, str, 'Unexpected value: company must be str')
 
         headers_dict = {
             'user-key': self.user_key.key
@@ -161,7 +160,7 @@ class Taxonomy():
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}/{company_code}'
 
-        response = helper.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
         if response.status_code == 200:
             response_data = response.json()
@@ -199,10 +198,10 @@ class Taxonomy():
             2  MN9431810453     MNM     M***********
 
         """
-        helper.validate_type(code_type, str, 'Unexpected value: code_type must be str')
-        helper.validate_type(company_codes, list, 'Unexpected value: companies must be list')
+        validate_type(code_type, str, 'Unexpected value: code_type must be str')
+        validate_type(company_codes, list, 'Unexpected value: companies must be list')
         for single_company_code in company_codes:
-            helper.validate_type(single_company_code, str, 'Unexpected value: each company in companies must be str')
+            validate_type(single_company_code, str, 'Unexpected value: each company in companies must be str')
 
         headers_dict = {
             'user-key': self.user_key.key
@@ -218,7 +217,7 @@ class Taxonomy():
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}'
 
-        response = helper.api_send_request(method='POST', endpoint_url=endpoint, headers=headers_dict, payload=payload_dict)
+        response = req.api_send_request(method='POST', endpoint_url=endpoint, headers=headers_dict, payload=payload_dict)
 
         if response.status_code == 200 or response.status_code == 207:
             response_data = response.json()

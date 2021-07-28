@@ -1,6 +1,6 @@
 """Implement query class definition."""
 from factiva.core import const
-from factiva.helper import validate_type
+from factiva.core.tools import validate_type
 from factiva.news.bulknews import BulkNewsQuery
 
 

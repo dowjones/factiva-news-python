@@ -1,5 +1,5 @@
 from factiva.core import const
-from factiva.helper import load_environment_value
+from factiva.core.tools import load_environment_value
 from factiva.news.snapshot.jobs import UpdateJob
 # from factiva.news.snapshot import Snapshot
 
