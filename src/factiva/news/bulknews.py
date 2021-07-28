@@ -294,7 +294,7 @@ class BulkNewsJob():
                 'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
-        response = .api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
+        response = helper.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
 
         if response.status_code == 201:
             response_data = response.json()
