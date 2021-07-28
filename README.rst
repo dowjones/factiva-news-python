@@ -1,6 +1,6 @@
 Dow Jones Factiva News Python Library
 #####################################
-.. image:: https://github.com/wizeline/factiva-news-python/actions/workflows/dev_branch_linting_testing.yml/badge.svg
+.. image:: https://github.com/dowjones/factiva-news-python/actions/workflows/master_test_publish.yml/badge.svg
 
 This library simplifies the integration to Factiva API services for news-related services.
 
