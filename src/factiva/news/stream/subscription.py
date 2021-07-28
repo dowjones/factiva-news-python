@@ -1,8 +1,8 @@
 """Implement Subscription class."""
-from factiva import helper
-
+from factiva.core import req
 from factiva.core import const
 from factiva.core import StreamUser
+from factiva.core.tools import load_environment_value
 
 from .listener import Listener
 
@@ -48,7 +48,7 @@ class Subscription:
         """Instantiate listener class constructor."""
         if not stream_id:
             try:
-                stream_id = helper.load_environment_value('FACTIVA_STREAM_SUBSCRIPTION_ID')
+                stream_id = load_environment_value('FACTIVA_STREAM_SUBSCRIPTION_ID')
             except Exception:
                 raise const.UNDEFINED_STREAM_ID_ERROR
 
@@ -120,7 +120,7 @@ class Subscription:
             )
 
         uri = '{}/{}/subscriptions'.format(self.url, self.stream_id)
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='POST',
             endpoint_url=uri,
             headers=headers
@@ -159,7 +159,7 @@ class Subscription:
             self.stream_id,
             self.id
             )
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='DELETE',
             endpoint_url=uri,
             headers=headers

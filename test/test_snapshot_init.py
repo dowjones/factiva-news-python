@@ -1,7 +1,7 @@
 import pytest
 
 from factiva.core import UserKey, const
-from factiva.helper import load_environment_value
+from factiva.core.tools import load_environment_value
 from factiva.news.snapshot import Snapshot, SnapshotQuery
 
 # TEST DATA. Fill out these values with valid data

@@ -3,7 +3,7 @@ from typing import List
 
 from factiva.core import UserKey, StreamResponse, const
 from factiva.news.bulknews import BulkNewsQuery
-from factiva import helper
+from factiva.core import req
 
 from .subscription import Subscription
 
@@ -123,7 +123,7 @@ class Stream:
         headers = {
                 'user-key': self.user_key.key
             }
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='GET',
             endpoint_url=uri,
             headers=headers
@@ -158,7 +158,7 @@ class Stream:
                 'user-key': self.user_key.key,
                 'content-type': 'application/json'
             }
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='DELETE',
             endpoint_url=uri,
             headers=headers,
@@ -299,7 +299,7 @@ class Stream:
         headers = {
                 'user-key': self.user_key.key
             }
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='GET',
             endpoint_url=uri,
             headers=headers
@@ -400,7 +400,7 @@ class Stream:
                 'content-type': 'application/json'
             }
         uri = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/{self.snapshot_id}/streams'
-        response = helper.api_send_request(
+        response = req.api_send_request(
             method='POST',
             endpoint_url=uri,
             headers=headers,
@@ -443,7 +443,7 @@ class Stream:
                 'user-key': self.user_key.key,
                 'content-type': 'application/json'
             }
-        response = helper.api_send_request(
+        response = req.api_send_request(
                 method='POST',
                 endpoint_url=self.stream_url,
                 headers=headers,
