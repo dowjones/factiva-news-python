@@ -43,7 +43,7 @@ class BulkNewsBase():
     ----------
     key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the constructor will try to obtain its
-        value from the FACTIVA_APIKEY environment variable.
+        value from the FACTIVA_USERKEY environment variable.
     stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation fills account detail properties
         along with maximum, used and remaining values. It may take several seconds to complete.
@@ -186,9 +186,9 @@ class BulkNewsJob():
     Parameters
     ----------
     user_key:
-        user_key : str or APIKeyUser
+        user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_APIKEY
+        constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
     user_key_stats : boolean, optional (Default: False)
         Indicates if user data has to be pulled from the server. This operation
@@ -294,7 +294,7 @@ class BulkNewsJob():
                 'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
-        response = helper.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
+        response = .api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
 
         if response.status_code == 201:
             response_data = response.json()

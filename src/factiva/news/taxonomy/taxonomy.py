@@ -14,7 +14,7 @@ class Taxonomy():
     ----------
     user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_APIKEY
+        constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
     user_stats : boolean, optional (Default: False)
         Indicates if user statistics have to be pulled from the API. This operation
