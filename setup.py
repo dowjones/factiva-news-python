@@ -1,4 +1,4 @@
-from setuptools import setup  # , find_namespace_packages
+from setuptools import setup
 
 with open("README.rst", "r") as fh:
     long_desc = fh.read()
@@ -17,12 +17,18 @@ setup(
     description='Python package to interact with Factiva news-related APIs. Services are described in the Dow Jones Developer Platform.',
     long_description=long_desc,
     long_description_content_type='text/x-rst',
+    license='MIT',
     author='Dos Jones Customer Engineers',
     author_email='customer.solutions@dowjones.com',
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
     packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy'],
-    url='https://github.com/dowjones/factiva-news-python',
+    url='https://developer.dowjones.com/',
+    project_urls={
+            "GitHub": "https://github.com/dowjones/factiva-news-python",
+            "Documentation": "https://factiva-news-python.readthedocs.io/",
+            "Bug Tracker": "https://github.com/dowjones/factiva-news-python/issues",
+        },
 
     classifiers=[  # Optional
         # How mature is this project? Common values are
@@ -49,5 +55,5 @@ setup(
     ],
     keywords='news, news aggregator, risk, compliance, nlp, alternative data',
     python_requires='>=3.6',
-    install_requires=['factiva-core', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub']
+    install_requires=['factiva-core>=0.1.11', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub']
 )
