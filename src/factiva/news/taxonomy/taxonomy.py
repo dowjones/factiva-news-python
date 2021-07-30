@@ -15,10 +15,6 @@ class Taxonomy():
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
-    user_stats : boolean, optional (Default: False)
-        Indicates if user statistics have to be pulled from the API. This operation
-        fills account detail properties along with maximum, used and remaining
-        values. It may take several seconds to complete.
 
     Examples
     --------
@@ -32,13 +28,17 @@ class Taxonomy():
     """
 
     categories = []
+    identifiers = []
 
-    def __init__(self, user_key=None, user_stats=False):
+
+    def __init__(self, user_key=None):
         """Class initializer."""
-        self.user_key = UserKey.create_user_key(user_key, user_stats)
+        self.user_key = UserKey.create_user_key(user_key)
         self.categories = self.get_categories()
+        self.identifiers = self.get_identifiers()
 
-    def get_categories(self):
+
+    def get_categories(self) -> list:
         """Request for a list of available taxonomy categories.
 
         Returns
@@ -75,7 +75,51 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
-    def get_category_codes(self, category):
+
+    def get_identifiers(self) -> list:
+        """Request for a list of available taxonomy categories.
+
+        Returns
+        -------
+        List of available taxonomy categories.
+
+        Raises
+        ------
+        RuntimeError: When API request returns unexpected error
+
+        Examples
+        --------
+        This method is called with in the __init__ method, so the categories can be accessed as is.
+            >>> taxonomy = Taxonomy()
+            >>> print(taxonomy.categories)
+            ['news_subjects', 'regions', 'companies', 'industries', 'executives']
+
+        Calling the method on its own
+            >>> taxonomy = Taxonomy()
+            >>> print(taxonomy.get_categories())
+            ['news_subjects', 'regions', 'companies', 'industries', 'executives']
+
+        """
+        headers_dict = {
+            'user-key': self.user_key.key
+        }
+
+        endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANY_IDENTIFIERS_BASEPATH}'
+
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
+
+        if response.status_code == 200:
+            return response.json()['data']['attributes']
+
+        raise RuntimeError('API Request returned an unexpected HTTP status')
+
+
+    # TODO: Implement a save_path parameter to alternatively store the taxonomy
+    # file locally, and don't load its content to a DataFrame
+    # https://github.com/dowjones/factiva-news-python/issues/4#issue-956942535
+    # Check also differences by loading the data in AVRO. In case the issue is
+    # too common with Executives, force the download option.
+    def get_category_codes(self, category) -> pd.DataFrame:
         """Request for available codes in the taxonomy for the specified category.
 
         Parameters
@@ -119,11 +163,18 @@ class Taxonomy():
         response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
         if response.status_code == 200:
-            return pd.read_csv(StringIO(response.content.decode()))
+            r_df = pd.read_csv(StringIO(response.content.decode()))
+            if 'executiveFactivaCode' in r_df.columns:
+                r_df.rename(columns = {'executiveFactivaCode':'code'}, inplace = True)
+            elif 'Code' in r_df.columns:
+                r_df.rename(columns = {'Code':'code'}, inplace = True)
+            r_df.set_index('code', inplace=True)
+            return r_df
 
         raise RuntimeError('API Request returned an unexpected HTTP Status')
 
-    def get_single_company(self, code_type, company_code):
+
+    def get_single_company(self, code_type, company_code) -> pd.DataFrame:
         """Request information about a single company.
 
         Parameters
@@ -168,7 +219,8 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
-    def get_multiple_companies(self, code_type, company_codes):
+
+    def get_multiple_companies(self, code_type, company_codes) -> pd.DataFrame:
         """Request information about a list of companies.
 
         Parameters
@@ -224,17 +276,15 @@ class Taxonomy():
             return pd.DataFrame.from_records(response_data['data']['attributes']['successes'])
         raise RuntimeError(f'API Request returned an unexpected HTTP status with message: {response.text}')
 
-    def get_company(self, code_type, company_code=None, companies_codes=None):
+    def get_company(self, code_type, company_codes) -> pd.DataFrame:
         """Request information about either a single company or a list of companies.
 
         Parameters
         ----------
         code_type : str
             String describing the code type used to request the information about the company. E.g. isin, ticker.
-        company_code: str, Optional
-            Single company code to request data about. Not compatible with companies_codes.
-        companies_codes: List[str], Optional
-            List of string that contains the company codes to request data about. Not compatible with company_code.
+        company_code: str or list
+            Single company code (str) or list of company codes to translate.
 
         Returns
         -------
@@ -266,13 +316,9 @@ class Taxonomy():
             2  MN9431810453     MNM     M***********
 
         """
-        if company_code is not None and companies_codes is not None:
-            raise RuntimeError('company and companies parameters cannot be set simultaneously')
-
-        if company_code is not None:
-            return self.get_single_company(code_type, company_code)
-
-        if companies_codes is not None:
-            return self.get_multiple_companies(code_type, companies_codes)
-
-        return None
+        if type(company_codes) is str:
+            return self.get_single_company(code_type, company_codes)
+        elif type(company_codes) is list:
+            return self.get_multiple_companies(code_type, company_codes)
+        else:
+            raise ValueError('company_codes must be a string or a list')

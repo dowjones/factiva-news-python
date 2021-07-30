@@ -53,8 +53,11 @@ class AnalyticsJob(BulkNewsJob):
         return source['data']['id']
 
     def set_job_data(self, source):
-        """Set job data."""
+        """Sets job data."""
         self.data = pd.DataFrame(source['data']['attributes']['results'])
+
+        if 'source_code' not in self.data.columns:
+            self.data['source_code'] = 'ALL_SOURCES'
 
 
 class ExtractionJob(BulkNewsJob):

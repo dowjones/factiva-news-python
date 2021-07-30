@@ -8,4 +8,4 @@ __all__ = ['Snapshot', 'SnapshotQuery', 'SnapshotFiles',
 from .query import SnapshotQuery
 from .jobs import AnalyticsJob, ExplainJob, ExtractionJob, UpdateJob
 from .snapshot import Snapshot
-from .files import SnapshotFiles
+from factiva.core import SnapshotFiles

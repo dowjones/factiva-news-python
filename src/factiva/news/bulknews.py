@@ -401,7 +401,7 @@ class BulkNewsJob():
         headers_dict = {
                 'user-key': self.user_key.key
             }
-        response = re.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
+        response = req.api_send_request(method='GET', endpoint_url=endpoint_url, headers=headers_dict)
 
         if response.status_code == 200:
             with open(download_path, 'wb') as download_file_path:
