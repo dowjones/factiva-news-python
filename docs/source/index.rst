@@ -12,6 +12,7 @@ Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com
 
    overview/index
    overview/installation
+   overview/querybuilding
    overview/quickstart
 
 .. toctree::
