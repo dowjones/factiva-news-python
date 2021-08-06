@@ -55,5 +55,5 @@ setup(
     ],
     keywords='news, news aggregator, risk, compliance, nlp, alternative data',
     python_requires='>=3.6',
-    install_requires=['factiva-core>=0.1.11', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub']
+    install_requires=['factiva-core>=0.2.0', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub']
 )
