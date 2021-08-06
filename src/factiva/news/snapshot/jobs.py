@@ -155,7 +155,7 @@ class UpdateJob(ExtractionJob):
 
     def get_endpoint_url(self):
         """Get endpoint URL."""
-        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.user_key}-{self.snapshot_id}/{self.update_type}'
+        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{self.snapshot_id}/{self.update_type}'
 
     def get_job_id(self, source):
         """Get job ID from source."""
