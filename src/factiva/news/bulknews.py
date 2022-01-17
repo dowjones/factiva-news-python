@@ -265,7 +265,7 @@ class BulkNewsJob():
         """
         raise NotImplementedError('Method has not been defined')
 
-    def submit_job(self, payload=None) -> bool:
+    def submit_job(self, payload=None, headers_extra=None) -> bool:
         """Submit a new job to be processed to the Factiva Snapshots API or Streams API.
 
         Submits a new job to be processed to the Factiva Snapshots API or Streams API.
@@ -294,6 +294,8 @@ class BulkNewsJob():
                 'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
+        if headers_extra is not None:
+            headers_dict.update(headers_extra)
         response = req.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
 
         if response.status_code == 201:
