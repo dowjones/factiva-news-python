@@ -2,7 +2,7 @@
 from factiva.news.bulknews import BulkNewsBase
 from .query import SnapshotQuery
 from .jobs import ExplainJob, ExtractionJob, AnalyticsJob, UpdateJob
-
+from factiva.core import const
 
 class Snapshot(BulkNewsBase):
     """Represent a Factiva Snapshot Class.
@@ -130,11 +130,16 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_explain_job.get_job_results()
 
-    def get_explain_job_samples(self):
+    def get_explain_job_samples(self, num_samples=10):
         """Obtain the Explain job samples from the Factiva Snapshots API.
 
         Returns a list of up to 100 sample documents (no full-text) which
         includes title and metadata fields.
+
+        Parameters
+        ----------
+        num_samples: int, optional (Default: 10)
+            Number of sample documents to get explained by a job
 
         Returns
         -------
@@ -142,7 +147,8 @@ class Snapshot(BulkNewsBase):
             otherwise.
 
         """
-        return self.last_explain_job.get_job_samples()
+        self.last_explain_job.extraction_type= const.API_SAMPLES_EXTRACTION_TYPE
+        return self.last_explain_job.get_job_samples(num_samples)
 
     def process_explain(self):
         """Submit an Explain job to the Factiva Snapshots API.
