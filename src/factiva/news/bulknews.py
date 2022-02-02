@@ -1,13 +1,12 @@
 """Implement actions with Bulk news such as Snapshot and Stream."""
-import time
 import os
-
-from pathlib import Path
+import time
 from datetime import datetime
+from pathlib import Path
 
-from factiva.core import const, UserKey
+import pandas as pd
+from factiva.core import UserKey, const, req
 from factiva.core.tools import mask_string
-from factiva.core import req
 
 
 def parse_field(field, field_name):
@@ -444,6 +443,39 @@ class BulkNewsJob():
         else:
             raise RuntimeError('No files available for download')
         return True
+
+    def get_job_samples(self, num_samples):
+        """Obtain the Explain job samples from the Factiva Snapshots API.
+        Returns a dataframe of up to 100 sample documents which  includes title and metadata fields.
+
+        Parameters
+        ----------
+        num_samples: int, Optional
+            Number of sample documents to get explained by a job
+
+        Returns
+        -------
+        Boolean : True if the files were correctly downloaded, False otherwise.
+
+        Raises
+        ------
+        - RuntimeError when there are no files available for download
+
+        """
+        headers_dict = {
+            'user-key': self.user_key.key
+        }
+        s_param = { 'num_samples': num_samples }
+        samples_url=f'{self.get_endpoint_url()}/{self.job_id}'
+        response = req.api_send_request(method='GET', endpoint_url=samples_url, headers=headers_dict, qs_params=s_param)
+        if response.status_code == 200:
+            resp_json = response.json()['data']['attributes']['sample']
+            samples = pd.DataFrame(resp_json)
+            print(f'DataFrame size: {samples.shape}')
+            print(f'Columns: {samples.columns}')
+            return samples
+        else:
+            print(f'Unexpected Response: {response.text}')
 
     def __repr__(self):
         """Create string representation for BulkNews Class."""

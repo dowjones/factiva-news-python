@@ -14,11 +14,21 @@ INVALID_WHERE_STATEMENT = "publecation_datetime >= '2018-01-01 00:00:00'"  # dat
 def test_process_explain():
     s = Snapshot(query=VALID_WHERE_STATEMENT)
     assert s.user_key.key == ENVIRONMENT_USER_KEY
-    assert s.query.get_base_query() == {'query': {'where': VALID_WHERE_STATEMENT}}
+    assert s.query.get_base_query() == {
+        'query': {
+            'where': VALID_WHERE_STATEMENT
+        }
+    }
     s.process_explain()
     assert s.last_explain_job.document_volume > 0
     assert s.last_explain_job.job_state == const.API_JOB_DONE_STATE
     assert len(s.last_explain_job.job_id) == 36
+
+
+def test_get_explain_job_samples():
+    s = Snapshot(query=VALID_WHERE_STATEMENT)
+    s.process_explain()
+    assert len(s.get_explain_job_samples().columns) > 0
 
 # Test step by step explain
 

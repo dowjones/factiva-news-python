@@ -14,6 +14,13 @@ def test_get_identifiers_for_category():
     assert industry_codes.loc['i25121'] is not None
 
 
+def test_get_identifiers_for_category_big_files():
+    taxonomy = Taxonomy()
+    industry_codes = taxonomy.get_category_codes('companies')
+    print(industry_codes)
+    assert len(industry_codes) > 0
+    assert industry_codes.loc['SSYRVO'] is not None
+
 def test_request_data_for_company():
     taxonomy = Taxonomy()
     company_data = taxonomy.get_company('isin', company_codes='PLUNMST00014')

@@ -160,8 +160,7 @@ class Taxonomy():
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
 
-        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
-
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict, stream=True)
         if response.status_code == 200:
             r_df = pd.read_csv(StringIO(response.content.decode()))
             if 'executiveFactivaCode' in r_df.columns:
