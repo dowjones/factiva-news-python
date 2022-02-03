@@ -67,7 +67,6 @@ class Snapshot(BulkNewsBase):
     news_data = None
     last_explain_job = None
     last_analytics_job = None
-    last_analytics2_job = None
     last_extraction_job = None
     last_update_job = None
 
@@ -83,7 +82,6 @@ class Snapshot(BulkNewsBase):
 
         self.last_explain_job = ExplainJob(user_key=self.user_key)
         self.last_analytics_job = AnalyticsJob(user_key=self.user_key)
-        self.last_analytics2_job = AnalyticsJob(user_key=self.user_key)
 
         if query and snapshot_id:
             raise Exception("The query and snapshot_id parameters cannot be set simultaneously")
@@ -177,6 +175,7 @@ class Snapshot(BulkNewsBase):
             450483
 
         """
+
         return self.last_explain_job.process_job(self.query.get_explain_query())
 
     def submit_analytics_job(self):
@@ -191,21 +190,12 @@ class Snapshot(BulkNewsBase):
         Boolean : True if the submission was successful. An Exception otherwise.
 
         """
-        return self.last_analytics_job.submit_job(self.query.get_analytics_query())
 
-    def submit_analytics2_job(self):
-        """Submit an Analytics v2 job to the Factiva Snapshots API.
+        use_latest_api_version = True
+        if(isinstance(self.query.group_by_source_code, bool)):
+            use_latest_api_version = False
 
-        Submits an Analytics job to the Factiva Snapshots API, using the
-        assigned user in the `user_key`, and SnapshotQuery in the `query`
-        properties.
-
-        Returns
-        -------
-        Boolean : True if the submission was successful. An Exception otherwise.
-
-        """
-        return self.last_analytics2_job.submit_job(self.query.get_analytics_query())
+        return self.last_analytics_job.submit_job(self.query.get_analytics_query(), use_latest_api_version)
 
     def get_analytics_job_results(self):
         """Obtain the Analytics job results from the Factiva Snapshots API.
@@ -220,20 +210,6 @@ class Snapshot(BulkNewsBase):
 
         """
         return self.last_analytics_job.get_job_results()
-
-    def get_analytics2_job_results(self):
-        """Obtain the Analytics v2 job results from the Factiva Snapshots API.
-
-        Obtains the Analytics job results from the Factiva Snapshots API.
-        Results are stored in the `last_analytics_job` class property.
-
-        Returns
-        -------
-        Boolean : True if the data was retrieved successfully. An Exception
-            otherwise.
-
-        """
-        return self.last_analytics2_job.get_job_results()
 
     def process_analytics(self):
         """Submit an Analytics job to the Factiva Snapshots API.
@@ -270,44 +246,13 @@ class Snapshot(BulkNewsBase):
             11              2018-12   38401
 
         """
-        return self.last_analytics_job.process_job(self.query.get_analytics_query())
 
-    def process_analytics2(self):
-        """Submit an Analytics job to the Factiva Snapshots API.
+        use_latest_api_version = True
+        if(isinstance(self.query.group_by_source_code, bool)):
+            use_latest_api_version = False
 
-        Submits an Analytics job to the Factiva Snapshots API, using the same
-        parameters used by `submit_analytics_job`. Then, monitors the job until
-        its status change to `JOB_STATE_DONE`. Finally, retrieves and stores
-        the results in the property `last_analytics_job`.
+        return self.last_analytics_job.process_job(self.query.get_analytics_query(), use_latest_api_version)
 
-        Returns
-        -------
-        Boolean : True if the analytics processing was successful. An Exception
-            otherwise.
-
-        Examples
-        --------
-        Process analytics job
-            >>> query_clause = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-01-02 00:00:00' AND LOWER(language_code) = 'en'"
-            >>> my_snapshot = Snapshot(user_key='abcd1234abcd1234abcd1234abcd1234', query=query_clause)
-            >>> my_snapshot.process_analytics()
-            >>> print(my_snapshot.last_analytics_job.data)
-                publication_datetime   count
-            0               2018-01  950516
-            1               2018-02  929795
-            2               2018-03  998663
-            3               2018-04  935845
-            4               2018-05  894903
-            5               2018-06  876938
-            6               2018-07  867509
-            7               2018-08  793283
-            8               2018-09  858963
-            9               2018-10  957739
-            10              2018-11  917355
-            11              2018-12   38401
-
-        """
-        return self.last_analytics2_job.process_job(self.query.get_analytics_query())
 
     def submit_extraction_job(self):
         """Submit an Extraction job to the Factiva Snapshots API.
