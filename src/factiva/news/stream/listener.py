@@ -76,7 +76,7 @@ class Listener:
     _check_exceeds_thread = None
     FIRST_OBJECT = 0
 
-    def __init__(self, subscription_id=None, user_key=None):
+    def __init__(self, subscription_id=None, stream_user=None):
         """Instantiate listener class constructor."""
         if not subscription_id:
             try:
@@ -84,10 +84,10 @@ class Listener:
             except Exception:
                 raise const.UNDEFINED_SUBSCRIPTION_ERROR
 
-        if not user_key:
-            raise ValueError('Undefined user_key')
+        if not stream_user:
+            raise ValueError('Undefined stream_user')
 
-        self.user_key = user_key
+        self.user_key = stream_user
         self.subscription_id = subscription_id
         self.is_consuming = True
         self.limit_msg = None

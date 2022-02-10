@@ -1,9 +1,8 @@
 """Implement Stream Class definition."""
 from typing import List
 
-from factiva.core import UserKey, StreamResponse, const
+from factiva.core import StreamResponse, StreamUser, const, req
 from factiva.news.bulknews import BulkNewsQuery
-from factiva.core import req
 
 from .subscription import Subscription
 
@@ -63,7 +62,7 @@ class Stream:
 
     """
     stream_id = None
-    user_key = None
+    stream_user = None
     snapshot_id = None
     listener = None
     subscriptions = dict()
@@ -85,8 +84,9 @@ class Stream:
         self.stream_id = stream_id
         self.snapshot_id = snapshot_id
         self.query = BulkNewsQuery(query)
-        self.user_key = UserKey.create_user_key(user_key, user_stats)
-        if not self.user_key:
+        self.stream_user = user_key if isinstance(
+            user_key, StreamUser) else StreamUser(user_key, user_stats)
+        if not self.stream_user:
             raise RuntimeError('Undefined Stream User')
 
         if stream_id:
@@ -101,6 +101,30 @@ class Stream:
     def all_subscriptions(self) -> List[str]:
         """List all subscriptions to a stream."""
         return [sub.__repr__() for sub in self.subscriptions.values()]
+
+    def get_all_streams(self) -> List[StreamResponse]:
+        """Get all streams of a user.
+
+        Returns
+        -------
+        List[StreamResponse] which contains all streams of the current user
+
+        Raises
+        ------
+        RuntimeError: when exists an unexpected HTTP error
+        """
+
+        headers = {'user-key': self.stream_user.key}
+        response = req.api_send_request(method='GET',
+                                        endpoint_url=self.stream_url,
+                                        headers=headers)
+        streams = []
+        if response.status_code == 200:
+            response = response.json()
+            for data in response['data']:
+                streams.append(
+                    StreamResponse(data=data, links=data.get('links', None)))
+        return streams
 
     def get_info(self) -> StreamResponse:
         """Query a stream by its id.
@@ -121,7 +145,7 @@ class Stream:
             raise const.UNDEFINED_STREAM_ID_ERROR
         uri = '{}/{}'.format(self.stream_url, self.stream_id)
         headers = {
-                'user-key': self.user_key.key
+                'user-key': self.stream_user.key
             }
         response = req.api_send_request(
             method='GET',
@@ -155,7 +179,7 @@ class Stream:
 
         uri = f'{self.stream_url}/{self.stream_id}'
         headers = {
-                'user-key': self.user_key.key,
+                'user-key': self.stream_user.key,
                 'content-type': 'application/json'
             }
         response = req.api_send_request(
@@ -173,7 +197,7 @@ class Stream:
         raise const.UNEXPECTED_HTTP_ERROR
 
     def create(self) -> StreamResponse:
-        """Create a stream subscription.
+        """Create a stream instance.
 
         There are two available options:
         Create a stream using a query
@@ -182,7 +206,7 @@ class Stream:
         Returns
         -------
         StreamResponse which contains all information
-            of the current sream
+            of the current stream
 
         Raises
         ------
@@ -212,12 +236,12 @@ class Stream:
         try:
             new_subscription = Subscription(stream_id=self.stream_id)
             headers = {
-                'user-key': self.user_key.key
+                'user-key': self.stream_user.key
             }
             new_subscription.create(
                 headers=headers
             )
-            new_subscription.create_listener(self.user_key)
+            new_subscription.create_listener(self.stream_user)
             self.subscriptions[new_subscription.id] = new_subscription
             return new_subscription.id
         except Exception as error:
@@ -252,7 +276,7 @@ class Stream:
             raise const.INVALID_SUBSCRIPTION_ID_ERROR
         try:
             if self.subscriptions[sus_id].delete(
-                headers={'user-key': self.user_key.key}
+                headers={'user-key': self.stream_user.key}
             ):
                 del self.subscriptions[sus_id]
                 return True
@@ -278,7 +302,7 @@ class Stream:
                 stream_id=self.stream_id,
                 subscription_type=subscription['type'],
                 )
-            subscription_obj.create_listener(self.user_key)
+            subscription_obj.create_listener(self.stream_user)
             self.subscriptions[subscription_obj.id] = subscription_obj
 
     def set_all_subscriptions(self):
@@ -297,7 +321,7 @@ class Stream:
             raise const.UNDEFINED_STREAM_ID_ERROR
         uri = '{}/{}'.format(self.stream_url, self.stream_id)
         headers = {
-                'user-key': self.user_key.key
+                'user-key': self.stream_user.key
             }
         response = req.api_send_request(
             method='GET',
@@ -396,7 +420,7 @@ class Stream:
             raise ValueError('create fails: snaphot_id undefined')
 
         headers = {
-                'user-key': self.user_key.key,
+                'user-key': self.stream_user.key,
                 'content-type': 'application/json'
             }
         uri = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/{self.snapshot_id}/streams'
@@ -440,7 +464,7 @@ class Stream:
             }
 
         headers = {
-                'user-key': self.user_key.key,
+                'user-key': self.stream_user.key,
                 'content-type': 'application/json'
             }
         response = req.api_send_request(
