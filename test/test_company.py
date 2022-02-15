@@ -1,8 +1,10 @@
+import os
 import shutil
 import unittest
-import pytest
 
+import pytest
 from factiva.core.const import (DOWNLOAD_DEFAULT_FOLDER,
+                                ISIN_COMPANY_IDENTIFIER,
                                 TICKER_COMPANY_IDENTIFIER)
 from factiva.core.tools import load_environment_value
 from factiva.news.taxonomy import Company
@@ -11,6 +13,17 @@ FACTIVA_USERKEY = load_environment_value("FACTIVA_USERKEY")
 
 
 class TestRequests(unittest.TestCase):
+
+    def test_validate_point_time_request(self):
+        c = Company(FACTIVA_USERKEY)
+        c.validate_point_time_request(TICKER_COMPANY_IDENTIFIER)
+        assert True
+
+    def test_validate_point_time_request_not_allowed(self):
+        c = Company(FACTIVA_USERKEY)
+        with pytest.raises(ValueError):
+            c.validate_point_time_request(ISIN_COMPANY_IDENTIFIER)
+            assert True
 
     def test_download_companies_identifier(self):
         c = Company(FACTIVA_USERKEY)
@@ -37,6 +50,12 @@ class TestRequests(unittest.TestCase):
                                                            add_timestamp=True)
             assert isinstance(local_file_name, str)
 
+    def test_point_in_time_query(self):
+        c = Company(FACTIVA_USERKEY)
+        response = c.point_in_time_query(TICKER_COMPANY_IDENTIFIER, 'BC1P')
+        assert isinstance(response, dict)
+
     @classmethod
     def tearDownClass(cls):
-        shutil.rmtree(DOWNLOAD_DEFAULT_FOLDER)
+        if os.path.exists(DOWNLOAD_DEFAULT_FOLDER):
+            shutil.rmtree(DOWNLOAD_DEFAULT_FOLDER)

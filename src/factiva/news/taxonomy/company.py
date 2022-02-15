@@ -1,9 +1,10 @@
-from json import tool
 from factiva.core import UserKey, req, tools
-from factiva.core.const import (API_HOST, API_SNAPSHOTS_COMPANIES_PIT,
+from factiva.core.const import (API_COMPANIES_IDENTIFIER_TYPE, API_HOST,
+                                API_SNAPSHOTS_COMPANIES_BASEPATH,
+                                API_SNAPSHOTS_COMPANIES_PIT,
                                 API_SNAPSHOTS_TAXONOMY_BASEPATH,
                                 DOWNLOAD_DEFAULT_FOLDER,
-                                API_COMPANIES_IDENTIFIER_TYPE)
+                                TICKER_COMPANY_IDENTIFIER)
 
 
 class Company():
@@ -26,7 +27,9 @@ class Company():
         >>> c = Company(user_key=u)
     """
 
-    __API_ENDPOINT_BASEURL = f'{API_HOST}{API_SNAPSHOTS_TAXONOMY_BASEPATH}'
+    __API_ENDPOINT_TAXONOMY = f'{API_HOST}{API_SNAPSHOTS_TAXONOMY_BASEPATH}'
+    __API_ENDPOINT_COMPANY = f'{API_HOST}{API_SNAPSHOTS_COMPANIES_BASEPATH}'
+    __TICKER_COMPANY_IDENTIFIER_NAME = 'ticker_exchange'
 
     def __init__(self, user_key=None):
         """Class initializar"""
@@ -45,9 +48,20 @@ class Company():
         ValueError: When the user is not allowed to permorm this operation
         ValueError: When the identifier requested is not valid
         """
+
         if (not len(self.user_key.enabled_company_identifiers)):
             raise ValueError('User is not allowed to perform this operation')
+
         tools.validate_field_options(identifier, API_COMPANIES_IDENTIFIER_TYPE)
+
+        if (identifier == TICKER_COMPANY_IDENTIFIER):
+            identifier = self.__TICKER_COMPANY_IDENTIFIER_NAME
+
+        identifier_description = list(
+            filter(lambda company: company['name'] == identifier,
+                   self.user_key.enabled_company_identifiers))
+        if (not len(identifier_description)):
+            raise ValueError('User is not allowed to perform this operation')
 
     def point_in_time_download_all(self,
                                    identifier,
@@ -93,3 +107,38 @@ class Company():
                                             file_format, to_save_path,
                                             add_timestamp)
         return local_file_name
+
+    def point_in_time_query(self, identifier, value) -> dict:
+        """Returns the resolved Factiva code and date ranges when the instrument from the identifier, was valid.
+        
+        Parameters
+        ----------
+        identifier : str
+            A company identifier type
+        value : str
+            Identifier value
+        
+        Returns
+        -------
+        dict:
+            Factiva code and date ranges from a company
+        
+        Raises
+        ------
+        ValueError: When the user is not allowed to permorm this operation
+        ValueError: When the identifier requested is not valid
+        """
+
+        self.validate_point_time_request(identifier)
+        headers_dict = {'user-key': self.user_key.key}
+        endpoint = f'{self.__API_ENDPOINT_COMPANY}{API_SNAPSHOTS_COMPANIES_PIT}/{identifier}/{value}'
+
+        response = req.api_send_request(endpoint_url=endpoint,
+                                        headers=headers_dict)
+        if response.status_code == 200:
+            response = response.json()
+            return response
+        else:
+            raise RuntimeError(
+                '''Unexpected HTTP Response from API while checking for limits'''
+            )
