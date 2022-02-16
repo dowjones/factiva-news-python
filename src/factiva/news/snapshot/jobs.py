@@ -65,8 +65,9 @@ class AnalyticsJob(BulkNewsJob):
         """Sets job data."""
         self.data = pd.DataFrame(source['data']['attributes']['results'])
 
-        if 'source_code' not in self.data.columns:
-            self.data['source_code'] = 'ALL_SOURCES'
+        for field in const.API_GROUP_DIMENSIONS_FIELDS:
+            if field not in self.data.columns:
+                self.data[field] = f'ALL_{field.upper().strip()}'
 
 
 class ExtractionJob(BulkNewsJob):

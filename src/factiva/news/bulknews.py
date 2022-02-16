@@ -264,7 +264,7 @@ class BulkNewsJob():
         """
         raise NotImplementedError('Method has not been defined')
 
-    def submit_job(self, payload=None, headers_extra=None) -> bool:
+    def submit_job(self, payload=None, use_latest_api_version=False) -> bool:
         """Submit a new job to be processed to the Factiva Snapshots API or Streams API.
 
         Submits a new job to be processed to the Factiva Snapshots API or Streams API.
@@ -293,8 +293,10 @@ class BulkNewsJob():
                 'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
-        if headers_extra is not None:
-            headers_dict.update(headers_extra)
+        if use_latest_api_version:
+            version_header = {'X-API-VERSION': const.API_LATEST_VERSION}
+            headers_dict.update(version_header)
+
         response = req.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
 
         if response.status_code == 201:
@@ -345,7 +347,7 @@ class BulkNewsJob():
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         return True
 
-    def process_job(self, payload=None) -> bool:
+    def process_job(self, payload=None, use_latest_api_version=False) -> bool:
         """Submit a new job to be processed, wait until the job is completed and then retrieves the job results.
 
         Parameters
@@ -366,7 +368,7 @@ class BulkNewsJob():
         - Exception when the job has failed to complete
 
         """
-        self.submit_job(payload=payload)
+        self.submit_job(payload=payload, use_latest_api_version=use_latest_api_version)
         self.get_job_results()
 
         while self.job_state != const.API_JOB_DONE_STATE:
