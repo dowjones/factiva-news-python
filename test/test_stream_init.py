@@ -23,25 +23,29 @@ user_key = StreamUser(VALID_USER_KEY)
 def test_create_stream_evironment_variable():
     stream = Stream()
     assert stream.stream_user.key == ENVIRONMENT_USER_KEY
+    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
+    #         Also, in this first test, ensure the DELETE Stream operation works fine
 
 
 def test_create_stream_str_key():
     stream = Stream(user_key=VALID_USER_KEY)
     assert stream.stream_user.key == VALID_USER_KEY
-
+    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
 
 def test_create_stream_request_info():
     stream = Stream(user_key=VALID_USER_KEY, user_stats=True)
     assert len(stream.stream_user.account_name) > 0
     assert stream.stream_user.max_allowed_extracted_documents != 0
+    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
 
 
 def test_create_stream_existing_user():
     stream = Stream(user_key=user_key)
     assert stream.stream_user.key == VALID_USER_KEY
+    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
 
 
-def test_create_stream_invalid_stream():
+def test_create_stream_instance_invalid_params():
     with pytest.raises(ValueError,
                        match=r'Not allowed stream id with query or snapshot'):
         Stream(user_key=VALID_USER_KEY,
@@ -51,15 +55,12 @@ def test_create_stream_invalid_stream():
 
 def test_create_stream_with_query():
     s = Stream(query=VALID_WHERE_STATEMENT)
-    assert s.query.get_base_query() == {
-        'query': {
-            'where': VALID_WHERE_STATEMENT
-        }
-    }
+    assert s.query.get_base_query() == {'query': {'where': VALID_WHERE_STATEMENT}}
+    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
 
 
 def test_stream_get_info_from_id():
-    s = Stream(stream_id=VALID_STREAM_ID)
+    s = Stream(stream_id=VALID_STREAM_ID)  # ID must be the long ID!
     response = s.get_info()
     assert isinstance(response, StreamResponse)
     assert len(response.id) > 0
@@ -88,9 +89,11 @@ def test_stream_get_all_streams():
 
 def test_stream_create_and_delete_subscription():
     s = Stream(query=VALID_WHERE_STATEMENT)
-    s.stream_id = VALID_STREAM_ID
+    # s.stream_id = VALID_STREAM_ID  # WLTODO: This line doesn't make sense as the ID was assigned in the previous line
     subscription_id = s.create_subscription()
     assert isinstance(subscription_id, str)
-
+    # WLTODO: Test the new subscription id is listed in the get_info response
     delete_process = s.delete_subscription(subscription_id)
+    # WLTODO: Test the new subscription id is removed from the get_info response
     assert delete_process == True
+    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
