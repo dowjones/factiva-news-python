@@ -31,6 +31,8 @@ class Company():
     __API_ENDPOINT_COMPANY = f'{API_HOST}{API_SNAPSHOTS_COMPANIES_BASEPATH}'
     __TICKER_COMPANY_IDENTIFIER_NAME = 'ticker_exchange'
 
+    user_key=None
+    
     def __init__(self, user_key=None):
         """Class initializar"""
         self.user_key = UserKey.create_user_key(user_key, True)

@@ -102,12 +102,29 @@ class Stream:
         """List all subscriptions to a stream."""
         return [sub.__repr__() for sub in self.subscriptions.values()]
 
-    def get_all_streams(self) -> List[StreamResponse]:
-        """Get all streams of a user.
+    def get_suscription_id_by_index(self, index) -> str:
+        suscription_keys = list(self.subscriptions.keys())
+        if (index > len(suscription_keys)):
+            raise ValueError("Index exceeds existing subscriptions")
+
+        return suscription_keys[index]
+
+    def get_suscription_by_index(self, index) -> Subscription:
+        suscription_id = self.get_suscription_id_by_index(index)
+        return self.subscriptions[suscription_id]
+
+    def get_suscription_by_id(self, susbcription_id) -> Subscription:
+        try:
+            return self.subscriptions[susbcription_id]
+        except:
+            raise ValueError("The suscriptionId not exist on the stream")
+
+    def get_all_streams(self) -> dict:
+        """Obtain streams from a given user.
 
         Returns
         -------
-        List[StreamResponse] which contains all streams of the current user
+        Json object -> list of objects containing information about every stream (id, link, state, etc)
 
         Raises
         ------
@@ -118,13 +135,20 @@ class Stream:
         response = req.api_send_request(method='GET',
                                         endpoint_url=self.stream_url,
                                         headers=headers)
-        streams = []
         if response.status_code == 200:
-            response = response.json()
-            for data in response['data']:
-                streams.append(
-                    StreamResponse(data=data, links=data.get('links', None)))
-        return streams
+            try:
+                response_data = response.json()
+                return [
+                    StreamResponse(data=stream,
+                                   links=stream.get('links', None))
+                    for stream in response_data['data']
+                ]
+            except Exception:
+                raise AttributeError('Unexpected Get Streams API Response.')
+        elif response.status_code == 403:
+            raise ValueError('Factiva API-Key does not exist or inactive.')
+        else:
+            raise RuntimeError('Unexpected Get Streams API Error')
 
     def get_info(self) -> StreamResponse:
         """Query a stream by its id.

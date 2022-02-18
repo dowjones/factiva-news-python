@@ -76,7 +76,7 @@ def test_stream_get_all_streams():
 def test_stream_create_from_query():
     stream = Stream(query=VALID_WHERE_STATEMENT)
     stream_response = stream.create()
-    subscription_id = list(stream.subscriptions.keys())[0]
+    subscription_id = stream.get_suscription_by_index(0)
 
     assert isinstance(stream_response, StreamResponse)
     assert len(stream_response.id) > 0
