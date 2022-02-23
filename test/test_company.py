@@ -12,7 +12,7 @@ from factiva.news.taxonomy import Company
 FACTIVA_USERKEY = load_environment_value("FACTIVA_USERKEY")
 
 
-class TestRequests(unittest.TestCase):
+class TestCompany(unittest.TestCase):
 
     def test_validate_point_time_request(self):
         c = Company(FACTIVA_USERKEY)
