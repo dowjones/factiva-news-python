@@ -17,7 +17,6 @@ def test_get_identifiers_for_category():
 def test_get_identifiers_for_category_big_files():
     taxonomy = Taxonomy()
     industry_codes = taxonomy.get_category_codes('companies')
-    print(industry_codes)
     assert len(industry_codes) > 0
     assert industry_codes.loc['SSYRVO'] is not None
 

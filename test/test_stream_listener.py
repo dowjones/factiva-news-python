@@ -45,18 +45,23 @@ class TestStreamListener(unittest.TestCase):
             listener = subscription.listener
             assert isinstance(listener, Listener)
 
-    """ def test_listener(self):
-        stream = Stream(stream_id=VALID_STREAM_ID)
+    # def test_listener_write_jsonl(self):
+    #     stream = Stream(stream_id=VALID_STREAM_ID)
 
-        subscription = stream.get_suscription_by_index(0)
-        listener = subscription.listener
-        listenerTools = ListenerTools()
-        listener.listen(listenerTools.save_json_file, 2)
+    #     subscription = stream.get_suscription_by_index(0)
+    #     listener = subscription.listener
+    #     listenerTools = ListenerTools()
+    #     listener.listen(callback=listenerTools.write_jsonl_line,
+    #                     maximum_messages=10, batch_size=10)
+    #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True
 
-        time.sleep(60)
-        delete_suscription = stream.delete_subscription(subscription)
-        assert delete_suscription == True
+    # def test_listener_write_bigquery(self):
+    #     stream = Stream(stream_id=VALID_STREAM_ID)
 
-        time.sleep(15)
-        delete_stream = stream.delete()
-        assert isinstance(delete_stream, StreamResponse) """
+    #     subscription = stream.get_suscription_by_index(0)
+    #     listener = subscription.listener
+    #     listenerTools = ListenerTools()
+    #     listener.listen(callback=listenerTools.save_on_bigquery_table,
+    #                     maximum_messages=10,
+    #                     batch_size=10)
+    #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True

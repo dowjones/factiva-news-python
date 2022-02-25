@@ -73,21 +73,21 @@ def test_stream_get_all_streams():
     assert isinstance(response[0], StreamResponse)
 
 
-def test_stream_create_from_query():
-    stream = Stream(query=VALID_WHERE_STATEMENT)
-    stream_response = stream.create()
-    subscription_id = stream.get_suscription_by_index(0)
+# def test_stream_create_from_query():
+#     stream = Stream(query=VALID_WHERE_STATEMENT)
+#     stream_response = stream.create()
+#     subscription_id = stream.get_suscription_by_index(0)
 
-    assert isinstance(stream_response, StreamResponse)
-    assert len(stream_response.id) > 0
+#     assert isinstance(stream_response, StreamResponse)
+#     assert len(stream_response.id) > 0
 
-    time.sleep(60)
-    delete_suscription = stream.delete_subscription(subscription_id)
-    assert delete_suscription == True
+#     time.sleep(60)
+#     delete_suscription = stream.delete_subscription(subscription_id)
+#     assert delete_suscription == True
 
-    time.sleep(15)
-    delete_stream = stream.delete()
-    assert isinstance(delete_stream, StreamResponse)
+#     time.sleep(15)
+#     delete_stream = stream.delete()
+#     assert isinstance(delete_stream, StreamResponse)
 
 
 # def test_stream_create_from_existing_snapshot_id():
