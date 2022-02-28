@@ -300,7 +300,7 @@ class Listener:
         pubsub_request = {
             "subscription": subscription_path,
             "max_messages": batch_size,
-            "return_immediately": True
+            "return_immediately": False
             }
         while (maximum_messages is None) or (self.messages_count < maximum_messages):
             try:

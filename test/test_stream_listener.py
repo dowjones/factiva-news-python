@@ -65,3 +65,15 @@ class TestStreamListener(unittest.TestCase):
     #                     maximum_messages=10,
     #                     batch_size=10)
     #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True
+
+
+    # def test_listener_write_mongodb(self):
+    #     stream = Stream(stream_id=VALID_STREAM_ID)
+
+    #     subscription = stream.get_suscription_by_index(0)
+    #     listener = subscription.listener
+    #     listenerTools = ListenerTools()
+    #     listener.listen(callback=listenerTools.save_on_mongodb,
+    #                     maximum_messages=10,
+    #                     batch_size=10)
+    #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True

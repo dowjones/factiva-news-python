@@ -57,5 +57,5 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'factiva-core>=0.2.0', 'fastavro', 'google-cloud-core',
-        'google-cloud-pubsub', 'google-cloud-bigquery'
+        'google-cloud-pubsub', 'google-cloud-bigquery', 'pymongo'
     ])

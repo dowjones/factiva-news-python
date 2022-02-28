@@ -3,8 +3,10 @@ import datetime
 import json
 import os
 
+import pymongo
 from factiva.core import const, tools
 from google.cloud import bigquery
+from pymongo import MongoClient
 
 from .bq_schemas import *
 
@@ -17,6 +19,7 @@ class ListenerTools:
         self.counter = 0
         self.bqclient = None
         self.log_line = ''
+        self.mongodb_collection = None
 
     def write_jsonl_line(self, file_prefix, action, file_suffix, message):
         """Write a new Jsonl line.
@@ -31,11 +34,6 @@ class ListenerTools:
             File suffix
         message : str
             Message to be write on the file
-
-        Returns
-        -------
-        str:
-            Dowloaded file path
         """
         output_filename = f'{file_prefix}_{action}_{file_suffix}.jsonl'
         output_filepath = os.path.join(const.FILES_DEFAULT_FOLDER,
@@ -181,3 +179,73 @@ class ListenerTools:
 
         print(self.log_line)
         return ret_val
+
+    def get_mongodb_database(self):
+        """Check and initaize the mongodb connection"""
+        connection_string = os.getenv('MONGODB_CONNECTION_STRING', None)
+        database_name = os.getenv('MONGODB_DATABASE_NAME', None)
+        collection_name = os.getenv('MONGODB_COLLECTION_NAME', None)
+        if connection_string is None or database_name is None or collection_name is None:
+            raise RuntimeError('MongoDB environment vars are not set')
+
+        client = MongoClient(connection_string)
+        database = client[database_name]
+        self.mongodb_collection = database[collection_name]
+
+    def save_on_mongodb(self, message, subscription_id) -> bool:
+        """Listener to save response into a mongodb table
+        
+        Parameters
+        ----------
+        message : str
+            Message to be stored
+        subscription_id : str
+            Suscription id from response
+        
+        Returns
+        -------
+        bool:
+            Status from the process
+        """
+
+        self.get_mongodb_database()
+
+        print("\n[ACTIVITY] Receiving messages (SYNC)...\n[0]", end='')
+        tools.create_path_if_not_exist(const.FILES_DEFAULT_FOLDER)
+
+        errorFile = os.path.join(const.FILES_DEFAULT_FOLDER, 'errors.log')
+        erroMessage = f"{datetime.datetime.utcnow()}\tERR\t$$ERROR$$\t$$MESSAGE$$\n"
+
+        if 'action' in message.keys():
+
+            message = tools.format_timestamps_mongodb(message)
+            message = tools.format_multivalues(message)
+            current_action = message['action']
+
+            if current_action in const.ALLOWED_ACTIONS:
+                print(const.ACTION_CONSOLE_INDICATOR[current_action], end='')
+                self.mongodb_collection.insert_one(message)
+
+            else:
+                print(const.ACTION_CONSOLE_INDICATOR[const.ERR_ACTION], end='')
+                with open(os.path.join(errorFile), mode='a',
+                          encoding='utf-8') as efp:
+                    efp.write(
+                        erroMessage.replace('$$ERROR$$',
+                                            'InvalidAction').replace(
+                                                '$$MESSAGE$$',
+                                                json.dumps(message)))
+
+            self.counter += 1
+            if self.counter % 100 == 0:
+                print(f'\n[{self.counter}]', end='')
+
+        else:
+            print(const.ACTION_CONSOLE_INDICATOR[const.ERR_ACTION], end='')
+            with open(errorFile, mode='a', encoding='utf-8') as efp:
+                efp.write(
+                    erroMessage.replace('$$ERROR$$', 'InvalidMessage').replace(
+                        '$$MESSAGE$$', json.dumps(message)))
+            return False
+
+        return True
