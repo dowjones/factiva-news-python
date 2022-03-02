@@ -17,9 +17,9 @@ class ListenerTools:
         """Initialize class constructor."""
         self.table_id = None
         self.counter = 0
-        self.bqclient = None
         self.log_line = ''
         self.mongodb_collection = None
+
 
     def write_jsonl_line(self, file_prefix, action, file_suffix, message):
         """Write a new Jsonl line.
@@ -36,7 +36,7 @@ class ListenerTools:
             Message to be write on the file
         """
         output_filename = f'{file_prefix}_{action}_{file_suffix}.jsonl'
-        output_filepath = os.path.join(const.FILES_DEFAULT_FOLDER,
+        output_filepath = os.path.join(const.LISTENER_FILES_DEFAULT_FOLDER,
                                        output_filename)
         with open(output_filepath, mode='a', encoding='utf-8') as fp:
             fp.write(
@@ -60,9 +60,9 @@ class ListenerTools:
 
         print("\n[ACTIVITY] Receiving messages (SYNC)...\n[0]", end='')
 
-        tools.create_path_if_not_exist(const.FILES_DEFAULT_FOLDER)
+        tools.create_path_if_not_exist(const.LISTENER_FILES_DEFAULT_FOLDER)
 
-        errorFile = os.path.join(const.FILES_DEFAULT_FOLDER, 'errors.log')
+        errorFile = os.path.join(const.LISTENER_FILES_DEFAULT_FOLDER, 'errors.log')
         erroMessage = f"{datetime.datetime.utcnow()}\tERR\t$$ERROR$$\t$$MESSAGE$$\n"
 
         stream_short_id = subscription_id.split('-')[-3]
@@ -125,10 +125,10 @@ class ListenerTools:
             Status from the process
         """
         self.verify_bigquery_table()
-        self.bqclient = bigquery.Client()
+        bqclient = bigquery.Client()
 
         print("\n[ACTIVITY] Receiving messages (SYNC)...\n[0]", end='')
-        tools.create_path_if_not_exist(const.FILES_DEFAULT_FOLDER)
+        tools.create_path_if_not_exist(const.LISTENER_FILES_DEFAULT_FOLDER)
 
         ret_val = False
         msg_an = ''
@@ -140,7 +140,7 @@ class ListenerTools:
                 _message = tools.format_timestamps(_message)
                 _message = tools.format_multivalues(_message)
                 _message = format_message_to_response_schema(_message)
-                errors = self.bqclient.insert_rows_json(
+                errors = bqclient.insert_rows_json(
                     self.table_id, [_message])
                 if errors == []:
                     ret_val = True
@@ -162,7 +162,7 @@ class ListenerTools:
                 print(const.ACTION_CONSOLE_INDICATOR[const.ERR_ACTION], end='')
 
         except Exception as e:
-            log_path = const.FILES_DEFAULT_FOLDER
+            log_path = const.LISTENER_FILES_DEFAULT_FOLDER
             if msg_an != '':
                 file_name = os.path.join(log_path, f"{msg_an}.json")
             else:
@@ -177,6 +177,7 @@ class ListenerTools:
             self.log_line += '#'
             self.counter += 1
 
+        bqclient.close()
         print(self.log_line)
         return ret_val
 
@@ -191,6 +192,7 @@ class ListenerTools:
         client = MongoClient(connection_string)
         database = client[database_name]
         self.mongodb_collection = database[collection_name]
+        return client
 
     def save_on_mongodb(self, message, subscription_id) -> bool:
         """Listener to save response into a mongodb table
@@ -208,12 +210,12 @@ class ListenerTools:
             Status from the process
         """
 
-        self.get_mongodb_database()
+        database = self.get_mongodb_database()
 
         print("\n[ACTIVITY] Receiving messages (SYNC)...\n[0]", end='')
-        tools.create_path_if_not_exist(const.FILES_DEFAULT_FOLDER)
+        tools.create_path_if_not_exist(const.LISTENER_FILES_DEFAULT_FOLDER)
 
-        errorFile = os.path.join(const.FILES_DEFAULT_FOLDER, 'errors.log')
+        errorFile = os.path.join(const.LISTENER_FILES_DEFAULT_FOLDER, 'errors.log')
         erroMessage = f"{datetime.datetime.utcnow()}\tERR\t$$ERROR$$\t$$MESSAGE$$\n"
 
         if 'action' in message.keys():
@@ -248,4 +250,5 @@ class ListenerTools:
                         '$$MESSAGE$$', json.dumps(message)))
             return False
 
+        database.close()
         return True

@@ -16,8 +16,8 @@ class TestStreamListener(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        if os.path.exists(const.FILES_DEFAULT_FOLDER):
-            shutil.rmtree(const.FILES_DEFAULT_FOLDER)
+        if os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER):
+            shutil.rmtree(const.LISTENER_FILES_DEFAULT_FOLDER)
 
     def test_get_listener_by_index(self):
         stream = Stream(stream_id=VALID_STREAM_ID)
@@ -53,7 +53,7 @@ class TestStreamListener(unittest.TestCase):
     #     listenerTools = ListenerTools()
     #     listener.listen(callback=listenerTools.write_jsonl_line,
     #                     maximum_messages=10, batch_size=10)
-    #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True
+    #     assert os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER) == True
 
     # def test_listener_write_bigquery(self):
     #     stream = Stream(stream_id=VALID_STREAM_ID)
@@ -64,7 +64,7 @@ class TestStreamListener(unittest.TestCase):
     #     listener.listen(callback=listenerTools.save_on_bigquery_table,
     #                     maximum_messages=10,
     #                     batch_size=10)
-    #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True
+    #     assert os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER) == True
 
 
     # def test_listener_write_mongodb(self):
@@ -76,4 +76,4 @@ class TestStreamListener(unittest.TestCase):
     #     listener.listen(callback=listenerTools.save_on_mongodb,
     #                     maximum_messages=10,
     #                     batch_size=10)
-    #     assert os.path.exists(const.FILES_DEFAULT_FOLDER) == True
+    #     assert os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER) == True
