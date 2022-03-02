@@ -23,6 +23,14 @@ Using Library services
 ======================
 Both services, Snapshots and Streams are implemented in this library.
 
+Enviroment vars
+============
+
+.. code-block::
+
+    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/Files/credentials.json"
+    $ export STREAMLOG_BQ_TABLENAME=project.dataset.table
+
 Snapshots
 ---------
 Create a new snapshot and download to a local repository just require a few lines of code.

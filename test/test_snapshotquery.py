@@ -65,7 +65,6 @@ def test_analytics_query_excedes_group_dimensions():
 
 def test_extraction_query():
     query = SnapshotQuery(VALID_WHERE_STATEMENT)
-    print(query.get_extraction_query())
     assert query.get_extraction_query() == {'query': {
         'where': "publication_datetime >= '2021-01-01'",
         'format': 'avro'

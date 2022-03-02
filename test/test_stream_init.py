@@ -1,7 +1,7 @@
-import pytest
-# import time
+import time
 
-from factiva.core import StreamUser, StreamResponse
+import pytest
+from factiva.core import StreamResponse, StreamUser
 from factiva.core.tools import load_environment_value
 from factiva.news.stream import Stream
 
@@ -65,6 +65,7 @@ def test_stream_get_info_from_id():
     assert isinstance(response, StreamResponse)
     assert len(response.id) > 0
 
+
 def test_stream_get_all_streams():
     s = Stream()
     response = s.get_all_streams()
@@ -73,10 +74,20 @@ def test_stream_get_all_streams():
 
 
 # def test_stream_create_from_query():
-#     s = Stream(query=VALID_WHERE_STATEMENT)
-#     response = s.create()
-#     assert isinstance(response, StreamResponse)
-#     assert len(response.id) > 0
+#     stream = Stream(query=VALID_WHERE_STATEMENT)
+#     stream_response = stream.create()
+#     subscription_id = stream.get_suscription_by_index(0)
+
+#     assert isinstance(stream_response, StreamResponse)
+#     assert len(stream_response.id) > 0
+
+#     time.sleep(60)
+#     delete_suscription = stream.delete_subscription(subscription_id)
+#     assert delete_suscription == True
+
+#     time.sleep(15)
+#     delete_stream = stream.delete()
+#     assert isinstance(delete_stream, StreamResponse)
 
 
 # def test_stream_create_from_existing_snapshot_id():
@@ -85,15 +96,3 @@ def test_stream_get_all_streams():
 #     response = s.create()
 #     assert isinstance(response, StreamResponse)
 #     assert len(response.id) > 0
-
-
-def test_stream_create_and_delete_subscription():
-    s = Stream(query=VALID_WHERE_STATEMENT)
-    # s.stream_id = VALID_STREAM_ID  # WLTODO: This line doesn't make sense as the ID was assigned in the previous line
-    subscription_id = s.create_subscription()
-    assert isinstance(subscription_id, str)
-    # WLTODO: Test the new subscription id is listed in the get_info response
-    delete_process = s.delete_subscription(subscription_id)
-    # WLTODO: Test the new subscription id is removed from the get_info response
-    assert delete_process == True
-    # WLTODO: Delete this stream!, it may need to wait ~30 seconds to ensure it's in RUNNING state
