@@ -1,5 +1,6 @@
 """Implement Subscription class."""
-from factiva.core import StreamUser, UserKey, const, req
+from factiva.core import (StreamUser, UserKey, const, factiva_logger,
+                          get_factiva_logger, req)
 from factiva.core.tools import load_environment_value
 
 from .listener import Listener
@@ -55,11 +56,13 @@ class Subscription:
         # pylint: disable=invalid-name
         self.id = id
         self.subscription_type = subscription_type
+        self.log= get_factiva_logger()
 
     def __repr__(self):
         """Create string representation for Subscription Class."""
         return f'Subscription(id={self.id}, type={self.subscription_type})'
 
+    @factiva_logger
     def create_listener(self, user):
         """Create a listener in a separate step.
 
@@ -87,6 +90,7 @@ class Subscription:
             stream_user=user
             )
 
+    @factiva_logger
     def create(self, headers=None):
         """Create a subscription for a given stream instance.
 
@@ -132,6 +136,7 @@ class Subscription:
 
         raise RuntimeError('Unexpected API response')
 
+    @factiva_logger
     def delete(self, headers=None) -> bool:
         """Delete subscription for a given stream.
 

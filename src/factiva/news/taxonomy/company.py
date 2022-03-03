@@ -1,4 +1,5 @@
-from factiva.core import UserKey, req, tools
+from factiva.core import (UserKey, factiva_logger, get_factiva_logger, req,
+                          tools)
 from factiva.core.const import (API_COMPANIES_IDENTIFIER_TYPE, API_HOST,
                                 API_SNAPSHOTS_COMPANIES_BASEPATH,
                                 API_SNAPSHOTS_COMPANIES_PIT,
@@ -36,7 +37,9 @@ class Company():
     def __init__(self, user_key=None):
         """Class initializar"""
         self.user_key = UserKey.create_user_key(user_key, True)
+        self.log= get_factiva_logger()
 
+    @factiva_logger
     def validate_point_time_request(self, identifier):
         """Validate if the user is allowes to perform company operation and if the identifier given is valid
         
@@ -65,6 +68,7 @@ class Company():
         if (not len(identifier_description)):
             raise ValueError('User is not allowed to perform this operation')
 
+    @factiva_logger
     def point_in_time_download_all(self,
                                    identifier,
                                    file_name,
@@ -110,6 +114,7 @@ class Company():
                                             add_timestamp)
         return local_file_name
 
+    @factiva_logger
     def point_in_time_query(self, identifier, value) -> dict:
         """Returns the resolved Factiva code and date ranges when the instrument from the identifier, was valid.
         

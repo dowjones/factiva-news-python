@@ -1,15 +1,16 @@
 import copy
 import datetime
 import json
+import logging
 import os
 
-import pymongo
-from factiva.core import const, tools
+from factiva.core import const, factiva_logger, get_factiva_logger, tools
 from google.cloud import bigquery
 from pymongo import MongoClient
 
 from .bq_schemas import *
 
+_logger = logging.getLogger(__name__)
 
 class ListenerTools:
 
@@ -19,8 +20,10 @@ class ListenerTools:
         self.counter = 0
         self.log_line = ''
         self.mongodb_collection = None
+        self.log = get_factiva_logger()
 
 
+    @factiva_logger
     def write_jsonl_line(self, file_prefix, action, file_suffix, message):
         """Write a new Jsonl line.
         
@@ -35,6 +38,7 @@ class ListenerTools:
         message : str
             Message to be write on the file
         """
+        _logger.info("Nueva linea")
         output_filename = f'{file_prefix}_{action}_{file_suffix}.jsonl'
         output_filepath = os.path.join(const.LISTENER_FILES_DEFAULT_FOLDER,
                                        output_filename)
@@ -42,6 +46,7 @@ class ListenerTools:
             fp.write(
                 f"{json.dumps(message, ensure_ascii=False, sort_keys=True)}\n")
 
+    @factiva_logger
     def save_json_file(self, message, subscription_id) -> bool:
         """Listener to save response into a jsonl
         
@@ -102,6 +107,7 @@ class ListenerTools:
 
         return True
 
+    @factiva_logger
     def verify_bigquery_table(self):
         """Check if table id is set"""
 
@@ -109,6 +115,7 @@ class ListenerTools:
         if self.table_id is None:
             raise RuntimeError('Env variable STREAMLOG_BQ_TABLENAME not set')
 
+    @factiva_logger
     def save_on_bigquery_table(self, message, subscription_id) -> bool:
         """Listener to save response into a big query table
         
@@ -181,6 +188,7 @@ class ListenerTools:
         print(self.log_line)
         return ret_val
 
+    @factiva_logger
     def get_mongodb_database(self):
         """Check and initaize the mongodb connection"""
         connection_string = os.getenv('MONGODB_CONNECTION_STRING', None)
@@ -194,6 +202,7 @@ class ListenerTools:
         self.mongodb_collection = database[collection_name]
         return client
 
+    @factiva_logger
     def save_on_mongodb(self, message, subscription_id) -> bool:
         """Listener to save response into a mongodb table
         
