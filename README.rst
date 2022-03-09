@@ -40,6 +40,14 @@ To use MongoDB Stream Listener
     $ export MONGODB_DATABASE_NAME=factiva-news
     $ export MONGODB_COLLECTION_NAME=stream-listener  
 
+To define custom directories. If they are not set, the project root path will be used
+.. code-block::
+
+    $ export DOWNLOAD_FILES_DIR=/users/dowloads
+    $ export STREAM_FILES_DIR=/users/listeners
+    $ export LOG_FILES_DIR=/users/logs
+
+
 Snapshots
 ---------
 Create a new snapshot and download to a local repository just require a few lines of code.

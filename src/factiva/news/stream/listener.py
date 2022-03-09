@@ -244,8 +244,6 @@ class Listener:
                 self.messages_count += 1
                 if not callback_result:
                     return
-
-                print(f'Callback returns: {callback_result}')
     
     @factiva_logger
     def listen(

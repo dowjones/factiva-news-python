@@ -5,7 +5,8 @@ import unittest
 import pytest
 from factiva.core import StreamResponse, const
 from factiva.core.tools import load_environment_value
-from factiva.news import Listener, ListenerTools, Stream
+from factiva.news import (BigQueryHandler, JSONLFileHandler, Listener,
+                          MongoDBHandler, Stream)
 
 VALID_STREAM_ID = load_environment_value('FACTIVA_STREAMID')
 VALID_SUSCRIPTION_ID = load_environment_value('FACTIVA_SUBSCRIPTIONID')
@@ -50,8 +51,8 @@ class TestStreamListener(unittest.TestCase):
 
     #     subscription = stream.get_suscription_by_index(0)
     #     listener = subscription.listener
-    #     listenerTools = ListenerTools()
-    #     listener.listen(callback=listenerTools.write_jsonl_line,
+    #     json_handler = JSONLFileHandler()
+    #     listener.listen(callback=json_handler.save,
     #                     maximum_messages=10, batch_size=10)
     #     assert os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER) == True
 
@@ -60,8 +61,8 @@ class TestStreamListener(unittest.TestCase):
 
     #     subscription = stream.get_suscription_by_index(0)
     #     listener = subscription.listener
-    #     listenerTools = ListenerTools()
-    #     listener.listen(callback=listenerTools.save_on_bigquery_table,
+    #     listenerTools = BigQueryHandler()
+    #     listener.listen(callback=listenerTools.save,
     #                     maximum_messages=10,
     #                     batch_size=10)
     #     assert os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER) == True
@@ -72,8 +73,8 @@ class TestStreamListener(unittest.TestCase):
 
     #     subscription = stream.get_suscription_by_index(0)
     #     listener = subscription.listener
-    #     listenerTools = ListenerTools()
-    #     listener.listen(callback=listenerTools.save_on_mongodb,
+    #     listenerTools = MongoDBHandler()
+    #     listener.listen(callback=listenerTools.save,
     #                     maximum_messages=10,
     #                     batch_size=10)
     #     assert os.path.exists(const.LISTENER_FILES_DEFAULT_FOLDER) == True
