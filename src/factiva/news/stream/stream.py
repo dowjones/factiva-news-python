@@ -1,7 +1,7 @@
 """Implement Stream Class definition."""
 from typing import List
 
-from factiva.core import StreamResponse, StreamUser, const, req
+from factiva.core import StreamResponse, StreamUser, const, req, get_factiva_logger, factiva_logger
 from factiva.news.bulknews import BulkNewsQuery
 
 from .subscription import Subscription
@@ -81,6 +81,7 @@ class Stream:
             raise ValueError(
                 'Not allowed stream id with query or snapshot'
             )
+        self.log= get_factiva_logger()
         self.stream_id = stream_id
         self.snapshot_id = snapshot_id
         self.query = BulkNewsQuery(query)
@@ -118,7 +119,8 @@ class Stream:
             return self.subscriptions[susbcription_id]
         except:
             raise ValueError("The suscriptionId not exist on the stream")
-
+   
+    @factiva_logger
     def get_all_streams(self) -> dict:
         """Obtain streams from a given user.
 
@@ -149,7 +151,8 @@ class Stream:
             raise ValueError('Factiva API-Key does not exist or inactive.')
         else:
             raise RuntimeError('Unexpected Get Streams API Error')
-
+    
+    @factiva_logger
     def get_info(self) -> StreamResponse:
         """Query a stream by its id.
 
@@ -182,6 +185,7 @@ class Stream:
 
         raise RuntimeError(response.text)
 
+    @factiva_logger
     def delete(self) -> StreamResponse:
         """Delete a stream.
 
@@ -220,6 +224,7 @@ class Stream:
 
         raise const.UNEXPECTED_HTTP_ERROR
 
+    @factiva_logger
     def create(self) -> StreamResponse:
         """Create a stream instance.
 
@@ -244,6 +249,7 @@ class Stream:
 
         return self._create_by_query()
 
+    @factiva_logger
     def create_subscription(self) -> str:
         """Create another subscription for an existing stream.
 
@@ -276,6 +282,7 @@ class Stream:
                 '''
             )
 
+    @factiva_logger
     def delete_subscription(self, sus_id) -> bool:
         """Delete subscription for an existing stream.
 
@@ -308,6 +315,7 @@ class Stream:
             raise RuntimeError('Unable to delete subscription')
         return False
 
+    @factiva_logger
     def create_default_subscription(self, response):
         """Create the default subscriptions at initialization.
 
@@ -329,6 +337,7 @@ class Stream:
             subscription_obj.create_listener(self.stream_user)
             self.subscriptions[subscription_obj.id] = subscription_obj
 
+    @factiva_logger
     def set_all_subscriptions(self):
         """Allow a user to set all subscriptions from a stream to local storage.
 
@@ -439,7 +448,6 @@ class Stream:
         RuntimeError: When API request returns unexpected error
 
         """
-        print(self.snapshot_id)
         if not self.snapshot_id:
             raise ValueError('create fails: snaphot_id undefined')
 

@@ -25,11 +25,28 @@ Both services, Snapshots and Streams are implemented in this library.
 
 Enviroment vars
 ============
+To be able to use Stream Listener options, add the following environment vars depending on your selected listener tool
 
+To use BigQuery Stream Listener
 .. code-block::
 
     $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/Files/credentials.json"
     $ export STREAMLOG_BQ_TABLENAME=project.dataset.table
+
+To use MongoDB Stream Listener
+.. code-block::
+
+    $ export MONGODB_CONNECTION_STRING=mongodb://localhost:27017
+    $ export MONGODB_DATABASE_NAME=factiva-news
+    $ export MONGODB_COLLECTION_NAME=stream-listener  
+
+To define custom directories. If they are not set, the project root path will be used
+.. code-block::
+
+    $ export DOWNLOAD_FILES_DIR=/users/dowloads
+    $ export STREAM_FILES_DIR=/users/listeners
+    $ export LOG_FILES_DIR=/users/logs
+
 
 Snapshots
 ---------

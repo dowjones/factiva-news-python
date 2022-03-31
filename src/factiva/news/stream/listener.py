@@ -1,14 +1,11 @@
 """Implement Listener class."""
 import json
 import time
-
 from threading import Thread
 
-from google.api_core.exceptions import GoogleAPICallError, NotFound
-
+from factiva.core import const, factiva_logger, get_factiva_logger, req
 from factiva.core.tools import load_environment_value
-from factiva.core import const
-from factiva.core import req
+from google.api_core.exceptions import GoogleAPICallError, NotFound
 
 
 def default_callback(message, subscription_id):
@@ -91,6 +88,7 @@ class Listener:
         self.subscription_id = subscription_id
         self.is_consuming = True
         self.limit_msg = None
+        self.log= get_factiva_logger()
 
     @property
     def stream_id_uri(self):
@@ -99,6 +97,7 @@ class Listener:
         stream_id = '-'.join(self.subscription_id.split("-")[:-2])
         return f'{host}/streams/{stream_id}'
 
+    @factiva_logger
     def _check_account_status(self):
         """Check the account status for max allowed extracts done.
 
@@ -126,7 +125,8 @@ class Listener:
                 while checking for limits
                 '''
                 )
-
+    
+    @factiva_logger
     def _check_stream_status(self):
         """Check the stream status.
 
@@ -152,6 +152,7 @@ class Listener:
         else:
             raise RuntimeError('HTTP API Response unexpected')
 
+    @factiva_logger
     def _check_exceeded(self):
         """Check exceeded time function.
 
@@ -176,7 +177,8 @@ class Listener:
                 with any questions or to upgrade your account limits.
                 '''.format(self.limit_msg)
             )
-
+    
+    @factiva_logger
     def check_exceeded_thread(self):
         """Check exceeded thread function.
 
@@ -188,6 +190,7 @@ class Listener:
         self._check_exceeds_thread.start()
 
     # pylint: disable=too-many-arguments
+    @factiva_logger
     def _pull_pubsub_messages(
         self,
         pubsub_client,
@@ -225,7 +228,7 @@ class Listener:
         if pubsub_messages and pubsub_messages.received_messages:
             for message in pubsub_messages.received_messages:
                 pubsub_message = json.loads(message.message.data)
-                print("Received news message with ID: {}".format(
+                self.log.info("Received news message with ID: {}".format(
                     pubsub_message['data'][self.FIRST_OBJECT]['id'])
                 )
                 news_message = pubsub_message['data'][self.FIRST_OBJECT]['attributes']
@@ -241,9 +244,8 @@ class Listener:
                 self.messages_count += 1
                 if not callback_result:
                     return
-
-                print(f'Callback returns: {callback_result}')
-
+    
+    @factiva_logger
     def listen(
         self,
         callback=default_callback,
@@ -300,7 +302,7 @@ class Listener:
         pubsub_request = {
             "subscription": subscription_path,
             "max_messages": batch_size,
-            "return_immediately": True
+            "return_immediately": False
             }
         while (maximum_messages is None) or (self.messages_count < maximum_messages):
             try:
@@ -337,6 +339,7 @@ class Listener:
 
         self.is_consuming = False
 
+    @factiva_logger
     def listen_async(self, callback=default_callback, ack_enabled=False):
         """Listen async function.
 
@@ -354,7 +357,7 @@ class Listener:
         """
         def ack_message_and_callback(message):
             pubsub_message = json.loads(message.data)
-            print("Received news message with ID: {}".format(
+            self.log.info("Received news message with ID: {}".format(
                 pubsub_message['data'][self.FIRST_OBJECT]['id']
                 )
             )
