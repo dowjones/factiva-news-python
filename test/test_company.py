@@ -22,7 +22,7 @@ class TestCompany(unittest.TestCase):
     def test_validate_point_time_request_not_allowed(self):
         c = Company(FACTIVA_USERKEY)
         with pytest.raises(ValueError):
-            c.validate_point_time_request(ISIN_COMPANY_IDENTIFIER)
+            c.validate_point_time_request('badcode')  # ISIN_COMPANY_IDENTIFIER
             assert True
 
     def test_download_companies_identifier(self):
