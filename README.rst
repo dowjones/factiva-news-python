@@ -24,7 +24,7 @@ Using Library services
 Both services, Snapshots and Streams are implemented in this library.
 
 Enviroment vars
-============
+===============
 To be able to use Stream Listener options, add the following environment vars depending on your selected listener tool
 
 To use BigQuery Stream Listener
@@ -56,7 +56,9 @@ Create a new snapshot and download to a local repository just require a few line
 
     from factiva.news.snapshot import Snapshot
     my_query = "publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'"
-    my_snapshot = Snapshot(user_key='abcd1234abcd1234abcd1234abcd1234', query=my_query)
+    my_snapshot = Snapshot(
+        user_key='abcd1234abcd1234abcd1234abcd1234',  # Can be ommited if exist as env variable
+        query=my_query)
     my_snapshot.process_extract()  # This operation can take several minutes to complete
 
 After the process completes, the output files are stored in a subfolder named as the Extraction Job ID.
@@ -72,7 +74,7 @@ Create a stream instance and get the details to configure the stream client and 
     from factiva.news.stream import Stream
 
     stream_query = Stream(
-        user_key='abcd1234abcd1234abcd1234abcd1234',
+        user_key='abcd1234abcd1234abcd1234abcd1234',   # Can be ommited if exist as env variable
         user_key_stats=True,
         query="publication_datetime >= '2021-04-01 00:00:00' AND LOWER(language_code)='en' AND UPPER(source_code) = 'DJDN'",
         )
