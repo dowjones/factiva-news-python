@@ -1,3 +1,2 @@
 factiva-core
 factiva-news
-sphinx-rtd-theme
