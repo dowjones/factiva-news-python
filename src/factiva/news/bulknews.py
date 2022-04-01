@@ -1,13 +1,12 @@
 """Implement actions with Bulk news such as Snapshot and Stream."""
-import time
 import os
-
-from pathlib import Path
+import time
 from datetime import datetime
+from pathlib import Path
 
-from factiva.core import const, UserKey
+import pandas as pd
+from factiva.core import UserKey, const, req
 from factiva.core.tools import mask_string
-from factiva.core import req
 
 
 def parse_field(field, field_name):
@@ -265,7 +264,7 @@ class BulkNewsJob():
         """
         raise NotImplementedError('Method has not been defined')
 
-    def submit_job(self, payload=None) -> bool:
+    def submit_job(self, payload=None, use_latest_api_version=False) -> bool:
         """Submit a new job to be processed to the Factiva Snapshots API or Streams API.
 
         Submits a new job to be processed to the Factiva Snapshots API or Streams API.
@@ -294,6 +293,10 @@ class BulkNewsJob():
                 'user-key': self.user_key.key,
                 'Content-Type': 'application/json'
             }
+        if use_latest_api_version:
+            version_header = {'X-API-VERSION': const.API_LATEST_VERSION}
+            headers_dict.update(version_header)
+
         response = req.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
 
         if response.status_code == 201:
@@ -344,7 +347,7 @@ class BulkNewsJob():
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         return True
 
-    def process_job(self, payload=None) -> bool:
+    def process_job(self, payload=None, use_latest_api_version=False) -> bool:
         """Submit a new job to be processed, wait until the job is completed and then retrieves the job results.
 
         Parameters
@@ -365,7 +368,7 @@ class BulkNewsJob():
         - Exception when the job has failed to complete
 
         """
-        self.submit_job(payload=payload)
+        self.submit_job(payload=payload, use_latest_api_version=use_latest_api_version)
         self.get_job_results()
 
         while self.job_state != const.API_JOB_DONE_STATE:
@@ -442,6 +445,39 @@ class BulkNewsJob():
         else:
             raise RuntimeError('No files available for download')
         return True
+
+    def get_job_samples(self, num_samples):
+        """Obtain the Explain job samples from the Factiva Snapshots API.
+        Returns a dataframe of up to 100 sample documents which  includes title and metadata fields.
+
+        Parameters
+        ----------
+        num_samples: int, Optional
+            Number of sample documents to get explained by a job
+
+        Returns
+        -------
+        Boolean : True if the files were correctly downloaded, False otherwise.
+
+        Raises
+        ------
+        - RuntimeError when there are no files available for download
+
+        """
+        headers_dict = {
+            'user-key': self.user_key.key
+        }
+        s_param = { 'num_samples': num_samples }
+        samples_url=f'{self.get_endpoint_url()}/{self.job_id}'
+        response = req.api_send_request(method='GET', endpoint_url=samples_url, headers=headers_dict, qs_params=s_param)
+        if response.status_code == 200:
+            resp_json = response.json()['data']['attributes']['sample']
+            samples = pd.DataFrame(resp_json)
+            print(f'DataFrame size: {samples.shape}')
+            print(f'Columns: {samples.columns}')
+            return samples
+        else:
+            print(f'Unexpected Response: {response.text}')
 
     def __repr__(self):
         """Create string representation for BulkNews Class."""

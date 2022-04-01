@@ -23,6 +23,31 @@ Using Library services
 ======================
 Both services, Snapshots and Streams are implemented in this library.
 
+Enviroment vars
+===============
+To be able to use Stream Listener options, add the following environment vars depending on your selected listener tool
+
+To use BigQuery Stream Listener
+.. code-block::
+
+    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/Files/credentials.json"
+    $ export STREAMLOG_BQ_TABLENAME=project.dataset.table
+
+To use MongoDB Stream Listener
+.. code-block::
+
+    $ export MONGODB_CONNECTION_STRING=mongodb://localhost:27017
+    $ export MONGODB_DATABASE_NAME=factiva-news
+    $ export MONGODB_COLLECTION_NAME=stream-listener  
+
+To define custom directories. If they are not set, the project root path will be used
+.. code-block::
+
+    $ export DOWNLOAD_FILES_DIR=/users/dowloads
+    $ export STREAM_FILES_DIR=/users/listeners
+    $ export LOG_FILES_DIR=/users/logs
+
+
 Snapshots
 ---------
 Create a new snapshot and download to a local repository just require a few lines of code.
@@ -31,7 +56,9 @@ Create a new snapshot and download to a local repository just require a few line
 
     from factiva.news.snapshot import Snapshot
     my_query = "publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'"
-    my_snapshot = Snapshot(user_key='abcd1234abcd1234abcd1234abcd1234', query=my_query)
+    my_snapshot = Snapshot(
+        user_key='abcd1234abcd1234abcd1234abcd1234',  # Can be ommited if exist as env variable
+        query=my_query)
     my_snapshot.process_extract()  # This operation can take several minutes to complete
 
 After the process completes, the output files are stored in a subfolder named as the Extraction Job ID.
@@ -47,7 +74,7 @@ Create a stream instance and get the details to configure the stream client and 
     from factiva.news.stream import Stream
 
     stream_query = Stream(
-        user_key='abcd1234abcd1234abcd1234abcd1234',
+        user_key='abcd1234abcd1234abcd1234abcd1234',   # Can be ommited if exist as env variable
         user_key_stats=True,
         query="publication_datetime >= '2021-04-01 00:00:00' AND LOWER(language_code)='en' AND UPPER(source_code) = 'DJDN'",
         )

@@ -1,8 +1,9 @@
 """Represent a Factiva Snapshot Class."""
+from factiva.core import const, factiva_logger, get_factiva_logger
 from factiva.news.bulknews import BulkNewsBase
-from .query import SnapshotQuery
-from .jobs import ExplainJob, ExtractionJob, AnalyticsJob, UpdateJob
 
+from .jobs import AnalyticsJob, ExplainJob, ExtractionJob, UpdateJob
+from .query import SnapshotQuery
 
 class Snapshot(BulkNewsBase):
     """Represent a Factiva Snapshot Class.
@@ -82,6 +83,7 @@ class Snapshot(BulkNewsBase):
 
         self.last_explain_job = ExplainJob(user_key=self.user_key)
         self.last_analytics_job = AnalyticsJob(user_key=self.user_key)
+        self.log = get_factiva_logger()
 
         if query and snapshot_id:
             raise Exception("The query and snapshot_id parameters cannot be set simultaneously")
@@ -100,6 +102,7 @@ class Snapshot(BulkNewsBase):
             self.last_extraction_job = ExtractionJob(snapshot_id=snapshot_id, user_key=self.user_key)
             self.get_extraction_job_results()
 
+    @factiva_logger
     def submit_explain_job(self):
         """Submit an Explain job to the Factiva Snapshots API.
 
@@ -113,7 +116,8 @@ class Snapshot(BulkNewsBase):
 
         """
         return self.last_explain_job.submit_job(self.query.get_explain_query())
-
+    
+    @factiva_logger
     def get_explain_job_results(self):
         """Obtain the Explain job results from the Factiva Snapshots API.
 
@@ -128,6 +132,28 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_explain_job.get_job_results()
 
+    @factiva_logger
+    def get_explain_job_samples(self, num_samples=10):
+        """Obtain the Explain job samples from the Factiva Snapshots API.
+
+        Returns a list of up to 100 sample documents (no full-text) which
+        includes title and metadata fields.
+
+        Parameters
+        ----------
+        num_samples: int, optional (Default: 10)
+            Number of sample documents to get explained by a job
+
+        Returns
+        -------
+        Boolean : True if the data was retrieved successfully. An Exception
+            otherwise.
+
+        """
+        self.last_explain_job.extraction_type= const.API_SAMPLES_EXTRACTION_TYPE
+        return self.last_explain_job.get_job_samples(num_samples)
+
+    @factiva_logger
     def process_explain(self):
         """Submit an Explain job to the Factiva Snapshots API.
 
@@ -155,8 +181,10 @@ class Snapshot(BulkNewsBase):
             450483
 
         """
+
         return self.last_explain_job.process_job(self.query.get_explain_query())
 
+    @factiva_logger
     def submit_analytics_job(self):
         """Submit an Analytics job to the Factiva Snapshots API.
 
@@ -169,8 +197,14 @@ class Snapshot(BulkNewsBase):
         Boolean : True if the submission was successful. An Exception otherwise.
 
         """
-        return self.last_analytics_job.submit_job(self.query.get_analytics_query())
 
+        use_latest_api_version = True
+        if(isinstance(self.query.group_by_source_code, bool)):
+            use_latest_api_version = False
+
+        return self.last_analytics_job.submit_job(self.query.get_analytics_query(), use_latest_api_version)
+
+    @factiva_logger
     def get_analytics_job_results(self):
         """Obtain the Analytics job results from the Factiva Snapshots API.
 
@@ -185,6 +219,7 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_analytics_job.get_job_results()
 
+    @factiva_logger
     def process_analytics(self):
         """Submit an Analytics job to the Factiva Snapshots API.
 
@@ -220,8 +255,14 @@ class Snapshot(BulkNewsBase):
             11              2018-12   38401
 
         """
-        return self.last_analytics_job.process_job(self.query.get_analytics_query())
 
+        use_latest_api_version = True
+        if(isinstance(self.query.group_by_source_code, bool)):
+            use_latest_api_version = False
+
+        return self.last_analytics_job.process_job(self.query.get_analytics_query(), use_latest_api_version)
+
+    @factiva_logger
     def submit_extraction_job(self):
         """Submit an Extraction job to the Factiva Snapshots API.
 
@@ -240,6 +281,7 @@ class Snapshot(BulkNewsBase):
             self.snapshot_id = self.last_extraction_job.job_id
         return is_successful
 
+    @factiva_logger
     def get_extraction_job_results(self):
         """Obtain the Extraction job results from the Factiva Snapshots API.
 
@@ -254,6 +296,7 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_extraction_job.get_job_results()
 
+    @factiva_logger
     def download_extraction_files(self, download_path=None):
         """Download the list of files listed in the Snapshot.last_extraction_job.files.
 
@@ -276,6 +319,7 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_extraction_job.download_job_files(download_path)
 
+    @factiva_logger
     def process_extraction(self, download_path=None):
         """Submit an Extraction job to the Factiva Snapshots API.
 
@@ -314,6 +358,7 @@ class Snapshot(BulkNewsBase):
         """
         return self.last_extraction_job.process_job(self.query.get_extraction_query(), download_path)
 
+    @factiva_logger
     def submit_update_job(self, update_type):
         """Submit an Update Job to the Factiva Snapshots API.
 
@@ -336,6 +381,7 @@ class Snapshot(BulkNewsBase):
         self.last_update_job = UpdateJob(update_type=update_type, snapshot_id=self.last_extraction_job.job_id)
         return self.last_update_job.submit_job()
 
+    @factiva_logger
     def get_update_job_results(self):
         """Obtain of the Update Job results from the Factiva Snapshots API.
 
@@ -356,6 +402,7 @@ class Snapshot(BulkNewsBase):
             raise RuntimeError('Update job has not been set')
         return self.last_update_job.get_job_results()
 
+    @factiva_logger
     def download_update_files(self, download_path=None):
         """Download the list of files listed in the Snapshot.last_update_job.files property.
 
@@ -384,6 +431,7 @@ class Snapshot(BulkNewsBase):
             raise RuntimeError('Update job has not been set')
         return self.last_update_job.download_job_files(download_path)
 
+    @factiva_logger
     def process_update(self, update_type, download_path=None):
         """Submit an Update job to the Factiva Snapshots API.
 

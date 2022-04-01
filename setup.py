@@ -20,6 +20,7 @@ setup(
     license='MIT',
     author='Dos Jones Customer Engineers',
     author_email='customer.solutions@dowjones.com',
+
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
     packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy'],
@@ -49,11 +50,14 @@ setup(
 
         'License :: OSI Approved :: MIT License',
 
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
-    keywords='news, news aggregator, risk, compliance, nlp, alternative data',
-    python_requires='>=3.6',
-    install_requires=['factiva-core>=0.2.0', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub']
-)
+    keywords='news, news aggregator, risk, compliance, nlp, alternative data, factiva, trading news, market movers',
+    python_requires='>=3.7',
+    install_requires=[
+        'factiva-core>=0.2.3', 'fastavro', 'google-cloud-core',
+        'google-cloud-pubsub', 'google-cloud-bigquery', 'pymongo'
+    ])

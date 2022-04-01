@@ -10,6 +10,7 @@ class ExplainJob(BulkNewsJob):
     """Represent the operation of creating an explain from Factiva Snapshots API."""
 
     document_volume = 0
+    extraction_type = const.API_DEFAULT_EXTRACTION_TYPE
 
     def __init__(self, user_key):
         """Initialize class."""
@@ -21,7 +22,15 @@ class ExplainJob(BulkNewsJob):
     # pylint: disable=no-self-use
     def get_endpoint_url(self):
         """Get endpoint URL."""
-        return f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}{const.API_EXPLAIN_SUFFIX}'
+        endpoint = ''
+        if (self.extraction_type == const.API_SAMPLES_EXTRACTION_TYPE):
+            endpoint = f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}{const.API_EXTRACTIONS_SAMPLES_SUFFIX}'
+        else:
+            endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}{const.API_EXPLAIN_SUFFIX}'
+
+        # Set default for safety
+        self.extraction_type = const.API_DEFAULT_EXTRACTION_TYPE
+        return endpoint
 
     # pylint: disable=no-self-use
     def get_job_id(self, source):
@@ -56,8 +65,9 @@ class AnalyticsJob(BulkNewsJob):
         """Sets job data."""
         self.data = pd.DataFrame(source['data']['attributes']['results'])
 
-        if 'source_code' not in self.data.columns:
-            self.data['source_code'] = 'ALL_SOURCES'
+        for field in const.API_GROUP_DIMENSIONS_FIELDS:
+            if field not in self.data.columns:
+                self.data[field] = f'ALL_{field.upper().strip()}'
 
 
 class ExtractionJob(BulkNewsJob):

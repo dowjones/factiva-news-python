@@ -2,7 +2,8 @@
 from io import StringIO
 
 import pandas as pd
-from factiva.core import UserKey, const, req
+from factiva.core import (UserKey, const, factiva_logger, get_factiva_logger,
+                          req)
 from factiva.core.tools import validate_type
 
 
@@ -36,8 +37,9 @@ class Taxonomy():
         self.user_key = UserKey.create_user_key(user_key)
         self.categories = self.get_categories()
         self.identifiers = self.get_identifiers()
+        self.log= get_factiva_logger()
 
-
+    @factiva_logger
     def get_categories(self) -> list:
         """Request for a list of available taxonomy categories.
 
@@ -75,7 +77,7 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
-
+    @factiva_logger
     def get_identifiers(self) -> list:
         """Request for a list of available taxonomy categories.
 
@@ -119,6 +121,7 @@ class Taxonomy():
     # https://github.com/dowjones/factiva-news-python/issues/4#issue-956942535
     # Check also differences by loading the data in AVRO. In case the issue is
     # too common with Executives, force the download option.
+    @factiva_logger
     def get_category_codes(self, category) -> pd.DataFrame:
         """Request for available codes in the taxonomy for the specified category.
 
@@ -160,8 +163,7 @@ class Taxonomy():
 
         endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
 
-        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
-
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict, stream=True)
         if response.status_code == 200:
             r_df = pd.read_csv(StringIO(response.content.decode()))
             if 'executiveFactivaCode' in r_df.columns:
@@ -173,7 +175,7 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP Status')
 
-
+    @factiva_logger
     def get_single_company(self, code_type, company_code) -> pd.DataFrame:
         """Request information about a single company.
 
@@ -219,7 +221,7 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
-
+    @factiva_logger
     def get_multiple_companies(self, code_type, company_codes) -> pd.DataFrame:
         """Request information about a list of companies.
 
@@ -276,6 +278,7 @@ class Taxonomy():
             return pd.DataFrame.from_records(response_data['data']['attributes']['successes'])
         raise RuntimeError(f'API Request returned an unexpected HTTP status with message: {response.text}')
 
+    @factiva_logger
     def get_company(self, code_type, company_codes) -> pd.DataFrame:
         """Request information about either a single company or a list of companies.
 
