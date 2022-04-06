@@ -1,5 +1,5 @@
 """
-    Describe modules included for Stream Class definition.
+    Describe modules included for stream module.
 """
 __all__ = ['Stream', 'Listener', 'Subscription', 'stream', 'listener', 'subscription']
 
