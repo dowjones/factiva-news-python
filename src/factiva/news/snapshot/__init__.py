@@ -1,5 +1,5 @@
 """
-    Define methods and properties for Snapshot class.
+    Define methods and properties for snapshot module.
 """
 __all__ = ['Snapshot', 'SnapshotQuery', 'SnapshotFiles',
     'AnalyticsJob', 'ExplainJob', 'ExtractionJob', 'UpdateJob',

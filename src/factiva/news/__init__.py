@@ -1,9 +1,9 @@
 """
-    Init file for news module.
+    Define methods and properties for tools module.
 """
 __all__ = [
     'snapshot', 'stream', 'bulknews', 'taxonomy', 'Snapshot', 'SnapshotQuery',
-    'SnapshotFiles', 'Stream', 'Listener', 'Subscription', 'Taxonomy',
+    'SnapshotFiles', 'Stream', 'Listener', 'Subscription', 'Taxonomy', 'tools',
     'SnapshotFiles', 'JSONLFileHandler', 'BigQueryHandler', 'MongoDBHandler', 'factiva_logger', 'get_factiva_logger'
 ]
 
