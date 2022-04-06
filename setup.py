@@ -23,7 +23,7 @@ setup(
 
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
-    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy'],
+    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy', 'factiva.news.tools'],
     url='https://developer.dowjones.com/',
     project_urls={
             "GitHub": "https://github.com/dowjones/factiva-news-python",
