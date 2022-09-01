@@ -1,6 +1,7 @@
 """Implement actions with Bulk news such as Snapshot and Stream."""
 import os
 import time
+import json
 from datetime import datetime
 from pathlib import Path
 
@@ -341,8 +342,14 @@ class BulkNewsJob():
             self.job_state = response_data['data']['attributes']['current_state']
             if self.job_state == const.API_JOB_DONE_STATE:
                 self.set_job_data(response_data)
+            elif self.job_state == const.API_JOB_FAILED_STATE:
+                errors = response_data['errors']
+                raise RuntimeError(f"Job Failed with reason: {[e['title'] + e['detail'] for e in errors]}")
         elif response.status_code == 404:
             raise RuntimeError('Job ID does not exist.')
+        elif response.status_code == 400:
+            detail = json.loads(response.text)['errors'][0]['detail']
+            raise ValueError(f'Bad Request: {detail}')
         else:
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         return True
@@ -473,8 +480,8 @@ class BulkNewsJob():
         if response.status_code == 200:
             resp_json = response.json()['data']['attributes']['sample']
             samples = pd.DataFrame(resp_json)
-            print(f'DataFrame size: {samples.shape}')
-            print(f'Columns: {samples.columns}')
+            # print(f'DataFrame size: {samples.shape}')
+            # print(f'Columns: {samples.columns}')
             return samples
         else:
             print(f'Unexpected Response: {response.text}')

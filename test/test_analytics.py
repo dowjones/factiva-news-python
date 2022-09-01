@@ -39,5 +39,5 @@ def test_analytics_job_no_group_dimensions():
 
 def test_analytics_error():
     s = Snapshot(query=INVALID_WHERE_STATEMENT)
-    with pytest.raises(ValueError, match=r'Unrecognized name*'):
+    with pytest.raises(ValueError, match=r'Bad Request*'):
         s.process_analytics()
