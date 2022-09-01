@@ -50,5 +50,5 @@ def test_get_explain_job_samples():
 
 def test_failed_explain():
     s = Snapshot(query=INVALID_WHERE_STATEMENT)
-    with pytest.raises(ValueError, match=r'Unrecognized name*'):
+    with pytest.raises(RuntimeError, match=r'Job Failed*'):
         s.process_explain()
