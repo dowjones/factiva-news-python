@@ -17,7 +17,17 @@ Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com
 
 .. toctree::
    :maxdepth: 2
-   :caption: Package Reference
+   :caption: Factiva Core
+   :glob:
+
+   factiva.core/auth
+   factiva.core/tools
+   factiva.core/dicts
+   factiva.core/const
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Factiva News
    :glob:
 
    factiva.news/snapshot

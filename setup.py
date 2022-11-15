@@ -23,7 +23,9 @@ setup(
 
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
-    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy', 'factiva.news.tools'],
+    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy',
+              'factiva.news.tools', 'factiva.core', 'factiva.core.dicts', 'factiva.core.const',
+            'factiva.core.auth', 'factiva.core.req', 'factiva.core.tools'],
     url='https://developer.dowjones.com/',
     project_urls={
             "GitHub": "https://github.com/dowjones/factiva-news-python",
@@ -58,6 +60,6 @@ setup(
     keywords='news, news aggregator, risk, compliance, nlp, alternative data, factiva, trading news, market movers',
     python_requires='>=3.7',
     install_requires=[
-        'factiva-core>=0.2.3', 'fastavro', 'google-cloud-core',
+        'fastavro', 'google-cloud-core',
         'google-cloud-pubsub', 'google-cloud-bigquery', 'pymongo'
     ])

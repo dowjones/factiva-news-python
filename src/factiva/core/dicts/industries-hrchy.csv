@@ -1,0 +1,987 @@
+ind_fcode,name,parent
+indroot,*DJ Industries,
+i0,Agriculture,indroot
+i01001,Farming,i0
+i03001,Aquaculture,i01001
+i0100144,Cocoa Growing,i01001
+i0100137,Coffee Growing,i01001
+i0100138,Cotton/Silk Farming,i01001
+i01002,Horticulture,i01001
+i0100201,Floriculture/Plant Nurseries,i01002
+i0100206,Fruit Growing,i01002
+i010020602,Citrus Groves,i0100206
+i010020603,Non-citrus Fruit/Tree Nut Farming,i0100206
+imarij,Marijuana Growing/Cultivation,i01002
+i0100216,Vegetable Growing,i01002
+ilsfarm,Livestock Farming,i01001
+ibees,Beekeeping/Honey Production,ilsfarm
+i0100105,Cattle Farming,ilsfarm
+i010010501,Beef Cattle Farming,i0100105
+i010010502,Dairy Cattle Farming,i0100105
+i0100119,Hog/Pig Farming,ilsfarm
+i0100121,Poultry Farming,ilsfarm
+i0100124,Sheep/Goat Farming,ilsfarm
+i0100132,Oilseed/Grain Farming,i01001
+i010013205,Corn Farming,i0100132
+i010013203,Dry Pea/Bean Farming,i0100132
+i010013202,Edible Oil Plant/Seed Farming (except Soybean),i0100132
+i010013206,Rice Farming,i0100132
+i0100223,Soybean Farming,i0100132
+i010013204,Wheat Farming,i0100132
+iofarm,Organic Farming,i01001
+i0100141,Rubber Growing,i01001
+isugar,Sugar Farming,i01001
+i0100136,Sugar Cane Farming,isugar
+i0100142,Tea Growing,i01001
+i0100145,Tobacco Farming,i01001
+i03,Fishing,i0
+i02,Forestry/Logging,i0
+i04,Hunting/Trapping,i0
+iseed,Seeds,i0
+i05,Support Activities for Agriculture,i0
+iaut,Automotive,indroot
+iadrive,Autonomous Driving Technologies,iaut
+i353,Motor Vehicle Parts,iaut
+i3434,Automobile Electronics,i353
+iautnv,Automotive Telematics,i3434
+i4811,Tires,i353
+iveheng,Vehicle Engine/Engine Parts,i353
+i351,Motor Vehicles,iaut
+i35104,Alternative Fuel Vehicles,i351
+i35102,Commercial Vehicles,i351
+i3510204,Buses/Coaches,i35102
+i3510202,Commercial Vans,i35102
+i3510203,Heavy Duty Trucks,i35102
+i3510201,Light Trucks,i35102
+i3640030,Dual Mode Vehicles,i351
+i36301,Motorcycles,i351
+i35101,Passenger Cars,i351
+i35103,Sports Utility Vehicles,i35101
+i352,Recreational Vehicles,i351
+ibasicm,Basic Materials/Resources,indroot
+i25,Chemicals,ibasicm
+i2562,Adhesives,i25
+iagro,Agrochemicals,i25
+i2513,Fertilizer,iagro
+i2568,Pesticides,iagro
+i26,Artificial/Synthetic Fibers,i25
+i2511,Basic Inorganic Chemicals,i25
+i2512,Basic Organic Chemicals,i25
+i25121,Petrochemicals,i2512
+i2565,Explosives,i25
+ifulads,Fuel Additives,i25
+i2567,Industrial Gas,i25
+i2551,Paints/Coatings,i25
+i2552,Printing Inks,i25
+i2514,Resin/Synthetic Rubber,i25
+i2516,Synthetic Dyes/Pigments,i25
+imet,Mining/Quarrying,ibasicm
+i111,Coal Mining,imet
+i112,Coal Mining Support Activities,imet
+ifrack,Fracking,imet
+i212,Metal Mining Support Activities,imet
+i211,Metal Ore Mining,imet
+i2111,Ferrous Metal Ore Mining,i211
+infmore,Non-ferrous Metal Ore Mining,i211
+ialomin,Aluminum Ore Mining,infmore
+i2114,Copper Ore/Nickel Ore Mining,infmore
+igoldm,Gold Ore Mining,infmore
+i2113,Lead Ore/Zinc Ore Mining,infmore
+iraremet,Rare Earth Metals,infmore
+i2112,Silver Ore Mining,infmore
+itttm,Tin/Tantalum/Tungsten Ore Mining,infmore
+iuran,Uranium Ore Mining,infmore
+i232,Mineral Mining Support Activities,imet
+i231,Non-metallic Mineral Mining/Quarrying,imet
+igems,Gemstone Mining,i231
+isalt,Salt Extraction,i231
+i2312,Sand/Gravel/Clay,i231
+i2311,Stone Mining/Quarrying,i231
+i23111,Limestone Mining/Quarrying,i2311
+ipper,Paper/Pulp,ibasicm
+i471,Paper Mills,ipper
+i473,Paperboard Mills,ipper
+i47101,Pulp Mills,ipper
+i22,Primary Metals,ibasicm
+i221,Ferrous Metals,i22
+i225,Ferrous Metal Foundries,i221
+isteel,Steel Production,i221
+i223,Steel Cold Rolling/Forming,isteel
+i224,Non-ferrous Metals,i22
+i2245,Aluminum,i224
+i2246,Copper/Copper Alloys,i224
+i226,Non-ferrous Metal Foundries,i224
+i22472,Precious Metals,i224
+i222,Steel/Iron Products,i22
+i46,Wood Products,ibasicm
+i461,Sawmills/Wood Preservation,i46
+i462,Veneer/Plywood,i46
+ibcs,Business/Consumer Services,indroot
+iacc,Accounting/Consulting,ibcs
+i836,Accounting,iacc
+i8362,Payroll Services,i836
+i8361,Tax Preparation Services,i836
+icnsl,Business Consultancy,iacc
+iengine,Engineering Services,icnsl
+i8395404,Human Resources Consulting,icnsl
+iitcns,IT Consulting,icnsl
+i83951,Management Consulting,icnsl
+i8395401,Marketing Consulting,icnsl
+iproc,Procurement/Supply Chain Consulting,icnsl
+i83109,Risk Management Services,icnsl
+iadmin,Administrative/Support Services,ibcs
+ibill,Billing Services,iadmin
+i8395408,Business Service Centers,iadmin
+i8395466,Data Processing Services,iadmin
+ielcfsv,Electronic Conferencing Services,iadmin
+iincub,Incubators/Business Development Services,iadmin
+i8395412,Packaging/Labeling Services,iadmin
+i8395407,Telephone Call Centers,iadmin
+i8395403,Translation/Interpretation Services,iadmin
+i8395406,Typing/Document Preparation Services,iadmin
+iadv,Advertising/Marketing/Public Relations,ibcs
+i83952,Market Research/Public Relations,iadv
+i8395201,Market Research/Opinion Polling,i83952
+i8395205,Public Relations,i83952
+imark,Marketing,iadv
+i838,Advertising,imark
+i8384,Film/Cinema Advertising,i838
+i8395402,Media Buying,i838
+ioutad,Outdoor Advertising,i838
+i8381,Print Advertising,i838
+i8383,Radio Advertising,i838
+i8382,TV Advertising,i838
+ividad,Video Advertising,i838
+i8395411,Conventions/Trade Shows,imark
+i8385,Digital Marketing,imark
+idirma,Direct Marketing,imark
+itelem,Telemarketing,idirma
+i8395448,Sales Promotion,imark
+i98211,Agents/Managers for Public Figures,ibcs
+i8394,Computer Services,ibcs
+i83943,Computer Facilities Management,i8394
+i8394007,Computer Maintenance/Support,i8394
+i83942,Computer Systems Design Services,i8394
+idsrs,Data Recovery Services,i8394
+idware,Data Warehousing,i8394
+idebtr,Debt Recovery/Collection Services,ibcs
+i8396,Diversified Holding Companies,ibcs
+i981,Dry Cleaning/Laundry Services,ibcs
+i983,Educational Services,ibcs
+i9837,Automobile Driving Schools,i983
+i9831,Business Schools,i983
+i95109,Child Day Care Services,i983
+i9834,Computer/Computer-aided Training,i983
+i9836,Language Schools/Tuition,i983
+i9833,Professional/Management Training,i983
+i9835,Sports/Physical Recreation Instruction,i983
+iewm,Environment/Waste Management,ibcs
+icarbon,Carbon Capture/Storage,iewm
+i8395413,Environmental Consulting Services,iewm
+i9231,Exterminating/Pest Control Services,iewm
+i9211,Waste Management/Recycling Services,iewm
+i92113,Remediation/Cleanup Services,i9211
+i36103,Shipbreaking,i9211
+i92111,Waste Collection,i9211
+i92114,Waste Sorting/Recycling,i9211
+i92112,Waste Treatment/Disposal,i9211
+i9212,Wastewater Treatment,i9211
+irdops,Highway Operation,ibcs
+iinvest,Investigation Services,ibcs
+i835,Legal Services,ibcs
+iflaw,Family Law Services,i835
+imove,Moving/Relocation Services,ibcs
+i98204,Parking Lots/Garages,ibcs
+i493,Photographic Processing,ibcs
+i67,Product Repair Services,ibcs
+i671,Automotive Repair/Maintenance,i67
+i673,Machinery Repair/Maintenance,i67
+i98205,Professional Bodies,ibcs
+i8395405,Recruitment Services,ibcs
+itemp,Temporary Employment Services,i8395405
+i84,Rental/Leasing Services,ibcs
+i841,Agricultural Equipment Rental/Leasing,i84
+i8480401,Aircraft Rental/Leasing,i84
+i842,Construction Equipment Rental/Leasing,i84
+i846,Consumer Goods/Appliances Rental,i84
+indleas,Industrial Machinery/Equipment Rental/Leasing,i84
+i843,Office Equipment Rental,i84
+irleas,Rail Transport Equipment Rental/Leasing,i84
+i8480410,Ship Rental/Leasing,i84
+iautlsg,Vehicle Rental/Leasing,i84
+i84802,Light Commercial Vehicle Rental/Leasing,iautlsg
+i84801,Passenger Car Rental/Leasing,iautlsg
+i84803,Truck/Trailer Rental/Leasing,iautlsg
+i8395414,Scientific Research Services,ibcs
+imedres,Medical Research Services,i8395414
+iproteo,Proteomics/Protein Therapy,imedres
+istemcll,Stem Cell Research,imedres
+i98207,Security Systems Services,ibcs
+i98206,Security/Prison Services,ibcs
+i923,Services to Facilities/Buildings,ibcs
+i9232,Cleaning Services,i923
+ilandsc,Landscaping/Gardening Services,i923
+ishell,Shell Company,ibcs
+iscsv,Specialized Consumer Services,ibcs
+i98201,Beauty/Personal Care,iscsv
+idating,Dating Services,iscsv
+i98202,Funeral Services,iscsv
+i98203,Pet Care (except Veterinary),iscsv
+i83953,Photographic Services,iscsv
+i98208,Vehicle Towing/Assistance,iscsv
+iwedd,Wedding Services,iscsv
+i837,Technical Services,ibcs
+i8372,Design Services,i837
+i8371,Architects,i8372
+i83722,Interior Design Services,i8372
+icnp,Consumer Goods,indroot
+iclt,Clothing/Textiles,icnp
+i453,Clothing,iclt
+i4533,Clothing Accessories,i453
+i443,Handbags/Purses/Briefcases,i4533
+i4532,Cut/Sew Clothing,i453
+idescl,Designer Clothing,i453
+i4531,Knitted Clothing,i453
+iproclth,Safety/Protective Clothing,i453
+i451,Footwear,iclt
+isptwr,Sports Clothing/Footwear,iclt
+i43,Textiles,iclt
+i432,Fabric Mills,i43
+i431,Fiber/Yarn/Thread,i43
+i455,Textile Furnishings,i43
+i472,Converted Paper Products,icnp
+i4721,Paper Bags/Treated Paper,i472
+i4722,Paper Stationery Products,i472
+i4723,Sanitary Paper Products,i472
+idurhg,Durable Household Products,icnp
+ihome,Home Electronics/Appliances,idurhg
+i34542,Audio/Video Equipment,ihome
+i34541,Radio/Television Equipment,i34542
+i347,Electric Lighting Equipment,ihome
+i34532,Electronic Consumer Goods Accessories,ihome
+i33032,Home Networking/Smart Appliances,ihome
+i346,Household Appliances,ihome
+i49411,Video Game Consoles,ihome
+ihouse,Houseware,idurhg
+i313,Cutlery/Hand Tools,ihouse
+i2411,Pottery/Ceramics/Porcelain,ihouse
+i491,Silverware,ihouse
+i41,Food/Beverages,icnp
+ibevrge,Beverages/Drinks,i41
+ialco,Alcoholic Beverages/Drinks,ibevrge
+ialpop,Alcopops/Malternatives,ialco
+i427,Brewing,ialco
+i424,Distilling,ialco
+i426,Wine,ialco
+ichmpc,Sparkling Wine,i426
+inonal,Non-alcoholic Beverages/Drinks,ibevrge
+icoffee,Coffee Products,inonal
+i428,Soft Drinks,inonal
+ihtwoo,Bottled Water,i428
+ijuice,Fruit Juices,i428
+iegydrk,Functional Beverages,i428
+i42392,Tea Products,inonal
+ifood,Food Products,i41
+i4221,Animal Feed,ifood
+i412,Animal Slaughtering/Processing,ifood
+i4122,Meat Processing,i412
+i4123,Poultry Processing,i412
+ibabyf,Baby Food,ifood
+i419,Bread/Bakery Products,ifood
+i4223,Breakfast Cereals,ifood
+i4229,Condiments/Sauces,ifood
+i4224,Cookies/Crackers,ifood
+i413,Dairy Products,ifood
+i4132,Ice Cream/Frozen Desserts,i413
+i4131,Non-frozen Dairy Products,i413
+i416,Flour/Malt Products,ifood
+i4161,Rice Products,i416
+ifadd,Food Additives,ifood
+i414,Food Preserving/Speciality Foods,ifood
+i4142,Food Canning/Pickling/Drying,i414
+i4141,Frozen Food,i414
+ifunfod,Functional Foods,ifood
+igmfd,Genetically Modified Food,ifood
+ihalal,Halal Food,ifood
+imeatsub,Meat Substitutes,ifood
+iorgf,Organic Food,ifood
+i4222,Pet Food,ifood
+iffood,Ready Made Meals,ifood
+i415,Seafood Products,ifood
+i42391,Snack Foods,ifood
+isoya,Soya Products,ifood
+i418,Starch,ifood
+i421,Sugar Products,ifood
+iconf,Confectionery,i421
+i4211,Sugar,i421
+isugsub,Sugar Substitutes,i421
+i411,Vegetable Oils,ifood
+ifurn,Furniture,icnp
+i457,Household/Institutional/Street Furniture,ifurn
+i458,Office Furniture,ifurn
+i467,Wooden Furniture,ifurn
+ihimpro,Home Improvement Products,icnp
+ifloor,Floor Coverings,ihimpro
+igarden,Gardening Equipment/Tools,ihimpro
+iplumff,Plumbing Fittings/Fixtures,ihimpro
+i32852,Portable Power Tools,ihimpro
+i441,Leather/Fur Goods,icnp
+iluxlg,Luxury Leather Goods,i441
+ilgood,Leisure/Travel Goods,icnp
+i36302,Bicycles/Bicycle Parts,ilgood
+i4941,Dolls/Toys/Games,ilgood
+igamsof,Games Software,ilgood
+i442,Luggage,ilgood
+i492,Musical Instruments,ilgood
+i3733,Photographic Equipment,ilgood
+idigicam,Digital Cameras,i3733
+i36102,Recreational Boats,ilgood
+isptgds,Sports Goods,ilgood
+i4942,Sports Equipment,isptgds
+iluxgds,Luxury Goods,icnp
+ifinefp,Fragrance/Perfume,iluxgds
+ifinej,Jewelry,iluxgds
+iluxwa,Luxury Watches,iluxgds
+immari,Marijuana Products,icnp
+inondhg,Nondurable Household Products,icnp
+i4954,Office Supplies (excluding paper),inondhg
+ipet,Pet Products,inondhg
+i2581,Soap/Cleaning Products,inondhg
+ioffeq,Office Equipment/Supplies,icnp
+i3301,Electronic Office Equipment,ioffeq
+i3302013,Computer Printers/Scanners,i3301
+i373,Optical Instruments,icnp
+ipcare,Personal Care Products/Appliances,icnp
+i258,Cosmetics/Toiletries,ipcare
+ihair,Hair Care Products,i258
+ihygn,Hygiene Products,i258
+icosm,Make-up Products,i258
+i2582,Oral Care Products,i258
+i2583,Skin Care Products,i258
+ibody,Body Care Products,i2583
+iface,Facial Care Products,i2583
+isun,Sun Care Products,i258
+iprscp,Personal Care Accessories,ipcare
+iprsca,Personal Care Appliances,ipcare
+i429,Tobacco Products,icnp
+i4291,Cigarettes,i429
+i374,Watches/Clocks/Parts,icnp
+i1,Energy,indroot
+ialtful,Alternative Fuels,i1
+ibioful,Biofuels,ialtful
+ifuelcl,Fuel Cells,ialtful
+i13,Crude Oil/Natural Gas Upstream Operations,i1
+iioil,Integrated Oil/Gas,i13
+i1300004,Liquefied/Compressed Gas,i13
+iexplo,Natural Gas/Oil Exploration,i13
+i1300013,Natural Gas Exploration,iexplo
+i1300002,Oil Exploration,iexplo
+iextra,Natural Gas/Oil Extraction,i13
+i1300003,Crude Petroleum Extraction,iextra
+i1300014,Natural Gas Extraction,iextra
+iuod,Oil Sands/Shale,i13
+i1300005,Support Activities for Oil/Gas,i13
+i14,Downstream Operations,i1
+i14002,Asphalt/Tar Products,i14
+i12,Coke Products,i14
+i14001,Petroleum Refining,i14
+i16101,Electric Power Generation,i1
+i1610108,Fossil Fuel Power Generation,i16101
+i1610109,Nuclear Power Generation,i16101
+i163,Renewable Energy Generation,i16101
+ibmass,Biomass Heat/Electricity Generation,i163
+igeothe,Geothermal Energy,i163
+i1610107,Hydropower Energy,i163
+isolar,Solar Energy,i163
+iwteg,Waste-to-Energy Generation,i163
+iwind,Wind Energy,i163
+intgpc,Natural Gas Processing,i1
+i15,Nuclear Fuel,i1
+imidstr,Oil/Natural Gas Midstream Operations,i1
+i1300006,Pipeline Transportation,imidstr
+ifinal,Financial Services,indroot
+ibnk,Banking/Credit,ifinal
+i814,Banking,ibnk
+i81401,Central Banking,i814
+i81402,Commercial Banking,i814
+ichalbk,Challenger Banks,i81402
+i8150106,Development Banking,i814
+iibnk,Integrated Banks,i814
+i83101,Investment Banking,i814
+iislam,Islamic Banking,i814
+imicro,Microfinance,i814
+i8150103,Mortgages/Real Estate Credit,i814
+i81404,Online/Direct Banking,i814
+iwealth,Private Banking/Wealth Management,i814
+irbank,Regional Banks,i814
+i81403,Savings Institutions,i814
+i81501,Credit Types/Services,ibnk
+iabls,Asset Based Lending Services,i81501
+i816,Clearing House/Reserve Activities,i81501
+i8150105,Consumer Lending,i81501
+ipayd,Payday Loans,i8150105
+i8150108,Credit Cards,i81501
+i8150102,Credit Unions,i81501
+i8150110,Export-import Financing,i81501
+iptpl,Peer-to-peer Lending Services,i81501
+i8150104,Sales Financing,i81501
+isynloan,Syndicated Loans,i81501
+iplastic,Electronic Payment Systems,ibnk
+i8150107,Debit Cards,iplastic
+impay,Mobile Payment Systems,iplastic
+i8150109,Smart Cards,iplastic
+imtcurr,Money Transfer/Currency Exchange Services,ibnk
+ivicu,Virtual Currencies/Cryptocurrencies,ibnk
+i82,Insurance,ifinal
+i82001,Full-line Insurance,i82
+i832,Insurance Brokering,i82
+islins,Islamic Insurance,i82
+i82002,Life Insurance,i82
+iannui,Annuities,i82002
+i82003,Non-life Insurance,i82
+iguins,Guarantee Insurance,i82003
+i8200301,Health/Medical Insurance,i82003
+igovspon,Government Sponsored Health Insurance,i8200301
+imedaid,Medicaid,igovspon
+imedicar,Medicare,igovspon
+iprivhea,Private Health Insurance,i8200301
+ihmo,Health Maintenance Organizations,iprivhea
+ilongtc,Long-term Care Insurance,iprivhea
+imoins,Mortgage Insurance,i82003
+i8200302,Professional Indemnity Insurance,i82003
+icaslty,Property/Casualty Insurance,i82003
+iagins,Agriculture Insurance,icaslty
+i8200304,Buildings/Contents Insurance,icaslty
+icatins,Catastrophe Insurance,icaslty
+iclins,Corporate Liability Insurance,icaslty
+ifains,Fine Art Insurance,icaslty
+i8200316,Vehicle Insurance,icaslty
+i8200306,Title Insurance,i82003
+itci,Trade Credit Insurance,i82003
+itfins,Transport/Freight Insurance,i82003
+i8200315,Aviation Insurance,itfins
+i8200314,Marine Insurance,itfins
+irlrins,Railroad Insurance,itfins
+ispains,Space Insurance,itfins
+itvlins,Travel Insurance,i82003
+i8200303,Unemployment/Disability Insurance,i82003
+ipetin,Pet Insurance,i82
+i8200318,Reinsurance,i82
+iinv,Investing/Securities,ifinal
+i831,Financial Investments,iinv
+ialgo,Algorithmic/Quantitative Trading,i831
+i83104,Commodity Contracts Brokering,i831
+i83103,Commodity Contracts Dealing,i831
+i83108,Investment Advice,i831
+iirese,Investment Research Services,i831
+imnacc,Managed Accounts,i831
+i83105,Online Brokers/After Hours Trading,i831
+i83107,Portfolio/Fund/Asset Management,i831
+icusto,Post Trade Services,i831
+i83106,Securities/Commodity Exchange Activities,i831
+i83102,Security Brokering/Dealing,i831
+i81502,Trusts/Funds/Financial Vehicles,iinv
+ialtinv,Alternative Investments,i81502
+ihedge,Hedge Funds,ialtinv
+i8150203,Private Equity,ialtinv
+iventure,Venture Capital,i8150203
+iresinv,Sustainable Investment,ialtinv
+i8150206,Closed-end Funds/Investment Trusts,i81502
+ibusdev,Business Development Companies/Venture Capital Trusts,i8150206
+i815020602,Real Estate Investment Trusts,i8150206
+idivreit,Diversified REITs,i815020602
+ihcreit,Healthcare REITs,i815020602
+ihotreit,Hotel/Lodging REITs,i815020602
+iindreit,Industrial/Office REITs,i815020602
+imorreit,Mortgage REITs,i815020602
+iredreit,Residential REITs,i815020602
+iretreit,Retail REITs,i815020602
+ispereit,Specialty REITs,i815020602
+icoldebt,Collateralized Debt Obligation,i81502
+iextrfu,Exchange Traded Funds,i81502
+i8150216,Individual Savings Accounts (ISAs),i81502
+ipension,Pension Funds,i81502
+i8150214,Private Pension Funds,ipension
+ippf,Public Pension Funds,ipension
+isover,Sovereign Wealth Fund,i81502
+i8150211,Unit Trusts/Mutual Funds,i81502
+i8395416,Rating Agencies,ifinal
+i951,Health Care/Life Sciences,indroot
+i2569,Biotechnology,i951
+ibioinf,Bioinformatics,i2569
+ibiother,Biological Therapy,i2569
+ibioph,Biopharmaceuticals,i2569
+iclone,Cloning,i2569
+iddkits,Drug Discovery Kits,i2569
+igenom,Genomics,i2569
+iphhp,Healthcare Provision,i951
+ialtmed,Alternative Health Practitioners,iphhp
+ichinese,Traditional Chinese Medicine,ialtmed
+i95102,Dental Care,iphhp
+i95101,Doctors/Physicians,iphhp
+iphdon,Donor Clinics/Services,iphhp
+iemer,Emergency Treatment/Care,iphhp
+i95106,Home Health Care Services,iphhp
+ihospice,Hospice Care,iphhp
+i95107,Hospital Care,iphhp
+imental,Mental Health Care,iphhp
+i95104,Outpatient Care,iphhp
+iphsy,Physiotherapists,iphhp
+iphplast,Plastic/Cosmetic Surgeons/Clinics,iphhp
+i95108,Residential Care,iphhp
+i95111,Veterinary Services,iphhp
+iphhss,Healthcare Support Services,i951
+iphhes,Health Education/Information Services,iphhss
+iphlab,Medical/Clinical/Diagnostic Services,iphhss
+i95105,Medical Laboratory Services,iphlab
+iphxray,Screening Clinics/Services,iphlab
+iphmbn,Pharmacy Benefit Management,iphhss
+i372,Medical Equipment/Supplies,i951
+iddtech,Drug Delivery Systems,i372
+iphmed,Medical Devices/Apparatus,i372
+identim,Dental Equipment/Implants,iphmed
+itheradv,Diagnostic/Therapeutic Devices,iphmed
+ieye,Eyewear/Ocular Implants,itheradv
+icntls,Contact Lenses,ieye
+ispecs,Eyeglasses/Spectacles,ieye
+idiagn,Medical Diagnostic Equipment/Supplies,itheradv
+iphpro,Orthopedic/Prosthetic Implants/Devices,itheradv
+isurgd,Surgical Devices,iphmed
+iphmm,Medical/Surgical Materials,i372
+i257,Pharmaceuticals,i951
+iherbs,Botanical/Homeopathic Drugs,i257
+iphddd,Drug Discovery/Development,i257
+igeneri,Generic/Biosimilar Drugs,i257
+i2578,Over-the-counter Drugs,i257
+ipresc,Prescription Drugs,i257
+idrugty,Specialized Drugs/Medications,i257
+i25782,Analgesics,idrugty
+i2571,Antibiotics,idrugty
+i2577,Anti-depressants,idrugty
+iphvir,Antivirals,idrugty
+i2573,Cancer Drugs,idrugty
+i2576,Cardiovascular Drugs,idrugty
+i25781,Cold Cures,idrugty
+i2574,Dermatological Treatments,idrugty
+i25784,Diet/Nutritional Drugs,idrugty
+ihormp,Hormone Products,idrugty
+iinsulin,Diabetes Drugs,ihormp
+i2575,Respiratory/Allergy Treatments,idrugty
+i2572,Vaccines,idrugty
+ivetd,Veterinary Drugs,i257
+iindstrls,Industrial Goods,indroot
+i246,Abrasive Products,iindstrls
+iaer,Aerospace/Defense,iindstrls
+i364,Aerospace Products/Parts,iaer
+i3640007,Aircraft Cabin Equipment,i364
+iairelc,Aircraft Electronics,i364
+i3640002,Aircraft Engines/Parts,i364
+i3640048,Aircraft Modification,i364
+i3640010,Civil Aircraft,i364
+i3640029,Helicopters,i364
+i3640047,Military Aircraft,i364
+i3640045,Satellites,i364
+i3640046,Space Vehicles,i364
+idef,Defense Equipment/Products,iaer
+iammu,Ammunition,idef
+i3289,Ammunition (except Small Arms),iammu
+i3288,Small Arms Ammunition,iammu
+i329,Firearms,idef
+i3640026,Guided Missiles,idef
+i365,Military Armored Vehicles/Parts,idef
+i36104,Naval Ships,idef
+isimu,Simulators,idef
+i36105,Submarines/Submersibles,idef
+iuav,Drones,iindstrls
+i247,Glass/Glass Products,iindstrls
+i24794,Glass Fiber,i247
+indcera,Industrial Ceramics,iindstrls
+iindele,Industrial Electronics,iindstrls
+i3432,Batteries,iindele
+i342,Electrical Components/Equipment,iindele
+ietrack,Electronic Navigation/Tracking Systems,iindele
+i3443,Air/Nautical Navigational Instruments,ietrack
+irfid,Radio Frequency Identification Equipment,ietrack
+igps,Satellite Navigation Systems,ietrack
+i3442,Environmental Control Systems,iindele
+i3435,Industrial Electrical Equipment,iindele
+i371,Measuring/Precision Instruments,iindele
+i3444,Passive Components,iindele
+iposs,Point of Sale Systems,iindele
+issyst,Security Systems,iindele
+i3433,Alarms/Signaling Equipment,issyst
+i34531,Semiconductors,iindele
+ianlog,Analog Integrated Circuits,i34531
+ichip,Chipsets,i34531
+iintcir,Integrated Circuits,i34531
+ividbd,Audio/Video/Graphics Integrated Circuits,iintcir
+iled,LED Technologies,i34531
+imicpr,Microprocessors/DSPs,i34531
+i32,Machinery,iindstrls
+i321,Agricultural Machinery,i32
+i3247,Automatic Vending Machines,i32
+i3205,Boilers/Tanks/Vessels,i32
+i3245,Chemical Industry Machinery,i32
+i3283,Compressors/Hydraulic Equipment,i32
+i3254,Construction Machinery,i32
+i3244,Food Product Machinery,i32
+i32755,Glass Working Machinery,i32
+i3255,Handling Equipment,i32
+i3284,Heating/Cooling/Air Treatment Equipment,i32
+i3204,Industrial Plant/Steelwork,i32
+i3281,Industrial/Marine Engines,i32
+iirrig,Irrigation Systems,i32
+i3248,Laundry/Dry Cleaning Machines,i32
+i32753,Leatherworking Machinery,i32
+i322,Metalworking Machinery,i32
+immach,Mining Machinery,i32
+i3251,Oil/Gas Field Machinery,i32
+i32754,Paper Industry Machinery Manufacturing,i32
+i32752,Plastics/Rubber Industry Machinery,i32
+i3246,Printing Machinery/Equipment,i32
+i3287,Pump Manufacturing,i32
+irenewee,Renewable Energy Equipment,i32
+i32751,Sawmill/Woodworking Machines,i32
+i323,Textile Machinery Manufacturing,i32
+itrff,Traffic/Railroad Control Devices,i32
+i326,Turbines,i32
+iwmach,Waste Treatment/Disposal Machinery,i32
+i32851,Weighing Machinery,i32
+i31,Metal Products,iindstrls
+i316,Coating/Engraving/Heat Treating,i31
+i312,Forging/Stamping,i31
+i314,Metal Doors/Windows,i31
+i315,Screws/Nuts/Bolts,i31
+ipap,Packaging,iindstrls
+iglassc,Glass Containers/Packaging,ipap
+imetcp,Metal Containers/Packaging,ipap
+iplascp,Plastic Containers/Packaging,ipap
+iwoodcp,Wooden Containers/Packaging,ipap
+i483,Plastics Products,iindstrls
+i362,Railroad Rolling Stock,iindstrls
+i481,Rubber Products,iindstrls
+i36101,Shipbuilding,iindstrls
+i341,Wires/Cables,iindstrls
+i3411,Fiber Optic Cable,i341
+ilea,Leisure/Arts/Hospitality,indroot
+i98212,Artists/Writers/Performers,ilea
+i97105,Film/Video Exhibition,ilea
+i97912,Gambling Industries,ilea
+i6652,Casino Hotels,i97912
+ionlgam,Online Gambling,i97912
+ispobet,Sports Betting,i97912
+iicafe,Internet/Cyber Cafes,ilea
+i8395462,Libraries/Archives,ilea
+i66,Lodgings/Restaurants/Bars,ilea
+i662,Bars/Public Houses,i66
+i665,Lodgings,i66
+i6653,Bed and Breakfast Inns,i665
+i6654,Campgrounds/RV Parks,i665
+i6651,Hotels/Motels,i665
+i6655,Rooming/Boarding Houses,i665
+i661,Restaurants/Cafes/Fast Food Places,i66
+i6613,Caterers/Mobile Food Services,i661
+i6611,Full-service Restaurants,i661
+i6612,Limited-Service Restaurants/Cafes,i661
+i98209,Performing Arts/Sports Promotion,ilea
+i979112,Spectator Sports,i98209
+i9791121,Sports Teams/Clubs,i98209
+i97911,Sporting Facilities/Venues,ilea
+i979111,Sports/Recreation Centers,i97911
+i97412,Theaters/Entertainment Venues,ilea
+i974122,Amusement Parks/Arcades,i97412
+i974123,Museums/Historical Sites/Gardens,i97412
+i974121,Performing Arts Companies,i97412
+itourm,Tourism,ilea
+i7505,Online Tourism Reservation Services,itourm
+i761,Scenic/Sightseeing Services,itourm
+i765,Tour Operators,itourm
+i77001,Travel Agencies,itourm
+imed,Media/Entertainment,indroot
+i971,Audiovisual Production,imed
+i97101,Cinema Film Production,i971
+i9741112,Television Program Production,i971
+i97411,Broadcasting,imed
+i9741109,Cable Broadcasting,i97411
+i9741105,Radio Broadcasting,i97411
+idradio,Digital Radio,i9741105
+iiradio,Internet Radio,i9741105
+isradio,Satellite Radio,i9741105
+i9741110,Satellite Broadcasting,i97411
+isattv,Satellite Television,i9741110
+i9741102,Television Broadcasting,i97411
+i974110202,Commercial Television,i9741102
+i974110203,Digital Television,i9741102
+i974110205,Interactive Television,i9741102
+iiptv,Internet Protocol Television,i9741102
+i974110204,Pay-per-view Television,i9741102
+i974110201,Public Service Television,i9741102
+i8395463,Digital Content Services,imed
+i8395419,Freelance Journalism,imed
+idistr,Media Content Distribution,imed
+i97103,Cinema Film Distribution,idistr
+i8395465,Multimedia Services,idistr
+i6422,News Dealers/Newsstands,idistr
+i8395461,News Syndicates,idistr
+imssoft,Streaming Services,idistr
+i97104,Video Distribution,idistr
+i475,Printing/Publishing,imed
+i4756,Printing,i475
+i47563,Book Printing,i4756
+icmprint,Commercial Printing,i4756
+i47562,Digital Printing,icmprint
+inewpr,Newspaper/Magazine Printing,i4756
+iscprint,Security Printing,i4756
+ipubl,Publishing,i475
+i4752105,Academic/Scientific/Trade Journals,ipubl
+i4753,Book Publishing,ipubl
+iebook,e-Book Publishing,i4753
+i4754,Database/Directory Publishing,ipubl
+i4752,Magazine Publishing,ipubl
+i4751,Newspaper Publishing,ipubl
+isocial,Social Media Platforms/Tools,imed
+isound,Sound/Music Recording/Publishing,imed
+isopub,Music/Sound Publishing,isound
+i97106,Music/Sound Recording,isound
+icre,Real Estate/Construction,indroot
+ibuildpr,Building Materials/Products,icre
+i244,Asbestos Products,ibuildpr
+i242,Cement/Ready-mix Concrete,ibuildpr
+i2412,Clay Building Materials,ibuildpr
+i243,Concrete Building Products,ibuildpr
+i249,Lime/Gypsum Products,ibuildpr
+iroof,Roofing Products/Materials,ibuildpr
+i245,Stone/Slate Products,ibuildpr
+iconst,Construction,icre
+i504,Building Completion,iconst
+i501,Building Construction,iconst
+i5010029,Building Refurbishment,i501
+i5010021,Land Development/Subdivision,i501
+i5010023,Non-residential Building Construction,i501
+i5010024,Hospital Construction,i5010023
+ihotel,Hotel Construction,i5010023
+i5010025,Industrial Building Construction,i5010023
+i5010031,Leisure Facility Construction,i5010023
+i5010027,Retail Construction,i5010023
+i5010028,School Construction,i5010023
+i5010022,Residential Building Construction,i501
+i502,Heavy Construction,iconst
+i5020002,Airport Construction,i502
+i5020006,Bridge Construction,i502
+i5020051,Canal/Waterway Construction,i502
+i5020011,Dam Construction,i502
+i5020050,Flood Defense Construction,i502
+i5020017,Harbor Construction,i502
+i5020041,Highway/Street Construction,i502
+i5020047,Land Reclamation,i502
+i5020022,Oil Production Platform Construction,i502
+i5020008,Parking Lot Construction,i502
+i5020043,Pipeline Laying,i502
+i5020044,Power Station Construction,i502
+irenewf,Renewable Energy Facility Construction,i5020044
+i5020028,Railway Construction,i502
+i5020030,Reservoir Construction,i502
+i5020032,Sewer Construction,i502
+i5020042,Transmission Line Construction,i502
+i5020039,Tunnel Construction,i502
+i5020045,Water Treatment Plant Construction,i502
+i503,Special Trade Contractors,iconst
+i5031,Electrical Contractors,i503
+iplum,Plumbing Contractors,i503
+iroofco,Roofing Contractors,i503
+i5032,Wrecking/Demolition Contractors,i503
+ireest,Real Estate,icre
+i834,Real Estate Agents/Brokers,ireest
+i85,Real Estate Transactions,ireest
+icireal,Commercial/Industrial Real Estate,i85
+i8500005,Industrial Real Estate,icireal
+i8500021,Office Real Estate,icireal
+i8500029,Retail Real Estate,icireal
+i8500013,Self-storage Unit Leasing,icireal
+i8500015,Property Managers,i85
+irreal,Residential Real Estate,i85
+i8500011,Residential Building Leasing,irreal
+i8500031,Residential Property Dealing/Owning,irreal
+i64,Retail/Wholesale,indroot
+iretail,Retail,i64
+i656000301,Etailing,iretail
+imkit,Meal Kit/Food Box Retailing,i656000301
+ionlauc,Online Auctions,i656000301
+itick,Ticket Agents,i656000301
+i656,Mixed Retailing,iretail
+iconvs,Convenience Stores,i656
+i6560002,Department Stores,i656
+idollar,Discount/Dollar Stores,i656
+i6560011,Shopping Malls/Superstores,i656
+i657,Non-store Retailing,iretail
+i6571,Vending Machine Operators,i657
+i654,Specialty Retailing,iretail
+i6540034,Art Dealing,i654
+iahou,Auction Houses,i654
+i6492,Automotive Parts/Tire Stores,i654
+i6491,Boat Dealing,i654
+i653,Book/Office Supplies Stores,i654
+i6531,Book Stores,i653
+i6532,Office Supplies/Gift Stores,i653
+i642,Cigarette/Newspaper/Liquor Stores,i654
+i6421,Beer/Wine/Liquor Stores,i642
+i645,Clothing Stores,i654
+i644,Cosmetics/Perfume Stores,i654
+i6540031,Florists,i654
+i641,Food Retailing,i654
+i6412,Specialty Food Retailing,i641
+i6411,Supermarkets/Grocery Stores,i641
+i6540011,Garden Centers,i654
+i652,Gasoline/Service Stations,i654
+i6540030,Hobby/Toy/Game Stores,i654
+i648,Household Goods/Hardware Stores,i654
+icompst,Computer Stores,i648
+i6483,Decorating/DIY/Hardware Stores,i648
+i6482,Electronics/Appliance Stores,i648
+i6481,Furniture/Home Furnishings Stores,i648
+i647,Household Textiles Stores,i654
+i6540028,Jewelry Stores,i654
+i6540026,Luggage/Leather Goods Stores,i654
+imretail,Marijuana Retailing,i654
+i651,Motor Vehicle Dealing,i654
+i6511,New Car Dealing,i651
+i6512,Used Car Dealing,i651
+i6540005,Optical Goods Stores/Opticians,i654
+i6540033,Pet/Pet Supply Stores,i654
+i643,Pharmacies/Drug Stores,i654
+i646,Shoe Stores,i654
+i6540029,Sporting Goods Stores,i654
+i6540032,Used Merchandise Stores,i654
+i61,Wholesalers,i64
+iagrws,Agricultural Raw Material Wholesale,i61
+iautws,Automobile/Automobile Part Wholesale,i61
+ichmws,Chemical Product Wholesale,i61
+icltws,Clothing/Textile Wholesale,i61
+icmpws,Computers/Electronic Equipment Wholesale,i61
+iengwh,Energy Wholesale,i61
+ifodwh,Food Wholesaling,i61
+imacws,Machinery/Industrial Goods Wholesale,i61
+iphrws,Pharmaceuticals Wholesale,i61
+itech,Technology,indroot
+i3dprn,3D/4D Printing,itech
+iagtech,Agriculture Technology,itech
+i3302022,Artificial Intelligence Technologies,itech
+iphmetrix,Biometrics Technology,itech
+iblock,Blockchain Technology,itech
+i3302,Computers/Consumer Electronics,itech
+icomp,Computing,i3302
+icph,Computer Hardware,icomp
+icircb,Circuit Boards,icph
+icper,Computer Peripherals,icph
+idisply,Computer Monitors/Displays,icper
+i3302019,Computer Storage Devices,icper
+icmpse,Computer Servers,icph
+i3302003,Desktop Computers,icph
+i3302011,Portable Computers,icph
+itablcm,Tablet Computers,i3302011
+i3302012,Supercomputers,icph
+i330202,Software,icomp
+i3302021,Applications Software,i330202
+ibisw,Business Intelligence Software,i3302021
+icadcam,CAD/CAM Software,i3302021
+icmsw,Communications Software,i3302021
+iemail,E-mail,icmsw
+iimess,Instant Messaging Software,icmsw
+iinttel,Internet Telephony,icmsw
+icrmsw,Customer Relationship Management Software,i3302021
+idmisoft,Data Mining/Analysis Software,i3302021
+iecmsw,Enterprise Content Management Software,i3302021
+ientrps,Enterprise Resource Planning Software,i3302021
+iscmsof,Supply Chain Management Software,ientrps
+iphhit,Healthcare Information Technology,i3302021
+iintela,Intelligent Agents,i3302021
+ibrows,Internet Browsers,i3302021
+iknowms,Knowledge Management Software,i3302021
+imobsoft,Mobile Applications Software,i3302021
+iportsf,Portal Software,i3302021
+isecpri,Security/Privacy Software,i3302021
+isimsft,Simulation Software,i3302021
+ivirtusw,Virtualization Software,i3302021
+ivoicr,Voice Recognition Software,i3302021
+i3302020,Systems Software,i330202
+i83941,Software Programming Tools/Languages,icomp
+ielec,Consumer Electronics,i3302
+i3454,Personal Electronics,ielec
+ihandaps,Handheld Electronic Devices,i3454
+icellph,Cell/Mobile/Smart Phones,ihandaps
+iebkre,e-Book Readers/Devices,ihandaps
+ievd,Electronic Cigarettes,ihandaps
+iwetec,Wearable Technology,i3454
+i3303,Networking,i3302
+ibrdbi,Broadband Equipment,i3303
+ifbropt,Fiber Optic Equipment,ibrdbi
+i33031,LAN/WAN Hardware,ibrdbi
+igncmp,Radio Frequency/Microwave Components,ibrdbi
+iedco,Edge Computing,i3303
+iioft,Internet-of-Things Technologies,i3303
+inetwt,Network Monitoring/Testing Tools,i3303
+iwrlssl,Wireless Area Network Technology,i3303
+idct,Digital Cellular Technology,iwrlssl
+ielear,E-learning/Educational Technology,itech
+ifmsoft,Financial Technology,itech
+iint,Online Service Providers,itech
+iappsp,Cloud Computing,iint
+iecom,E-commerce,iint
+iebus,B2B e-commerce,iecom
+itnsv,Sharing/On-demand Economy Services,iecom
+i8395464,Internet Search Engines,iint
+iwebhst,Web Hosting,iint
+isptech,Sports Technologies,itech
+i3441,Telecommunications Equipment,itech
+i34411,Mobile Communications Devices,i3441
+ivrealt,Virtual Reality Technologies,itech
+i7902,Telecommunication Services,indroot
+i79026,Integrated Communications Providers,i7902
+i79023,Satellite Telecommunications Services,i7902
+i79021,Wired Telecommunications Services,i7902
+i79022,Wireless Telecommunications Services,i7902
+i7902202,Mobile Telecommunications,i79022
+ippcell,Prepaid Mobile Services,i7902202
+itsp,Transportation/Logistics,indroot
+iairtr,Air Transport,itsp
+i75,Airlines,iairtr
+i7502,Air Freight,i75
+i7504,Chartered Air Freight,i7502
+i7501,Passenger Airlines,i75
+i7503,Chartered Passenger Airlines,i7501
+ilowair,Low Cost Airlines,i7501
+i764,Airports,iairtr
+i7641,Air Traffic Control,i764
+i7643,Aircraft Cleaning/Fuelling,i764
+i7644,Aircraft Maintenance Services,i764
+i7642,Ramp/Baggage Handling,i764
+icargo,Freight Transport/Logistics,itsp
+i78,Couriers/Messengers,icargo
+i77002,Freight Transportation Arrangement,icargo
+imarfr,Marine Freight,icargo
+i7901,Postal Service,icargo
+irfrght,Railroad Freight,icargo
+i723,Trucking,icargo
+i77003,Warehousing/Storage,icargo
+irailtr,Road/Rail Transport,itsp
+i72102,Bus/Coach Services,irailtr
+i71,Railroads,irailtr
+irpass,Railroad Passenger Transport,i71
+i722,Taxi/Limousine Service,irailtr
+i721,Urban/Commuter Transit,irailtr
+i751,Space Transport,itsp
+iship,Water Transport/Shipping,itsp
+i72603,Inland Water Transport,iship
+i74,Marine Transport,iship
+imarpas,Marine Passenger Transport,i74
+i763,Port/Harbor Operations,iship
+iutil,Utilities,indroot
+i16,Electricity/Gas Utilities,iutil
+ieutil,Electric Utilities,i16
+i16102,Electric Bulk Power Transmission,ieutil
+i16103,Electric Power Distribution,ieutil
+i162,Gas Utilities,i16
+imulti,Multiutilities,iutil
+i17,Water Utilities,iutil
+idesal,Desalination,i17
+idishea,District Heating/Cooling,i17
