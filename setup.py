@@ -60,6 +60,10 @@ setup(
     keywords='news, news aggregator, risk, compliance, nlp, alternative data, factiva, trading news, market movers',
     python_requires='>=3.7',
     install_requires=[
-        'fastavro', 'google-cloud-core',
-        'google-cloud-pubsub', 'google-cloud-bigquery', 'pymongo'
-    ])
+        'requests', 'pandas', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub'
+    ],
+    extras_require={
+        "MongoDB": ["pymongo"],
+        "Elasticsearch": ["elasticsearch"],
+        "BigQuery": ["google-cloud-bigquery"]
+    })
