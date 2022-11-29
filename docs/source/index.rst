@@ -1,9 +1,9 @@
-Dow Jones Factiva News Python Library
-#####################################
+Dow Jones Factiva Analytics Python Library
+##########################################
 
-This package simplifies the integration process to the Dow Jones Snapshots and Streams services.
+This package simplifies the integration process to the Dow Jones Analytics services.
 
-Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com>`_ for more information about the available services.
+Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com>`_ for more information about all available services.
 
 .. toctree::
    :maxdepth: 2
@@ -17,19 +17,13 @@ Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com
 
 .. toctree::
    :maxdepth: 2
-   :caption: Factiva Core
+   :caption: Factiva Analytics
    :glob:
 
-   factiva.core/auth
-   factiva.core/tools
-   factiva.core/dicts
-   factiva.core/const
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Factiva News
-   :glob:
-
-   factiva.news/snapshot
-   factiva.news/stream
-   factiva.news/taxonomy
+   factiva.analytics/auth
+   factiva.analytics/snapshot
+   factiva.analytics/stream
+   factiva.analytics/taxonomy
+   factiva.analytics/tools
+   factiva.analytics/dicts
+   factiva.analytics/const

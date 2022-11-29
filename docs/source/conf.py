@@ -12,24 +12,25 @@
 #
 import os
 import sys
-from factiva.news.__version__ import __version__
+from datetime import date
+from factiva.analytics.__version__ import __version__
 sys.path.insert(0, os.path.abspath('../../src'))
 sys.path.insert(0, os.path.abspath('../../src/factiva'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/core'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/core/auth'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/core/const'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/core/dicts'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/core/tools'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/news'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/news/snapshot'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/news/stream'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/news/taxonomy'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/news/tools'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/auth'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/const'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/dicts'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/tools'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/snapshot'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/stream'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/taxonomy'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/tools'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Factiva News'
-copyright = '2022, Dow Jones'
+current_year = date.today().year
+project = 'Factiva Analytics'
+copyright = f'{current_year}, Dow Jones'
 author = 'Dow Jones'
 
 # The full version, including alpha/beta/rc tags

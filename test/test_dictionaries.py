@@ -1,4 +1,4 @@
-from factiva.core import dicts
+from factiva.analytics import dicts
 
 
 def test_country_codes():

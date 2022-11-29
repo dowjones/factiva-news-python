@@ -1,4 +1,4 @@
-from factiva.news import Taxonomy
+from factiva.analytics import Taxonomy
 
 
 def test_create_taxonomy_instance():

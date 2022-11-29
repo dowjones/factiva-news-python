@@ -1,8 +1,8 @@
 import pytest
 
-from factiva.core import const
-from factiva.core.tools import load_environment_value
-from factiva.news.snapshot import Snapshot
+from factiva.analytics import const
+from factiva.analytics.tools import load_environment_value
+from factiva.analytics.snapshot import Snapshot
 
 ENVIRONMENT_USER_KEY = load_environment_value('FACTIVA_USERKEY')
 VALID_USER_KEY = load_environment_value('FACTIVA_USERKEY')

@@ -1,0 +1,10 @@
+fastavro
+requests
+pandas
+pytest
+google-cloud-core
+google-cloud-pubsub
+google-cloud-bigquery
+pymongo
+elasticsearch
+sphinx
