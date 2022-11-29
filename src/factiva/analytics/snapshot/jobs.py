@@ -2,8 +2,8 @@
 import pandas as pd
 
 
-from factiva.core import const
-from factiva.news.bulknews import BulkNewsJob
+from .. import const
+from ..bulknews import BulkNewsJob
 
 
 class ExplainJob(BulkNewsJob):

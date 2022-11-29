@@ -1,8 +1,8 @@
 import pytest
 
-from factiva.core import UserKey, const
-from factiva.core.tools import load_environment_value
-from factiva.news.snapshot import Snapshot, SnapshotQuery
+from factiva.analytics import UserKey, const
+from factiva.analytics.tools import load_environment_value
+from factiva.analytics.snapshot import Snapshot, SnapshotQuery
 
 # TEST DATA. Fill out these values with valid data
 # Environment values are loaded for automated testing.

@@ -1,5 +1,5 @@
 import pytest
-from factiva.news.snapshot import SnapshotQuery
+from factiva.analytics import SnapshotQuery
 
 VALID_WHERE_STATEMENT = "publication_datetime >= '2021-01-01'"
 

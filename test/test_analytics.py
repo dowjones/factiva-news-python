@@ -1,7 +1,7 @@
 import pytest
 
-from factiva.news.snapshot import Snapshot
-from factiva.core.tools import load_environment_value
+from factiva.analytics.snapshot import Snapshot
+from factiva.analytics.tools import load_environment_value
 
 ENVIRONMENT_USER_KEY = load_environment_value('FACTIVA_USERKEY')
 VALID_QUERY = "publication_datetime >= '2018-01-01 00:00:00' AND publication_datetime <= '2018-03-01 00:00:00' AND LOWER(language_code) = 'en'"

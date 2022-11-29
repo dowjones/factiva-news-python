@@ -1,6 +1,6 @@
-from factiva.core import const
-from factiva.core.tools import load_environment_value
-from factiva.news.snapshot.jobs import UpdateJob
+from factiva.analytics import const
+from factiva.analytics.tools import load_environment_value
+from factiva.analytics.snapshot.jobs import UpdateJob
 # from factiva.news.snapshot import Snapshot
 
 VALID_SNAPSHOT_ID = load_environment_value('FACTIVA_SNAPSHOTID')

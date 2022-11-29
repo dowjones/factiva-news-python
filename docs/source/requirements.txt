@@ -1,2 +1,1 @@
-factiva-core
-factiva-news
+factiva-analytics

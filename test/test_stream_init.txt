@@ -1,9 +1,9 @@
 import time
 
 import pytest
-from factiva.core import StreamResponse, StreamUser
-from factiva.core.tools import load_environment_value
-from factiva.news.stream import Stream
+from factiva.analytics import StreamResponse, UserKey
+from factiva.analytics.tools import load_environment_value
+from factiva.analytics.stream import Stream
 
 # [MB] This file needs to test mainly constructor outputs. Specific
 # operations are tested in separate files.
@@ -16,7 +16,7 @@ VALID_STREAM_ID = load_environment_value('FACTIVA_STREAMID')
 VALID_WHERE_STATEMENT = "publication_datetime >= '2021-04-01 00:00:00' AND LOWER(language_code)='en' AND UPPER(source_code) = 'DJDN'"
 
 # Dummy key to test data flow without making requests to API
-user_key = StreamUser(VALID_USER_KEY)
+user_key = UserKey(VALID_USER_KEY)
 
 
 # USER-CENTRIC tests

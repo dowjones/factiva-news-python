@@ -1,9 +1,8 @@
 """Implement Stream Class definition."""
 from typing import List
-
-from factiva.core import StreamResponse, StreamUser, const, req, get_factiva_logger, factiva_logger
-from factiva.news.bulknews import BulkNewsQuery
-
+from .. import const, req, get_factiva_logger, factiva_logger, UserKey
+from ..stream_response import StreamResponse
+from ..bulknews import BulkNewsQuery
 from .subscription import Subscription
 
 
@@ -86,7 +85,7 @@ class Stream:
         self.snapshot_id = snapshot_id
         self.query = BulkNewsQuery(query)
         self.stream_user = user_key if isinstance(
-            user_key, StreamUser) else StreamUser(user_key, user_stats)
+            user_key, UserKey) else UserKey(user_key, user_stats)
         if not self.stream_user:
             raise RuntimeError('Undefined Stream User')
 

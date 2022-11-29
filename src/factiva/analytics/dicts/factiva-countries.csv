@@ -1,0 +1,251 @@
+﻿common_name,official_name_en,alpha2,alpha3,currency_code,currency_name,capital,edgar,lldc,languages,ldc,world,continent_name,continent_code,sub-region,interm_region_name,factiva_code,factiva_parent,tld,is_independent
+Taiwan,,TW,TWN,,,Taipei,,,"zh-TW,zh,nan,hak",,,,AS,,,TAIWAN,CHINAZ,.tw,Yes
+Afghanistan,Afghanistan,AF,AFG,AFN,Afghani,Kabul,B2,x,"fa-AF,ps,uz-AF,tk",x,World,Asia,AS,Southern Asia,,AFGH,CASIAZ,.af,Yes
+Albania,Albania,AL,ALB,ALL,Lek,Tirana,B3,,"sq,el",,World,Europe,EU,Southern Europe,,ALB,BALKZ,.al,Yes
+Algeria,Algeria,DZ,DZA,DZD,Algerian Dinar,Algiers,B4,,ar-DZ,,World,Africa,AF,Northern Africa,,ALG,NAFRZ,.dz,Yes
+American Samoa,American Samoa,AS,ASM,USD,US Dollar,Pago Pago,B5,,"en-AS,sm,to",,World,Oceania,OC,Polynesia,,AMSAM,PACISZ,.as,Territory of US
+Andorra,Andorra,AD,AND,EUR,Euro,Andorra la Vella,B6,,ca,,World,Europe,EU,Southern Europe,,ANDO,WEURZ,.ad,Yes
+Angola,Angola,AO,AGO,AOA,Kwanza,Luanda,B7,,pt-AO,x,World,Africa,AF,Sub-Saharan Africa,Middle Africa,ANGOL,SOUAFRZ,.ao,Yes
+Anguilla,Anguilla,AI,AIA,XCD,East Caribbean Dollar,The Valley,1A,,en-AI,,World,Americas,NA,Latin America and the Caribbean,Caribbean,ANGUIL,CARIBZ,.ai,Territory of GB
+Antarctica,Antarctica,AQ,ATA,,No universal currency,,B8,,,,World,,AN,,,,,.aq,International
+Antigua & Barbuda,Antigua and Barbuda,AG,ATG,XCD,East Caribbean Dollar,St. John's,B9,,en-AG,,World,Americas,NA,Latin America and the Caribbean,Caribbean,ANTA,CARIBZ,.ag,Yes
+Argentina,Argentina,AR,ARG,ARS,Argentine Peso,Buenos Aires,C1,,"es-AR,en,it,de,fr,gn",,World,Americas,SA,Latin America and the Caribbean,South America,ARG,SAMZ,.ar,Yes
+Armenia,Armenia,AM,ARM,AMD,Armenian Dram,Yerevan,1B,x,hy,,World,Asia,AS,Western Asia,,ARMEN,WASIAZ,.am,Yes
+Aruba,Aruba,AW,ABW,AWG,Aruban Florin,Oranjestad,1C,,"nl-AW,es,en",,World,Americas,NA,Latin America and the Caribbean,Caribbean,ARUBA,CARIBZ,.aw,Part of NL
+Australia,Australia,AU,AUS,AUD,Australian Dollar,Canberra,C3,,en-AU,,World,Oceania,OC,Australia and New Zealand,,AUSTR,AUSNZ,.au,Yes
+Austria,Austria,AT,AUT,EUR,Euro,Vienna,C4,,"de-AT,hr,hu,sl",,World,Europe,EU,Western Europe,,AUST,DACH,.at,Yes
+Azerbaijan,Azerbaijan,AZ,AZE,AZN,Azerbaijan Manat,Baku,1D,x,"az,ru,hy",,World,Asia,AS,Western Asia,,AZERB,WASIAZ,.az,Yes
+Bahamas,Bahamas,BS,BHS,BSD,Bahamian Dollar,Nassau,C5,,en-BS,,World,Americas,NA,Latin America and the Caribbean,Caribbean,BAH,CARIBZ,.bs,Yes
+Bahrain,Bahrain,BH,BHR,BHD,Bahraini Dinar,Manama,C6,,"ar-BH,en,fa,ur",,World,Asia,AS,Western Asia,,BAHRN,GULFSTZ,.bh,Yes
+Bangladesh,Bangladesh,BD,BGD,BDT,Taka,Dhaka,C7,,"bn-BD,en",x,World,Asia,AS,Southern Asia,,BANDH,INDSUBZ,.bd,Yes
+Barbados,Barbados,BB,BRB,BBD,Barbados Dollar,Bridgetown,C8,,en-BB,,World,Americas,NA,Latin America and the Caribbean,Caribbean,BARB,CARIBZ,.bb,Yes
+Belarus,Belarus,BY,BLR,BYN,Belarusian Ruble,Minsk,1F,,"be,ru",,World,Europe,EU,Eastern Europe,,BYELRS,EEURZ,.by,Yes
+Belgium,Belgium,BE,BEL,EUR,Euro,Brussels,C9,,"nl-BE,fr-BE,de-BE",,World,Europe,EU,Western Europe,,BELG,BENLUXZ,.be,Yes
+Belize,Belize,BZ,BLZ,BZD,Belize Dollar,Belmopan,D1,,"en-BZ,es",,World,Americas,NA,Latin America and the Caribbean,Central America,BELZ,CAMZ,.bz,Yes
+Benin,Benin,BJ,BEN,XOF,CFA Franc BCEAO,Porto-Novo,G6,,fr-BJ,x,World,Africa,AF,Sub-Saharan Africa,Western Africa,BENIN,WAFRZ,.bj,Yes
+Bermuda,Bermuda,BM,BMU,BMD,Bermudian Dollar,Hamilton,D0,,"en-BM,pt",,World,Americas,NA,Northern America,,BERM,NAMZ,.bm,Territory of GB
+Bhutan,Bhutan,BT,BTN,"INR,BTN","Indian Rupee,Ngultrum",Thimphu,D2,x,dz,x,World,Asia,AS,Southern Asia,,BHUTAN,CASIAZ,.bt,Yes
+Bolivia,Bolivia (Plurinational State of),BO,BOL,BOB,Boliviano,Sucre,,x,"es-BO,qu,ay",,World,Americas,SA,Latin America and the Caribbean,South America,BOL,SAMZ,.bo,Yes
+Caribbean Netherlands,"Bonaire, Sint Eustatius and Saba",BQ,BES,USD,US Dollar,,,,"nl,pap,en",,World,Americas,NA,Latin America and the Caribbean,Caribbean,,,.bq,Part of NL
+Bosnia and Herzegovina,Bosnia and Herzegovina,BA,BIH,BAM,Convertible Mark,Sarajevo,1E,,"bs,hr-BA,sr-BA",,World,Europe,EU,Southern Europe,,BSHZG,BALKZ,.ba,Yes
+Botswana,Botswana,BW,BWA,BWP,Pula,Gaborone,B1,x,"en-BW,tn-BW",,World,Africa,AF,Sub-Saharan Africa,Southern Africa,BOTS,SOUAFRZ,.bw,Yes
+Bouvet Island,Bouvet Island,BV,BVT,NOK,Norwegian Krone,,D4,,,,World,Americas,AN,Latin America and the Caribbean,South America,BOUV,SOUAFRUZ,.bv,Territory of NO
+Brazil,Brazil,BR,BRA,BRL,Brazilian Real,Brasilia,D5,,"pt-BR,es,en,fr",,World,Americas,SA,Latin America and the Caribbean,South America,BRAZ,SAMZ,.br,Yes
+British Indian Ocean Territory,British Indian Ocean Territory,IO,IOT,USD,US Dollar,Diego Garcia,D6,,en-IO,,World,Africa,AS,Sub-Saharan Africa,Eastern Africa,BIOT,SASIAZ,.io,Territory of GB
+British Virgin Islands,British Virgin Islands,VG,VGB,USD,US Dollar,Road Town,,,en-VG,,World,Americas,NA,Latin America and the Caribbean,Caribbean,BVI,CARIBZ,.vg,Territory of GB
+Brunei,Brunei Darussalam,BN,BRN,BND,Brunei Dollar,Bandar Seri Begawan,D9,,"ms-BN,en-BN",,World,Asia,AS,South-eastern Asia,,BRUNEI,SEASIAZ,.bn,Yes
+Bulgaria,Bulgaria,BG,BGR,BGN,Bulgarian Lev,Sofia,E0,,"bg,tr-BG,rom",,World,Europe,EU,Eastern Europe,,BUL,BALKZ,.bg,Yes
+Burkina Faso,Burkina Faso,BF,BFA,XOF,CFA Franc BCEAO,Ouagadougou,X2,x,fr-BF,x,World,Africa,AF,Sub-Saharan Africa,Western Africa,UPVOLA,WAFRZ,.bf,Yes
+Burundi,Burundi,BI,BDI,BIF,Burundi Franc,Bujumbura,E2,x,"fr-BI,rn",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,BURUN,EAFRZ,.bi,Yes
+Cape Verde,Cabo Verde,CV,CPV,CVE,Cabo Verde Escudo,Praia,,,pt-CV,,World,Africa,AF,Sub-Saharan Africa,Western Africa,CVI,WAFRZ,.cv,Yes
+Cambodia,Cambodia,KH,KHM,KHR,Riel,Phnom Penh,E3,,"km,fr,en",x,World,Asia,AS,South-eastern Asia,,KAMPA,INDOCHZ,.kh,Yes
+Cameroon,Cameroon,CM,CMR,XAF,CFA Franc BEAC,Yaounde,E4,,"en-CM,fr-CM",,World,Africa,AF,Sub-Saharan Africa,Middle Africa,CAMER,CEAFRZ,.cm,Yes
+Canada,Canada,CA,CAN,CAD,Canadian Dollar,Ottawa,,,"en-CA,fr-CA,iu",,World,Americas,NA,Northern America,,CANA,NAMZ,.ca,Yes
+Cayman Islands,Cayman Islands,KY,CYM,KYD,Cayman Islands Dollar,George Town,E9,,en-KY,,World,Americas,NA,Latin America and the Caribbean,Caribbean,CAYI,CARIBZ,.ky,Territory of GB
+Central African Republic,Central African Republic,CF,CAF,XAF,CFA Franc BEAC,Bangui,F0,x,"fr-CF,sg,ln,kg",x,World,Africa,AF,Sub-Saharan Africa,Middle Africa,CAFR,CEAFRZ,.cf,Yes
+Chad,Chad,TD,TCD,XAF,CFA Franc BEAC,N'Djamena,F2,x,"fr-TD,ar-TD,sre",x,World,Africa,AF,Sub-Saharan Africa,Middle Africa,CHAD,CEAFRZ,.td,Yes
+Chile,Chile,CL,CHL,CLP,Chilean Peso,Santiago,F3,,es-CL,,World,Americas,SA,Latin America and the Caribbean,South America,CHIL,SAMZ,.cl,Yes
+China,China,CN,CHN,CNY,Yuan Renminbi,Beijing,F4,,"zh-CN,yue,wuu,dta,ug,za",,World,Asia,AS,Eastern Asia,,CHINA,CHINAZ,.cn,Yes
+Hong Kong,"China, Hong Kong Special Administrative Region",HK,HKG,HKD,Hong Kong Dollar,Hong Kong,K3,,"zh-HK,yue,zh,en",,World,Asia,AS,Eastern Asia,,HKONG,CHINAZ,.hk,Part of CN
+Macau,"China, Macao Special Administrative Region",MO,MAC,MOP,Pataca,Macao,,,"zh,zh-MO,pt",,World,Asia,AS,Eastern Asia,,MACAO,CHINAZ,.mo,Part of CN
+Christmas Island,Christmas Island,CX,CXR,AUD,Australian Dollar,Flying Fish Cove,F6,,"en,zh,ms-CC",,World,Oceania,AS,Australia and New Zealand,,CHR,SEASIAZ,.cx,Territory of AU
+Cocos (Keeling) Islands,Cocos (Keeling) Islands,CC,CCK,AUD,Australian Dollar,West Island,F7,,"ms-CC,en",,World,Oceania,AS,Australia and New Zealand,,COCOS,SEASIAZ,.cc,Territory of AU
+Colombia,Colombia,CO,COL,COP,Colombian Peso,Bogota,F8,,es-CO,,World,Americas,SA,Latin America and the Caribbean,South America,COL,SAMZ,.co,Yes
+Comoros,Comoros,KM,COM,KMF,Comorian Franc,Moroni,F9,,"ar,fr-KM",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,COMOR,EAFRZ,.km,Yes
+Congo - Brazzaville,Congo,CG,COG,XAF,CFA Franc BEAC,Brazzaville,G0,,"fr-CG,kg,ln-CG",,World,Africa,AF,Sub-Saharan Africa,Middle Africa,,,.cg,Yes
+Cook Islands,Cook Islands,CK,COK,NZD,New Zealand Dollar,Avarua,G1,,"en-CK,mi",,World,Oceania,OC,Polynesia,,COOKIS,PACISZ,.ck,Associated with NZ
+Costa Rica,Costa Rica,CR,CRI,CRC,Costa Rican Colon,San Jose,G2,,"es-CR,en",,World,Americas,NA,Latin America and the Caribbean,Central America,COSR,CAMZ,.cr,Yes
+Croatia,Croatia,HR,HRV,HRK,Kuna,Zagreb,1M,,"hr-HR,sr",,World,Europe,EU,Southern Europe,,CRTIA,BALKZ,.hr,Yes
+Cuba,Cuba,CU,CUB,"CUP,CUC","Cuban Peso,Peso Convertible",Havana,G3,,es-CU,,World,Americas,NA,Latin America and the Caribbean,Caribbean,CUBA,CARIBZ,.cu,Yes
+Curaçao,Curaçao,CW,CUW,ANG,Netherlands Antillean Guilder,Willemstad,,,"nl,pap",,World,Americas,NA,Latin America and the Caribbean,Caribbean,NANT,CARIBZ,.cw,Part of NL
+Cyprus,Cyprus,CY,CYP,EUR,Euro,Nicosia,G4,,"el-CY,tr-CY,en",,World,Asia,EU,Western Asia,,CYPR,WASIAZ,.cy,Yes
+Czech Republic,Czech Republic,CZ,CZE,CZK,Czech Koruna,Prague,,,"cs,sk",,World,Europe,EU,Eastern Europe,,CZREP,EEURZ,.cz,Yes
+Côte d’Ivoire,Côte d'Ivoire,CI,CIV,XOF,CFA Franc BCEAO,Yamoussoukro,,,fr-CI,,World,Africa,AF,Sub-Saharan Africa,Western Africa,ICST,WAFRZ,.ci,Yes
+North Korea,Democratic People's Republic of Korea,KP,PRK,KPW,North Korean Won,Pyongyang,,,ko-KP,,World,Asia,AS,Eastern Asia,,NKOREA,EASIAZ,.kp,Yes
+Congo - Kinshasa,Democratic Republic of the Congo,CD,COD,CDF,Congolese Franc,Kinshasa,,,"fr-CD,ln,kg",x,World,Africa,AF,Sub-Saharan Africa,Middle Africa,,,.cd,Yes
+Denmark,Denmark,DK,DNK,DKK,Danish Krone,Copenhagen,G7,,"da-DK,en,fo,de-DK",,World,Europe,EU,Northern Europe,,DEN,SCANDZ,.dk,Yes
+Djibouti,Djibouti,DJ,DJI,DJF,Djibouti Franc,Djibouti,1G,,"fr-DJ,ar,so-DJ,aa",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,TAI,EAFRZ,.dj,Yes
+Dominica,Dominica,DM,DMA,XCD,East Caribbean Dollar,Roseau,G9,,en-DM,,World,Americas,NA,Latin America and the Caribbean,Caribbean,DOMA,CARIBZ,.dm,Yes
+Dominican Republic,Dominican Republic,DO,DOM,DOP,Dominican Peso,Santo Domingo,G8,,es-DO,,World,Americas,NA,Latin America and the Caribbean,Caribbean,DOMR,CARIBZ,.do,Yes
+Ecuador,Ecuador,EC,ECU,USD,US Dollar,Quito,H1,,es-EC,,World,Americas,SA,Latin America and the Caribbean,South America,ECU,SAMZ,.ec,Yes
+Egypt,Egypt,EG,EGY,EGP,Egyptian Pound,Cairo,H2,,"ar-EG,en,fr",,World,Africa,AF,Northern Africa,,EGYPT,NAFRZ,.eg,Yes
+El Salvador,El Salvador,SV,SLV,"SVC,USD","El Salvador Colon,US Dollar",San Salvador,H3,,es-SV,,World,Americas,NA,Latin America and the Caribbean,Central America,ELSAL,CAMZ,.sv,Yes
+Equatorial Guinea,Equatorial Guinea,GQ,GNQ,XAF,CFA Franc BEAC,Malabo,H4,,"es-GQ,fr",x,World,Africa,AF,Sub-Saharan Africa,Middle Africa,EQGNA,CEAFRZ,.gq,Yes
+Eritrea,Eritrea,ER,ERI,ERN,Nakfa,Asmara,1J,,"aa-ER,ar,tig,kun,ti-ER",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,ERTRA,EAFRZ,.er,Yes
+Estonia,Estonia,EE,EST,EUR,Euro,Tallinn,1H,,"et,ru",,World,Europe,EU,Northern Europe,,ESTNIA,BALTST,.ee,Yes
+Ethiopia,Ethiopia,ET,ETH,ETB,Ethiopian Birr,Addis Ababa,H5,x,"am,en-ET,om-ET,ti-ET,so-ET,sid",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,ETHPA,EAFRZ,.et,Yes
+Falkland Islands,Falkland Islands (Malvinas),FK,FLK,,,Stanley,,,en-FK,,World,Americas,SA,Latin America and the Caribbean,South America,FALK,SAMZ,.fk,Territory of GB
+Faroe Islands,Faroe Islands,FO,FRO,DKK,Danish Krone,Torshavn,H6,,"fo,da-FO",,World,Europe,EU,Northern Europe,,FAEROE,NORDZ,.fo,Part of DK
+Fiji,Fiji,FJ,FJI,FJD,Fiji Dollar,Suva,H8,,"en-FJ,fj",,World,Oceania,OC,Melanesia,,FIJI,PACISZ,.fj,Yes
+Finland,Finland,FI,FIN,EUR,Euro,Helsinki,H9,,"fi-FI,sv-FI,smn",,World,Europe,EU,Northern Europe,,FIN,NORDZ,.fi,Yes
+France,France,FR,FRA,EUR,Euro,Paris,I0,,"fr-FR,frp,br,co,ca,eu,oc",,World,Europe,EU,Western Europe,,FRA,WEURZ,.fr,Yes
+French Guiana,French Guiana,GF,GUF,EUR,Euro,Cayenne,I3,,fr-GF,,World,Americas,SA,Latin America and the Caribbean,South America,FGNA,SAMZ,.gf,Part of FR
+French Polynesia,French Polynesia,PF,PYF,XPF,CFP Franc,Papeete,I4,,"fr-PF,ty",,World,Oceania,OC,Polynesia,,FPOLY,PACISZ,.pf,Territory of FR
+French Southern Territories,French Southern Territories,TF,ATF,EUR,Euro,Port-aux-Francais,2C,,fr,,World,Africa,AN,Sub-Saharan Africa,Eastern Africa,,,.tf,Territory of FR
+Gabon,Gabon,GA,GAB,XAF,CFA Franc BEAC,Libreville,I5,,fr-GA,,World,Africa,AF,Sub-Saharan Africa,Middle Africa,GABON,CEAFRZ,.ga,Yes
+Gambia,Gambia,GM,GMB,GMD,Dalasi,Banjul,I6,,"en-GM,mnk,wof,wo,ff",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,GAMB,WAFRZ,.gm,Yes
+Georgia,Georgia,GE,GEO,GEL,Lari,Tbilisi,2Q,,"ka,ru,hy,az",,World,Asia,AS,Western Asia,,GRGIA,WASIAZ,.ge,Yes
+Germany,Germany,DE,DEU,EUR,Euro,Berlin,2M,,de,,World,Europe,EU,Western Europe,,GFR,DACH,.de,Yes
+Ghana,Ghana,GH,GHA,GHS,Ghana Cedi,Accra,J0,,"en-GH,ak,ee,tw",,World,Africa,AF,Sub-Saharan Africa,Western Africa,GHANA,WAFRZ,.gh,Yes
+Gibraltar,Gibraltar,GI,GIB,GIP,Gibraltar Pound,Gibraltar,J1,,"en-GI,es,it,pt",,World,Europe,EU,Southern Europe,,GIB,WEURZ,.gi,Territory of GB
+Greece,Greece,GR,GRC,EUR,Euro,Athens,J3,,"el-GR,en,fr",,World,Europe,EU,Southern Europe,,GREECE,BALKZ,.gr,Yes
+Greenland,Greenland,GL,GRL,DKK,Danish Krone,Nuuk,J4,,"kl,da-GL,en",,World,Americas,NA,Northern America,,GREENL,NAMZ,.gl,Part of DK
+Grenada,Grenada,GD,GRD,XCD,East Caribbean Dollar,St. George's,J5,,en-GD,,World,Americas,NA,Latin America and the Caribbean,Caribbean,GREN,CARIBZ,.gd,Yes
+Guadeloupe,Guadeloupe,GP,GLP,EUR,Euro,Basse-Terre,J6,,fr-GP,,World,Americas,NA,Latin America and the Caribbean,Caribbean,GUAD,CARIBZ,.gp,Part of FR
+Guam,Guam,GU,GUM,USD,US Dollar,Hagatna,GU,,"en-GU,ch-GU",,World,Oceania,OC,Micronesia,,GUAM,PACISZ,.gu,Territory of US
+Guatemala,Guatemala,GT,GTM,GTQ,Quetzal,Guatemala City,J8,,es-GT,,World,Americas,NA,Latin America and the Caribbean,Central America,GUAT,CAMZ,.gt,Yes
+Guernsey,Guernsey,GG,GGY,GBP,Pound Sterling,St Peter Port,Y7,,"en,fr",,World,Europe,EU,Northern Europe,Channel Islands,GUERN,WEURZ,.gg,Crown dependency of GB
+Guinea,Guinea,GN,GIN,GNF,Guinean Franc,Conakry,J9,,fr-GN,x,World,Africa,AF,Sub-Saharan Africa,Western Africa,GUREP,WAFRZ,.gn,Yes
+Guinea-Bissau,Guinea-Bissau,GW,GNB,XOF,CFA Franc BCEAO,Bissau,S0,,"pt-GW,pov",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,GUBI,WAFRZ,.gw,Yes
+Guyana,Guyana,GY,GUY,GYD,Guyana Dollar,Georgetown,K0,,en-GY,,World,Americas,SA,Latin America and the Caribbean,South America,GUY,SAMZ,.gy,Yes
+Haiti,Haiti,HT,HTI,"HTG,USD","Gourde,US Dollar",Port-au-Prince,K1,,"ht,fr-HT",x,World,Americas,NA,Latin America and the Caribbean,Caribbean,HAIT,CARIBZ,.ht,Yes
+Heard & McDonald Islands,Heard Island and McDonald Islands,HM,HMD,AUD,Australian Dollar,,K4,,,,World,Oceania,AN,Australia and New Zealand,,HEARD,SOUAFRUZ,.hm,Territory of AU
+Vatican City,Holy See,VA,VAT,EUR,Euro,Vatican City,,,"la,it,fr",,World,Europe,EU,Southern Europe,,VCAN,WEURZ,.va,Yes
+Honduras,Honduras,HN,HND,HNL,Lempira,Tegucigalpa,K2,,es-HN,,World,Americas,NA,Latin America and the Caribbean,Central America,HON,CAMZ,.hn,Yes
+Hungary,Hungary,HU,HUN,HUF,Forint,Budapest,K5,,hu-HU,,World,Europe,EU,Eastern Europe,,HUNG,EEURZ,.hu,Yes
+Iceland,Iceland,IS,ISL,ISK,Iceland Krona,Reykjavik,K6,,"is,en,de,da,sv,no",,World,Europe,EU,Northern Europe,,ICEL,NORDZ,.is,Yes
+India,India,IN,IND,INR,Indian Rupee,New Delhi,K7,,"en-IN,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,bh,sat,ks,ne,sd,kok,doi,mni,sit,sa,fr,lus,inc",,World,Asia,AS,Southern Asia,,INDIA,INDSUBZ,.in,Yes
+Indonesia,Indonesia,ID,IDN,IDR,Rupiah,Jakarta,K8,,"id,en,nl,jv",,World,Asia,AS,South-eastern Asia,,INDON,SEASIAZ,.id,Yes
+Iran,Iran (Islamic Republic of),IR,IRN,IRR,Iranian Rial,Tehran,,,"fa-IR,ku",,World,Asia,AS,Southern Asia,,IRAN,GULFSTZ,.ir,Yes
+Iraq,Iraq,IQ,IRQ,IQD,Iraqi Dinar,Baghdad,L0,,"ar-IQ,ku,hy",,World,Asia,AS,Western Asia,,IRAQ,GULFSTZ,.iq,Yes
+Ireland,Ireland,IE,IRL,EUR,Euro,Dublin,L2,,"en-IE,ga-IE",,World,Europe,EU,Northern Europe,,IRE,WEURZ,.ie,Yes
+Isle of Man,Isle of Man,IM,IMN,GBP,Pound Sterling,Douglas,Y8,,"en,gv",,World,Europe,EU,Northern Europe,,ISLEOM,WEURZ,.im,Crown dependency of GB
+Israel,Israel,IL,ISR,ILS,New Israeli Sheqel,Jerusalem,L3,,"he,ar-IL,en-IL,",,World,Asia,AS,Western Asia,,ISRAEL,WASIAZ,.il,Yes
+Italy,Italy,IT,ITA,EUR,Euro,Rome,L6,,"it-IT,de-IT,fr-IT,sc,ca,co,sl",,World,Europe,EU,Southern Europe,,ITALY,WEURZ,.it,Yes
+Jamaica,Jamaica,JM,JAM,JMD,Jamaican Dollar,Kingston,L8,,en-JM,,World,Americas,NA,Latin America and the Caribbean,Caribbean,JAMA,CARIBZ,.jm,Yes
+Japan,Japan,JP,JPN,JPY,Yen,Tokyo,M0,,ja,,World,Asia,AS,Eastern Asia,,JAP,EASIAZ,.jp,Yes
+Jersey,Jersey,JE,JEY,GBP,Pound Sterling,Saint Helier,Y9,,"en,pt",,World,Europe,EU,Northern Europe,Channel Islands,JERSEY,WEURZ,.je,Crown dependency of GB
+Jordan,Jordan,JO,JOR,JOD,Jordanian Dinar,Amman,M2,,"ar-JO,en",,World,Asia,AS,Western Asia,,JORDAN,WASIAZ,.jo,Yes
+Kazakhstan,Kazakhstan,KZ,KAZ,KZT,Tenge,Astana,,x,"kk,ru",,World,Asia,AS,Central Asia,,KAZK,CASIAZ,.kz,Yes
+Kenya,Kenya,KE,KEN,KES,Kenyan Shilling,Nairobi,M3,,"en-KE,sw-KE",,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,KENYA,EAFRZ,.ke,Yes
+Kiribati,Kiribati,KI,KIR,AUD,Australian Dollar,Tarawa,J2,,"en-KI,gil",x,World,Oceania,OC,Micronesia,,KIRB,PACISZ,.ki,Yes
+Kuwait,Kuwait,KW,KWT,KWD,Kuwaiti Dinar,Kuwait City,M6,,"ar-KW,en",,World,Asia,AS,Western Asia,,KUWAIT,GULFSTZ,.kw,Yes
+Kyrgyzstan,Kyrgyzstan,KG,KGZ,KGS,Som,Bishkek,1N,x,"ky,uz,ru",,World,Asia,AS,Central Asia,,KIRGH,CASIAZ,.kg,Yes
+Laos,Lao People's Democratic Republic,LA,LAO,LAK,Lao Kip,Vientiane,,x,"lo,fr,en",x,World,Asia,AS,South-eastern Asia,,LAOS,INDOCHZ,.la,Yes
+Latvia,Latvia,LV,LVA,EUR,Euro,Riga,1R,,"lv,ru,lt",,World,Europe,EU,Northern Europe,,LATV,BALTST,.lv,Yes
+Lebanon,Lebanon,LB,LBN,LBP,Lebanese Pound,Beirut,M8,,"ar-LB,fr-LB,en,hy",,World,Asia,AS,Western Asia,,LEBAN,WASIAZ,.lb,Yes
+Lesotho,Lesotho,LS,LSO,"LSL,ZAR","Loti,Rand",Maseru,M9,x,"en-LS,st,zu,xh",x,World,Africa,AF,Sub-Saharan Africa,Southern Africa,LESOT,SOUAFRZ,.ls,Yes
+Liberia,Liberia,LR,LBR,LRD,Liberian Dollar,Monrovia,N0,,en-LR,x,World,Africa,AF,Sub-Saharan Africa,Western Africa,LIBER,WAFRZ,.lr,Yes
+Libya,Libya,LY,LBY,LYD,Libyan Dinar,Tripoli,,,"ar-LY,it,en",,World,Africa,AF,Northern Africa,,LIBYA,NAFRZ,.ly,Yes
+Liechtenstein,Liechtenstein,LI,LIE,CHF,Swiss Franc,Vaduz,N2,,de-LI,,World,Europe,EU,Western Europe,,LIECHT,WEURZ,.li,Yes
+Lithuania,Lithuania,LT,LTU,EUR,Euro,Vilnius,1Q,,"lt,ru,pl",,World,Europe,EU,Northern Europe,,LITH,BALTST,.lt,Yes
+Luxembourg,Luxembourg,LU,LUX,EUR,Euro,Luxembourg,N4,,"lb,de-LU,fr-LU",,World,Europe,EU,Western Europe,,LUX,BENLUXZ,.lu,Yes
+Madagascar,Madagascar,MG,MDG,MGA,Malagasy Ariary,Antananarivo,N6,,"fr-MG,mg",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,MALAG,EAFRZ,.mg,Yes
+Malawi,Malawi,MW,MWI,MWK,Malawi Kwacha,Lilongwe,N7,x,"ny,yao,tum,swk",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,MALAW,SOUAFRZ,.mw,Yes
+Malaysia,Malaysia,MY,MYS,MYR,Malaysian Ringgit,Kuala Lumpur,N8,,"ms-MY,en,zh,ta,te,ml,pa,th",,World,Asia,AS,South-eastern Asia,,MALAY,SEASIAZ,.my,Yes
+Maldives,Maldives,MV,MDV,MVR,Rufiyaa,Male,N9,,"dv,en",,World,Asia,AS,Southern Asia,,MALDR,SASIAZ,.mv,Yes
+Mali,Mali,ML,MLI,XOF,CFA Franc BCEAO,Bamako,O0,x,"fr-ML,bm",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,MALI,WAFRZ,.ml,Yes
+Malta,Malta,MT,MLT,EUR,Euro,Valletta,O1,,"mt,en-MT",,World,Europe,EU,Southern Europe,,MALTA,WEURZ,.mt,Yes
+Marshall Islands,Marshall Islands,MH,MHL,USD,US Dollar,Majuro,1T,,"mh,en-MH",,World,Oceania,OC,Micronesia,,MAH,PACISZ,.mh,Yes
+Martinique,Martinique,MQ,MTQ,EUR,Euro,Fort-de-France,O2,,fr-MQ,,World,Americas,NA,Latin America and the Caribbean,Caribbean,MARQ,CARIBZ,.mq,Part of FR
+Mauritania,Mauritania,MR,MRT,MRO,Ouguiya,Nouakchott,O3,,"ar-MR,fuc,snk,fr,mey,wo",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,MAURTN,WAFRZ,.mr,Yes
+Mauritius,Mauritius,MU,MUS,MUR,Mauritius Rupee,Port Louis,O4,,"en-MU,bho,fr",,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,MAURTS,EAFRZ,.mu,Yes
+Mayotte,Mayotte,YT,MYT,EUR,Euro,Mamoudzou,2P,,fr-YT,,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,MAYOT,EAFRZ,.yt,Part of FR
+Mexico,Mexico,MX,MEX,MXN,Mexican Peso,Mexico City,O5,,es-MX,,World,Americas,NA,Latin America and the Caribbean,Central America,MEX,NAMZ,.mx,Yes
+Micronesia,Micronesia (Federated States of),FM,FSM,USD,US Dollar,Palikir,,,"en-FM,chk,pon,yap,kos,uli,woe,nkr,kpg",,World,Oceania,OC,Micronesia,,FESMIC,PACISZ,.fm,Yes
+Monaco,Monaco,MC,MCO,EUR,Euro,Monaco,O9,,"fr-MC,en,it",,World,Europe,EU,Western Europe,,MONAC,WEURZ,.mc,Yes
+Mongolia,Mongolia,MN,MNG,MNT,Tugrik,Ulan Bator,P0,x,"mn,ru",,World,Asia,AS,Eastern Asia,,MONGLA,CASIAZ,.mn,Yes
+Montenegro,Montenegro,ME,MNE,EUR,Euro,Podgorica,Z5,,"sr,hu,bs,sq,hr,rom",,World,Europe,EU,Southern Europe,,MNTNG,BALKZ,.me,Yes
+Montserrat,Montserrat,MS,MSR,XCD,East Caribbean Dollar,Plymouth,P1,,en-MS,,World,Americas,NA,Latin America and the Caribbean,Caribbean,MONT,CARIBZ,.ms,Territory of GB
+Morocco,Morocco,MA,MAR,MAD,Moroccan Dirham,Rabat,P2,,"ar-MA,ber,fr",,World,Africa,AF,Northern Africa,,MOROC,NAFRZ,.ma,Yes
+Mozambique,Mozambique,MZ,MOZ,MZN,Mozambique Metical,Maputo,P3,,"pt-MZ,vmw",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,MOZAM,EAFRZ,.mz,Yes
+Myanmar,Myanmar,MM,MMR,MMK,Kyat,Nay Pyi Taw,E1,,my,x,World,Asia,AS,South-eastern Asia,,BURMA,SEASIAZ,.mm,Yes
+Namibia,Namibia,NA,NAM,"NAD,ZAR","Namibia Dollar,Rand",Windhoek,T6,,"en-NA,af,de,hz,naq",,World,Africa,AF,Sub-Saharan Africa,Southern Africa,NAMIB,SOUAFRZ,.na,Yes
+Nauru,Nauru,NR,NRU,AUD,Australian Dollar,Yaren,P5,,"na,en-NR",,World,Oceania,OC,Micronesia,,NAURU,PACISZ,.nr,Yes
+Nepal,Nepal,NP,NPL,NPR,Nepalese Rupee,Kathmandu,P6,x,"ne,en",x,World,Asia,AS,Southern Asia,,NEPAL,CASIAZ,.np,Yes
+Netherlands,Netherlands,NL,NLD,EUR,Euro,Amsterdam,P7,,"nl-NL,fy-NL",,World,Europe,EU,Western Europe,,NETH,BENLUXZ,.nl,Yes
+New Caledonia,New Caledonia,NC,NCL,XPF,CFP Franc,Noumea,1W,,fr-NC,,World,Oceania,OC,Melanesia,,NEWCAL,PACISZ,.nc,Territory of FR
+New Zealand,New Zealand,NZ,NZL,NZD,New Zealand Dollar,Wellington,Q2,,"en-NZ,mi",,World,Oceania,OC,Australia and New Zealand,,NZ,AUSNZ,.nz,Yes
+Nicaragua,Nicaragua,NI,NIC,NIO,Cordoba Oro,Managua,Q3,,"es-NI,en",,World,Americas,NA,Latin America and the Caribbean,Central America,NICG,CAMZ,.ni,Yes
+Niger,Niger,NE,NER,XOF,CFA Franc BCEAO,Niamey,Q4,x,"fr-NE,ha,kr,dje",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,NIGER,WAFRZ,.ne,Yes
+Nigeria,Nigeria,NG,NGA,NGN,Naira,Abuja,Q5,,"en-NG,ha,yo,ig,ff",,World,Africa,AF,Sub-Saharan Africa,Western Africa,NIGEA,WAFRZ,.ng,Yes
+Niue,Niue,NU,NIU,NZD,New Zealand Dollar,Alofi,Q6,,"niu,en-NU",,World,Oceania,OC,Polynesia,,NIUE,PACISZ,.nu,Associated with NZ
+Norfolk Island,Norfolk Island,NF,NFK,AUD,Australian Dollar,Kingston,Q7,,en-NF,,World,Oceania,OC,Australia and New Zealand,,NORFIS,PACISZ,.nf,Territory of AU
+Northern Mariana Islands,Northern Mariana Islands,MP,MNP,USD,US Dollar,Saipan,1V,,"fil,tl,zh,ch-MP,en-MP",,World,Oceania,OC,Micronesia,,NOMARI,PACISZ,.mp,Commonwealth of US
+Norway,Norway,NO,NOR,NOK,Norwegian Krone,Oslo,Q8,,"no,nb,nn,se,fi",,World,Europe,EU,Northern Europe,,NORW,SCANDZ,.no,Yes
+Oman,Oman,OM,OMN,OMR,Rial Omani,Muscat,P4,,"ar-OM,en,bal,ur",,World,Asia,AS,Western Asia,,OMAN,GULFSTZ,.om,Yes
+Pakistan,Pakistan,PK,PAK,PKR,Pakistan Rupee,Islamabad,R0,,"ur-PK,en-PK,pa,sd,ps,brh",,World,Asia,AS,Southern Asia,,PAKIS,INDSUBZ,.pk,Yes
+Palau,Palau,PW,PLW,USD,US Dollar,Melekeok,1Y,,"pau,sov,en-PW,tox,ja,fil,zh",,World,Oceania,OC,Micronesia,,PALAU,PACISZ,.pw,Yes
+Panama,Panama,PA,PAN,"PAB,USD","Balboa,US Dollar",Panama City,R1,,"es-PA,en",,World,Americas,NA,Latin America and the Caribbean,Central America,PANA,CAMZ,.pa,Yes
+Papua New Guinea,Papua New Guinea,PG,PNG,PGK,Kina,Port Moresby,R2,,"en-PG,ho,meu,tpi",,World,Oceania,OC,Melanesia,,PAPNG,PACISZ,.pg,Yes
+Paraguay,Paraguay,PY,PRY,PYG,Guarani,Asuncion,R4,x,"es-PY,gn",,World,Americas,SA,Latin America and the Caribbean,South America,PARA,SAMZ,.py,Yes
+Peru,Peru,PE,PER,PEN,Sol,Lima,R5,,"es-PE,qu,ay",,World,Americas,SA,Latin America and the Caribbean,South America,PERU,SAMZ,.pe,Yes
+Philippines,Philippines,PH,PHL,PHP,Philippine Piso,Manila,R6,,"tl,en-PH,fil",,World,Asia,AS,South-eastern Asia,,PHLNS,SEASIAZ,.ph,Yes
+Pitcairn Islands,Pitcairn,PN,PCN,NZD,New Zealand Dollar,Adamstown,R8,,en-PN,,World,Oceania,OC,Polynesia,,PITCIS,PACISZ,.pn,Territory of GB
+Poland,Poland,PL,POL,PLN,Zloty,Warsaw,R9,,pl,,World,Europe,EU,Eastern Europe,,POL,EEURZ,.pl,Yes
+Portugal,Portugal,PT,PRT,EUR,Euro,Lisbon,S1,,"pt-PT,mwl",,World,Europe,EU,Southern Europe,,PORL,WEURZ,.pt,Yes
+Puerto Rico,Puerto Rico,PR,PRI,USD,US Dollar,San Juan,PR,,"en-PR,es-PR",,World,Americas,NA,Latin America and the Caribbean,Caribbean,PURI,CARIBZ,.pr,Commonwealth of US
+Qatar,Qatar,QA,QAT,QAR,Qatari Rial,Doha,S3,,"ar-QA,es",,World,Asia,AS,Western Asia,,QATAR,GULFSTZ,.qa,Yes
+South Korea,Republic of Korea,KR,KOR,KRW,Won,Seoul,,,"ko-KR,en",,World,Asia,AS,Eastern Asia,,SKOREA,EASIAZ,.kr,Yes
+Moldova,Republic of Moldova,MD,MDA,MDL,Moldovan Leu,Chisinau,,x,"ro,ru,gag,tr",,World,Europe,EU,Eastern Europe,,MOLDV,EEURZ,.md,Yes
+Romania,Romania,RO,ROU,RON,Romanian Leu,Bucharest,S5,,"ro,hu,rom",,World,Europe,EU,Eastern Europe,,ROM,BALKZ,.ro,Yes
+Russia,Russian Federation,RU,RUS,RUB,Russian Ruble,Moscow,1Z,,"ru,tt,xal,cau,ady,kv,ce,tyv,cv,udm,tut,mns,bua,myv,mdf,chm,ba,inh,tut,kbd,krc,av,sah,nog",,World,Europe,EU,Eastern Europe,,RUSS,EEURZ,.ru,Yes
+Rwanda,Rwanda,RW,RWA,RWF,Rwanda Franc,Kigali,S6,x,"rw,en-RW,fr-RW,sw",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,RWANDA,EAFRZ,.rw,Yes
+Réunion,Réunion,RE,REU,EUR,Euro,Saint-Denis,,,fr-RE,,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,REUNI,EAFRZ,.re,Part of FR
+St. Barthélemy,Saint Barthélemy,BL,BLM,EUR,Euro,Gustavia,,,fr,,World,Americas,NA,Latin America and the Caribbean,Caribbean,SBRTHY,CARIBZ,.gp,Part of FR
+St. Helena,Saint Helena,SH,SHN,SHP,Saint Helena Pound,Jamestown,,,en-SH,,World,Africa,AF,Sub-Saharan Africa,Western Africa,STHEL,SOUAFRZ,.sh,Territory of GB
+St. Kitts & Nevis,Saint Kitts and Nevis,KN,KNA,XCD,East Caribbean Dollar,Basseterre,U7,,en-KN,,World,Americas,NA,Latin America and the Caribbean,Caribbean,SKIT,CARIBZ,.kn,Yes
+St. Lucia,Saint Lucia,LC,LCA,XCD,East Caribbean Dollar,Castries,U9,,en-LC,,World,Americas,NA,Latin America and the Caribbean,Caribbean,SLUC,CARIBZ,.lc,Yes
+St. Martin,Saint Martin (French Part),MF,MAF,EUR,Euro,Marigot,,,fr,,World,Americas,NA,Latin America and the Caribbean,Caribbean,STMART,CARIBZ,.gp,Part of FR
+St. Pierre & Miquelon,Saint Pierre and Miquelon,PM,SPM,EUR,Euro,Saint-Pierre,V0,,fr-PM,,World,Americas,NA,Northern America,,STPM,NAMZ,.pm,Part of FR
+St. Vincent & Grenadines,Saint Vincent and the Grenadines,VC,VCT,XCD,East Caribbean Dollar,Kingstown,V1,,"en-VC,fr",,World,Americas,NA,Latin America and the Caribbean,Caribbean,SVIN,CARIBZ,.vc,Yes
+Samoa,Samoa,WS,WSM,WST,Tala,Apia,Y0,,"sm,en-WS",,World,Oceania,OC,Polynesia,,WSOMOA,PACISZ,.ws,Yes
+San Marino,San Marino,SM,SMR,EUR,Euro,San Marino,S8,,it-SM,,World,Europe,EU,Southern Europe,,SMARNO,WEURZ,.sm,Yes
+São Tomé & Príncipe,Sao Tome and Principe,ST,STP,STD,Dobra,Sao Tome,S9,,pt-ST,x,World,Africa,AF,Sub-Saharan Africa,Middle Africa,PST,CEAFRZ,.st,Yes
+,Sark,,,,,,,,,,World,Europe,,Northern Europe,Channel Islands,,,,
+Saudi Arabia,Saudi Arabia,SA,SAU,SAR,Saudi Riyal,Riyadh,T0,,ar-SA,,World,Asia,AS,Western Asia,,SAARAB,GULFSTZ,.sa,Yes
+Senegal,Senegal,SN,SEN,XOF,CFA Franc BCEAO,Dakar,T1,,"fr-SN,wo,fuc,mnk",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,SENEG,WAFRZ,.sn,Yes
+Serbia,Serbia,RS,SRB,RSD,Serbian Dinar,Belgrade,Z2,,"sr,hu,bs,rom",,World,Europe,EU,Southern Europe,,YUG,BALKZ,.rs,Yes
+Seychelles,Seychelles,SC,SYC,SCR,Seychelles Rupee,Victoria,T2,,"en-SC,fr-SC",,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,SEYCH,EAFRZ,.sc,Yes
+Sierra Leone,Sierra Leone,SL,SLE,SLL,Leone,Freetown,T8,,"en-SL,men,tem",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,SILEN,WAFRZ,.sl,Yes
+Singapore,Singapore,SG,SGP,SGD,Singapore Dollar,Singapore,U0,,"cmn,en-SG,ms-SG,ta-SG,zh-SG",,World,Asia,AS,South-eastern Asia,,SINGP,SEASIAZ,.sg,Yes
+St. Maarten,Sint Maarten (Dutch part),SX,SXM,ANG,Netherlands Antillean Guilder,Philipsburg,,,"nl,en",,World,Americas,NA,Latin America and the Caribbean,Caribbean,SINTMA,CARIBZ,.sx,Part of NL
+Slovakia,Slovakia,SK,SVK,EUR,Euro,Bratislava,2B,,"sk,hu",,World,Europe,EU,Eastern Europe,,SLVAK,EEURZ,.sk,Yes
+Slovenia,Slovenia,SI,SVN,EUR,Euro,Ljubljana,2A,,"sl,sh",,World,Europe,EU,Southern Europe,,SLVNIA,BALKZ,.si,Yes
+Solomon Islands,Solomon Islands,SB,SLB,SBD,Solomon Islands Dollar,Honiara,D7,,"en-SB,tpi",x,World,Oceania,OC,Melanesia,,SOLIL,PACISZ,.sb,Yes
+Somalia,Somalia,SO,SOM,SOS,Somali Shilling,Mogadishu,U1,,"so-SO,ar-SO,it,en-SO",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,SOMAL,EAFRZ,.so,Yes
+South Africa,South Africa,ZA,ZAF,ZAR,Rand,Pretoria,T3,,"zu,xh,af,nso,en-ZA,tn,st,ts,ss,ve,nr",,World,Africa,AF,Sub-Saharan Africa,Southern Africa,SAFR,SOUAFRZ,.za,Yes
+South Georgia & South Sandwich Islands,South Georgia and the South Sandwich Islands,GS,SGS,,No universal currency,Grytviken,1L,,en,,World,Americas,AN,Latin America and the Caribbean,South America,SGSSI,SAMZ,.gs,Territory of GB
+South Sudan,South Sudan,SS,SSD,SSP,South Sudanese Pound,Juba,,x,en,x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,SOUSUD,EAFRZ,,Yes
+Spain,Spain,ES,ESP,EUR,Euro,Madrid,U3,,"es-ES,ca,gl,eu,oc",,World,Europe,EU,Southern Europe,,SPAIN,WEURZ,.es,Yes
+Sri Lanka,Sri Lanka,LK,LKA,LKR,Sri Lanka Rupee,Colombo,F1,,"si,ta,en",,World,Asia,AS,Southern Asia,,SRILAN,INDSUBZ,.lk,Yes
+Palestine,State of Palestine,PS,PSE,,No universal currency,East Jerusalem,,,ar-PS,,World,Asia,AS,Western Asia,,PALEST,WASIAZ,.ps,In contention
+Sudan,Sudan,SD,SDN,SDG,Sudanese Pound,Khartoum,V2,,"ar-SD,en,fia",x,World,Africa,AF,Northern Africa,,SUDAN,EAFRZ,.sd,Yes
+Suriname,Suriname,SR,SUR,SRD,Surinam Dollar,Paramaribo,V3,,"nl-SR,en,srn,hns,jv",,World,Americas,SA,Latin America and the Caribbean,South America,SURM,SAMZ,.sr,Yes
+Svalbard & Jan Mayen,Svalbard and Jan Mayen Islands,SJ,SJM,NOK,Norwegian Krone,Longyearbyen,L9,,"no,ru",,World,Europe,EU,Northern Europe,,SVALB,NORDZ,.sj,Territory of NO
+Eswatini,Swaziland,SZ,SWZ,SZL,Lilangeni,Mbabane,V6,x,"en-SZ,ss-SZ",,World,Africa,AF,Sub-Saharan Africa,Southern Africa,SWAZD,SOUAFRZ,.sz,Yes
+Sweden,Sweden,SE,SWE,SEK,Swedish Krona,Stockholm,V7,,"sv-SE,se,sma,fi-SE",,World,Europe,EU,Northern Europe,,SWED,SCANDZ,.se,Yes
+Switzerland,Switzerland,CH,CHE,CHF,Swiss Franc,Bern,V8,,"de-CH,fr-CH,it-CH,rm",,World,Europe,EU,Western Europe,,SWITZ,DACH,.ch,Yes
+Syria,Syrian Arab Republic,SY,SYR,SYP,Syrian Pound,Damascus,V9,,"ar-SY,ku,hy,arc,fr,en",,World,Asia,AS,Western Asia,,SYRIA,WASIAZ,.sy,Yes
+Tajikistan,Tajikistan,TJ,TJK,TJS,Somoni,Dushanbe,2D,x,"tg,ru",,World,Asia,AS,Central Asia,,TADZK,CASIAZ,.tj,Yes
+Thailand,Thailand,TH,THA,THB,Baht,Bangkok,W1,,"th,en",,World,Asia,AS,South-eastern Asia,,THAIL,SEASIAZ,.th,Yes
+North Macedonia,The former Yugoslav Republic of Macedonia,MK,MKD,MKD,Denar,Skopje,,x,"mk,sq,tr,rmm,sr",,World,Europe,EU,Southern Europe,,MCDNIA,BALKZ,.mk,Yes
+Timor-Leste,Timor-Leste,TL,TLS,USD,US Dollar,Dili,Z3,,"tet,pt-TL,id,en",x,World,Asia,OC,South-eastern Asia,,TIMOR,SEASIAZ,.tl,Yes
+Togo,Togo,TG,TGO,XOF,CFA Franc BCEAO,Lome,W2,,"fr-TG,ee,hna,kbp,dag,ha",x,World,Africa,AF,Sub-Saharan Africa,Western Africa,TOGO,WAFRZ,.tg,Yes
+Tokelau,Tokelau,TK,TKL,NZD,New Zealand Dollar,,W3,,"tkl,en-TK",,World,Oceania,OC,Polynesia,,TOKLAU,PACISZ,.tk,Territory of NZ
+Tonga,Tonga,TO,TON,TOP,Pa’anga,Nuku'alofa,W4,,"to,en-TO",,World,Oceania,OC,Polynesia,,TONGA,PACISZ,.to,Yes
+Trinidad & Tobago,Trinidad and Tobago,TT,TTO,TTD,Trinidad and Tobago Dollar,Port of Spain,W5,,"en-TT,hns,fr,es,zh",,World,Americas,NA,Latin America and the Caribbean,Caribbean,TRTO,CARIBZ,.tt,Yes
+Tunisia,Tunisia,TN,TUN,TND,Tunisian Dinar,Tunis,W6,,"ar-TN,fr",,World,Africa,AF,Northern Africa,,TUNIS,NAFRZ,.tn,Yes
+Turkey,Turkey,TR,TUR,TRY,Turkish Lira,Ankara,W8,,"tr-TR,ku,diq,az,av",,World,Asia,AS,Western Asia,,TURK,BALKZ,.tr,Yes
+Turkmenistan,Turkmenistan,TM,TKM,TMT,Turkmenistan New Manat,Ashgabat,2E,x,"tk,ru,uz",,World,Asia,AS,Central Asia,,TURKM,CASIAZ,.tm,Yes
+Turks & Caicos Islands,Turks and Caicos Islands,TC,TCA,USD,US Dollar,Cockburn Town,W7,,en-TC,,World,Americas,NA,Latin America and the Caribbean,Caribbean,TCAI,CARIBZ,.tc,Territory of GB
+Tuvalu,Tuvalu,TV,TUV,AUD,Australian Dollar,Funafuti,2G,,"tvl,en,sm,gil",x,World,Oceania,OC,Polynesia,,TVLU,PACISZ,.tv,Yes
+Uganda,Uganda,UG,UGA,UGX,Uganda Shilling,Kampala,W9,x,"en-UG,lg,sw,ar",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,UGANDA,EAFRZ,.ug,Yes
+Ukraine,Ukraine,UA,UKR,UAH,Hryvnia,Kiev,2H,,"uk,ru-UA,rom,pl,hu",,World,Europe,EU,Eastern Europe,,UKRN,EEURZ,.ua,Yes
+United Arab Emirates,United Arab Emirates,AE,ARE,AED,UAE Dirham,Abu Dhabi,C0,,"ar-AE,fa,en,hi,ur",,World,Asia,AS,Western Asia,,UAE,GULFSTZ,.ae,Yes
+United Kingdom,United Kingdom of Great Britain and Northern Ireland,GB,GBR,GBP,Pound Sterling,London,,,"en-GB,cy-GB,gd",,World,Europe,EU,Northern Europe,,UK,WEURZ,.uk,Yes
+Tanzania,United Republic of Tanzania,TZ,TZA,TZS,Tanzanian Shilling,Dodoma,W0,,"sw-TZ,en,ar",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,TANZA,EAFRZ,.tz,Yes
+U.S. Outlying Islands,United States Minor Outlying Islands,UM,UMI,USD,US Dollar,,2J,,en-UM,,World,Oceania,OC,Micronesia,,,,.um,Territories of US
+U.S. Virgin Islands,United States Virgin Islands,VI,VIR,USD,US Dollar,Charlotte Amalie,,,en-VI,,World,Americas,NA,Latin America and the Caribbean,Caribbean,VI,CARIBZ,.vi,Territory of US
+United States,United States of America,US,USA,USD,US Dollar,Washington,,,"en-US,es-US,haw,fr",,World,Americas,NA,Northern America,,USA,NAMZ,.us,Yes
+Uruguay,Uruguay,UY,URY,UYU,Peso Uruguayo,Montevideo,X3,,es-UY,,World,Americas,SA,Latin America and the Caribbean,South America,URU,SAMZ,.uy,Yes
+Uzbekistan,Uzbekistan,UZ,UZB,UZS,Uzbekistan Sum,Tashkent,2K,x,"uz,ru,tg",,World,Asia,AS,Central Asia,,UZBK,CASIAZ,.uz,Yes
+Vanuatu,Vanuatu,VU,VUT,VUV,Vatu,Port Vila,2L,,"bi,en-VU,fr-VU",x,World,Oceania,OC,Melanesia,,VANU,PACISZ,.vu,Yes
+Venezuela,Venezuela (Bolivarian Republic of),VE,VEN,VEF,Bolívar,Caracas,,,es-VE,,World,Americas,SA,Latin America and the Caribbean,South America,VEN,SAMZ,.ve,Yes
+Vietnam,Viet Nam,VN,VNM,VND,Dong,Hanoi,Q1,,"vi,en,fr,zh,km",,World,Asia,AS,South-eastern Asia,,VIETN,INDOCHZ,.vn,Yes
+Wallis and Futuna Islands,Wallis and Futuna Islands,WF,WLF,XPF,CFP Franc,Mata Utu,X8,,"wls,fud,fr-WF",,World,Oceania,OC,Polynesia,,WALLIS,PACISZ,.wf,Territory of FR
+Western Sahara,Western Sahara,EH,ESH,MAD,Moroccan Dirham,El-Aaiun,U5,,"ar,mey",,World,Africa,AF,Northern Africa,,SPSAH,WAFRZ,.eh,In contention
+Yemen,Yemen,YE,YEM,YER,Yemeni Rial,Sanaa,T7,,ar-YE,x,World,Asia,AS,Western Asia,,YEMAR,WASIAZ,.ye,Yes
+Zambia,Zambia,ZM,ZMB,ZMW,Zambian Kwacha,Lusaka,Y4,x,"en-ZM,bem,loz,lun,lue,ny,toi",x,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,ZAMBIA,SOUAFRZ,.zm,Yes
+Zimbabwe,Zimbabwe,ZW,ZWE,ZWL,Zimbabwe Dollar,Harare,Y5,x,"en-ZW,sn,nr,nd",,World,Africa,AF,Sub-Saharan Africa,Eastern Africa,ZIMBAB,SOUAFRZ,.zw,Yes
+Åland Islands,Åland Islands,AX,ALA,EUR,Euro,Mariehamn,,,sv-AX,,World,Europe,EU,Northern Europe,,,,.ax,Part of FI

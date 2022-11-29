@@ -3,8 +3,8 @@ import json
 import time
 from threading import Thread
 
-from factiva.core import const, factiva_logger, get_factiva_logger, req
-from factiva.core.tools import load_environment_value
+from .. import const, factiva_logger, get_factiva_logger, req
+from ..tools import load_environment_value
 from google.api_core.exceptions import GoogleAPICallError, NotFound
 
 

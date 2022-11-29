@@ -3,7 +3,7 @@ from setuptools import setup
 with open("README.rst", "r") as fh:
     long_desc = fh.read()
 
-with open('src/factiva/news/__version__.py') as f:
+with open('src/factiva/analytics/__version__.py') as f:
     for line in f:
         if line.find("__version__") >= 0:
             version = line.split("=")[1].strip()
@@ -12,9 +12,9 @@ with open('src/factiva/news/__version__.py') as f:
             continue
 
 setup(
-    name='factiva-news',
+    name='factiva-analytics',
     version=version,
-    description='Python package to interact with Factiva news-related APIs. Services are described in the Dow Jones Developer Platform.',
+    description='Python package to interact with Factiva Analytics APIs. Services are described in the Dow Jones Developer Platform.',
     long_description=long_desc,
     long_description_content_type='text/x-rst',
     license='MIT',
@@ -23,12 +23,14 @@ setup(
 
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
-    packages=['factiva.news', 'factiva.news.snapshot', 'factiva.news.stream', 'factiva.news.taxonomy', 'factiva.news.tools'],
+    packages=['factiva.analytics', 'factiva.analytics.snapshot', 'factiva.analytics.stream',
+              'factiva.analytics.dicts', 'factiva.analytics.const', 'factiva.analytics.taxonomy',
+              'factiva.analytics.auth', 'factiva.analytics.req', 'factiva.analytics.tools'],
     url='https://developer.dowjones.com/',
     project_urls={
-            "GitHub": "https://github.com/dowjones/factiva-news-python",
-            "Documentation": "https://factiva-news-python.readthedocs.io/",
-            "Bug Tracker": "https://github.com/dowjones/factiva-news-python/issues",
+            "GitHub": "https://github.com/dowjones/factiva-analytics-python",
+            "Documentation": "https://factiva-analytics-python.readthedocs.io/",
+            "Bug Tracker": "https://github.com/dowjones/factiva-analytics-python/issues",
         },
 
     classifiers=[  # Optional
@@ -50,14 +52,17 @@ setup(
 
         'License :: OSI Approved :: MIT License',
 
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
     keywords='news, news aggregator, risk, compliance, nlp, alternative data, factiva, trading news, market movers',
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[
-        'factiva-core>=0.2.3', 'fastavro', 'google-cloud-core',
-        'google-cloud-pubsub', 'google-cloud-bigquery', 'pymongo'
-    ])
+        'requests', 'pandas', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub'
+    ],
+    extras_require={
+        "MongoDB": ["pymongo"],
+        "Elasticsearch": ["elasticsearch"],
+        "BigQuery": ["google-cloud-bigquery"]
+    })

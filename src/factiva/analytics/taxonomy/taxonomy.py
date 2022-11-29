@@ -2,9 +2,9 @@
 from io import StringIO
 
 import pandas as pd
-from factiva.core import (UserKey, const, factiva_logger, get_factiva_logger,
+from .. import (UserKey, const, factiva_logger, get_factiva_logger,
                           req)
-from factiva.core.tools import validate_type
+from ..tools import validate_type
 
 
 class Taxonomy():

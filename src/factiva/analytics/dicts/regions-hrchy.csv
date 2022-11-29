@@ -1,0 +1,300 @@
+﻿name,reg_fcode,parent,level
+World*,WORLD,,0
+Africa,AFRICAZ,WORLD,1
+Americas*,AMRCSZ,WORLD,1
+Asia Pacific,APACZ,WORLD,1
+Asia,ASIAZ,WORLD,1
+Europe,EURZ,WORLD,1
+Australia/Oceania*,AUSNUZ,APACZ,2
+Central America*,CAMUZ,AMRCSZ,2
+Caribbean Islands*,CARIBUZ,AMRCSZ,2
+Central Asia*,CASIAUZ,ASIAZ,2
+Central Africa*,CEAFRUZ,AFRICAZ,2
+East Africa*,EAFRUZ,AFRICAZ,2
+Eastern Asia*,EASIAUZ,ASIAZ,2
+Central/Eastern Europe*,EEURUZ,EURZ,2
+Europe*,EURUZ,EURZ,2
+North Africa*,NAFRUZ,AFRICAZ,2
+North America*,NAMUZ,AMRCSZ,2
+Nordic Countries*,NORDUZ,EURZ,2
+South America*,SAMUZ,AMRCSZ,2
+Southern Asia*,SASIAUZ,ASIAZ,2
+Southeast Asia*,SEASIAUZ,ASIAZ,2
+Southern Africa*,SOUAFRUZ,AFRICAZ,2
+West Africa*,WAFRUZ,AFRICAZ,2
+Western Asia*,WASIAUZ,ASIAZ,2
+Western Europe*,WEURUZ,EURZ,2
+Australia/Oceania,AUSNZ,AUSNUZ,3
+Balkan States,BALKZ,EURUZ,3
+Baltic States,BALTST,EEURUZ,3
+Benelux Countries,BENLUXZ,WEURUZ,3
+Central America,CAMZ,CAMUZ,3
+Caribbean Islands,CARIBZ,CARIBUZ,3
+Central Asia,CASIAZ,CASIAUZ,3
+Central Africa,CEAFRZ,CEAFRUZ,3
+Greater China,CHINAZ,EASIAUZ,3
+DACH Countries,DACH,WEURUZ,3
+East Africa,EAFRZ,EAFRUZ,3
+Eastern Asia,EASIAZ,EASIAUZ,3
+Central/Eastern Europe,EEURZ,EEURUZ,3
+Persian Gulf Region,GULFSTZ,WASIAUZ,3
+Indo-China,INDOCHZ,SEASIAUZ,3
+Indian Subcontinent,INDSUBZ,SASIAUZ,3
+North Africa,NAFRZ,NAFRUZ,3
+North America,NAMZ,NAMUZ,3
+Nordic Countries,NORDZ,NORDUZ,3
+Pacific Islands,PACISZ,AUSNUZ,3
+South America,SAMZ,SAMUZ,3
+Southern Asia,SASIAZ,SASIAUZ,3
+Scandinavia,SCANDZ,NORDUZ,3
+Southeast Asia,SEASIAZ,SEASIAUZ,3
+Southern Africa,SOUAFRZ,SOUAFRUZ,3
+West Africa,WAFRZ,WAFRUZ,3
+Western Asia,WASIAZ,WASIAUZ,3
+Western Europe,WEURZ,WEURUZ,3
+Australia,AUSTR,AUSNZ,4
+New Zealand,NZ,AUSNZ,4
+Albania,ALB,BALKZ,4
+Bosnia and Herzegovina,BSHZG,BALKZ,4
+Bulgaria,BUL,BALKZ,4
+Croatia,CRTIA,BALKZ,4
+Greece,GREECE,BALKZ,4
+North Macedonia,MCDNIA,BALKZ,4
+Romania,ROM,BALKZ,4
+Slovenia,SLVNIA,BALKZ,4
+Turkey,TURK,BALKZ,4
+Latvia,LATV,BALTST,4
+Lithuania,LITH,BALTST,4
+Belgium,BELG,BENLUXZ,4
+Luxembourg,LUX,BENLUXZ,4
+Netherlands,NETH,BENLUXZ,4
+Belize,BELZ,CAMZ,4
+Costa Rica,COSR,CAMZ,4
+El Salvador,ELSAL,CAMZ,4
+Guatemala,GUAT,CAMZ,4
+Honduras,HON,CAMZ,4
+Nicaragua,NICG,CAMZ,4
+Panama,PANA,CAMZ,4
+Barbados,BARB,CARIBZ,4
+Cuba,CUBA,CARIBZ,4
+Dominica,DOMA,CARIBZ,4
+Dominican Republic,DOMR,CARIBZ,4
+Grenada,GREN,CARIBZ,4
+Haiti,HAIT,CARIBZ,4
+Jamaica,JAMA,CARIBZ,4
+Afghanistan,AFGH,CASIAZ,4
+Bhutan,BHUTAN,CASIAZ,4
+Kazakhstan,KAZK,CASIAZ,4
+Mongolia,MONGLA,CASIAZ,4
+Nepal,NEPAL,CASIAZ,4
+Tajikistan,TADZK,CASIAZ,4
+Turkmenistan,TURKM,CASIAZ,4
+Uzbekistan,UZBK,CASIAZ,4
+Cameroon,CAMER,CEAFRZ,4
+Central African Republic,CAFR,CEAFRZ,4
+Congo Republic,CONGO,CEAFRZ,4
+Democratic Republic of the Congo,ZAIRE,CEAFRZ,4
+Equatorial Guinea,EQGNA,CEAFRZ,4
+Gabon,GABON,CEAFRZ,4
+São Tomé & Príncipe,PST,CEAFRZ,4
+Austria,AUST,DACH,4
+Germany,GFR,DACH,4
+Switzerland,SWITZ,DACH,4
+Burundi,BURUN,EAFRZ,4
+Djibouti,TAI,EAFRZ,4
+Eritrea,ERTRA,EAFRZ,4
+Ethiopia,ETHPA,EAFRZ,4
+Kenya,KENYA,EAFRZ,4
+Mozambique,MOZAM,EAFRZ,4
+Rwanda,RWANDA,EAFRZ,4
+Somalia,SOMAL,EAFRZ,4
+South Sudan,SOUSUD,EAFRZ,4
+Sudan,SUDAN,EAFRZ,4
+Tanzania,TANZA,EAFRZ,4
+Uganda,UGANDA,EAFRZ,4
+Japan,JAP,EASIAZ,4
+North Korea,NKOREA,EASIAZ,4
+South Korea,SKOREA,EASIAZ,4
+Belarus,BYELRS,EEURZ,4
+Hungary,HUNG,EEURZ,4
+Ukraine,UKRN,EEURZ,4
+China,CHINA,CHINAZ,4
+Hong Kong,HKONG,CHINAZ,4
+Macau,MACAO,CHINAZ,4
+Taiwan,TAIWAN,CHINAZ,4
+Bahrain,BAHRN,GULFSTZ,4
+Iran,IRAN,GULFSTZ,4
+Iraq,IRAQ,GULFSTZ,4
+Kuwait,KUWAIT,GULFSTZ,4
+Oman,OMAN,GULFSTZ,4
+Qatar,QATAR,GULFSTZ,4
+Saudi Arabia,SAARAB,GULFSTZ,4
+United Arab Emirates,UAE,GULFSTZ,4
+Cambodia,KAMPA,INDOCHZ,4
+Laos,LAOS,INDOCHZ,4
+Vietnam,VIETN,INDOCHZ,4
+Bangladesh,BANDH,INDSUBZ,4
+India,INDIA,INDSUBZ,4
+Pakistan,PAKIS,INDSUBZ,4
+Sri Lanka,SRILAN,INDSUBZ,4
+Algeria,ALG,NAFRZ,4
+Egypt,EGYPT,NAFRZ,4
+Libya,LIBYA,NAFRZ,4
+Morocco,MOROC,NAFRZ,4
+Tunisia,TUNIS,NAFRZ,4
+Canada,CANA,NAMZ,4
+Mexico,MEX,NAMZ,4
+United States,USA,NAMZ,4
+Finland,FIN,NORDZ,4
+Iceland,ICEL,NORDZ,4
+Fiji,FIJI,PACISZ,4
+Kiribati,KIRB,PACISZ,4
+Micronesia,FESMIC,PACISZ,4
+Nauru,NAURU,PACISZ,4
+Palau,PALAU,PACISZ,4
+Papua New Guinea,PAPNG,PACISZ,4
+Samoa,WSOMOA,PACISZ,4
+Solomon Islands,SOLIL,PACISZ,4
+Tonga,TONGA,PACISZ,4
+Tuvalu,TVLU,PACISZ,4
+Vanuatu,VANU,PACISZ,4
+Argentina,ARG,SAMZ,4
+Bolivia,BOL,SAMZ,4
+Brazil,BRAZ,SAMZ,4
+Chile,CHIL,SAMZ,4
+Colombia,COL,SAMZ,4
+Ecuador,ECU,SAMZ,4
+Guyana,GUY,SAMZ,4
+Paraguay,PARA,SAMZ,4
+Peru,PERU,SAMZ,4
+Suriname,SURM,SAMZ,4
+Uruguay,URU,SAMZ,4
+Venezuela,VEN,SAMZ,4
+Maldives,MALDR,SASIAZ,4
+Denmark,DEN,SCANDZ,4
+Norway,NORW,SCANDZ,4
+Sweden,SWED,SCANDZ,4
+Brunei,BRUNEI,SEASIAZ,4
+Indonesia,INDON,SEASIAZ,4
+Malaysia,MALAY,SEASIAZ,4
+Myanmar,BURMA,SEASIAZ,4
+Philippines,PHLNS,SEASIAZ,4
+Singapore,SINGP,SEASIAZ,4
+Thailand,THAIL,SEASIAZ,4
+Timor-Leste,TIMOR,SEASIAZ,4
+Angola,ANGOL,SOUAFRZ,4
+Botswana,BOTS,SOUAFRZ,4
+Eswatini,SWAZD,SOUAFRZ,4
+Lesotho,LESOT,SOUAFRZ,4
+Malawi,MALAW,SOUAFRZ,4
+Namibia,NAMIB,SOUAFRZ,4
+South Africa,SAFR,SOUAFRZ,4
+Zambia,ZAMBIA,SOUAFRZ,4
+Zimbabwe,ZIMBAB,SOUAFRZ,4
+Benin,BENIN,WAFRZ,4
+Burkina Faso,UPVOLA,WAFRZ,4
+Côte d’Ivoire,ICST,WAFRZ,4
+Gambia,GAMB,WAFRZ,4
+Ghana,GHANA,WAFRZ,4
+Guinea,GUREP,WAFRZ,4
+Guinea-Bissau,GUBI,WAFRZ,4
+Liberia,LIBER,WAFRZ,4
+Mali,MALI,WAFRZ,4
+Niger,NIGER,WAFRZ,4
+Nigeria,NIGEA,WAFRZ,4
+Senegal,SENEG,WAFRZ,4
+Sierra Leone,SILEN,WAFRZ,4
+Togo,TOGO,WAFRZ,4
+Armenia,ARMEN,WASIAZ,4
+Azerbaijan,AZERB,WASIAZ,4
+Cyprus,CYPR,WASIAZ,4
+Georgia,GRGIA,WASIAZ,4
+Israel,ISRAEL,WASIAZ,4
+Jordan,JORDAN,WASIAZ,4
+Lebanon,LEBAN,WASIAZ,4
+Syria,SYRIA,WASIAZ,4
+Turkey,TURK,WASIAZ,4
+Yemen,YEMAR,WASIAZ,4
+Andorra,ANDO,WEURZ,4
+France,FRA,WEURZ,4
+Ireland,IRE,WEURZ,4
+Italy,ITALY,WEURZ,4
+Liechtenstein,LIECHT,WEURZ,4
+Malta,MALTA,WEURZ,4
+Portugal,PORL,WEURZ,4
+San Marino,SMARNO,WEURZ,4
+Spain,SPAIN,WEURZ,4
+American Samoa,AMSAM,PACISZ,4
+Anguilla,ANGUIL,CARIBZ,4
+Antigua & Barbuda,ANTA,CARIBZ,4
+Aruba,ARUBA,CARIBZ,4
+Bahamas,BAH,CARIBZ,4
+Bermuda,BERM,NAMZ,4
+Bosnia and Herzegovina,BSHZG,BALKZ,4
+Bouvet Island,BOUV,SOUAFRZ,4
+British Virgin Islands,BVI,CARIBZ,4
+British Indian Ocean Territory,BIOT,SASIAZ,4
+Cape Verde,CVI,WAFRZ,4
+Cayman Islands,CAYI,CARIBZ,4
+Chad,CHAD,CEAFRZ,4
+Christmas Island,CHR,SEASIAZ,4
+Cocos (Keeling) Islands,COCOS,SEASIAZ,4
+Comoros,COMOR,EAFRZ,4
+Cook Islands,COOKIS,PACISZ,4
+Curaçao,NANT,CARIBZ,4
+Czech Republic,CZREP,EEURZ,4
+Estonia,ESTNIA,BALTST,4
+Falkland Islands,FALK,SAMZ,4
+Faroe Islands,FAEROE,NORDZ,4
+French Guiana,FGNA,SAMZ,4
+French Polynesia,FPOLY,PACISZ,4
+Gibraltar,GIB,WEURZ,4
+Greenland,GREENL,NAMZ,4
+Guadeloupe,GUAD,CARIBZ,4
+Guam,GUAM,PACISZ,4
+Guernsey,GUERN,WEURZ,4
+Heard & McDonald Islands,HEARD,SOUAFRZ,4
+Vatican City,VCAN,WEURZ,4
+Isle of Man,ISLEOM,WEURZ,4
+Jersey,JERSEY,WEURZ,4
+Kyrgyzstan,KIRGH,CASIAZ,4
+Madagascar,MALAG,EAFRZ,4
+Marshall Islands,MAH,PACISZ,4
+Martinique,MARQ,CARIBZ,4
+Mauritania,MAURTN,WAFRZ,4
+Mauritius,MAURTS,EAFRZ,4
+Mayotte,MAYOT,EAFRZ,4
+Monaco,MONAC,WEURZ,4
+Montenegro,MNTNG,BALKZ,4
+Montserrat,MONT,CARIBZ,4
+New Caledonia,NEWCAL,PACISZ,4
+Niue,NIUE,PACISZ,4
+Norfolk Island,NORFIS,PACISZ,4
+Northern Mariana Islands,NOMARI,PACISZ,4
+Pitcairn Islands,PITCIS,PACISZ,4
+Poland,POL,EEURZ,4
+Puerto Rico,PURI,CARIBZ,4
+Moldova,MOLDV,EEURZ,4
+Russia,RUSS,EEURZ,4
+Réunion,REUNI,EAFRZ,4
+St. Barthélemy,SBRTHY,CARIBZ,4
+St. Helena,STHEL,SOUAFRZ,4
+St. Kitts & Nevis,SKIT,CARIBZ,4
+St. Lucia,SLUC,CARIBZ,4
+St. Martin,STMART,CARIBZ,4
+St. Pierre & Miquelon,STPM,NAMZ,4
+St. Vincent & Grenadines,SVIN,CARIBZ,4
+Serbia,YUG,BALKZ,4
+Seychelles,SEYCH,EAFRZ,4
+St. Maarten,SINTMA,CARIBZ,4
+Slovakia,SLVAK,EEURZ,4
+South Georgia & South Sandwich Islands,SGSSI,SAMZ,4
+Palestine,PALEST,WASIAZ,4
+Svalbard & Jan Mayen,SVALB,NORDZ,4
+Tokelau,TOKLAU,PACISZ,4
+Trinidad & Tobago,TRTO,CARIBZ,4
+Turks & Caicos Islands,TCAI,CARIBZ,4
+United Kingdom,UK,WEURZ,4
+U.S. Virgin Islands,VI,CARIBZ,4
+Wallis and Futuna Islands,WALLIS,PACISZ,4
+Western Sahara,SPSAH,WAFRZ,4

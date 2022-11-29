@@ -6,8 +6,8 @@ from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
-from factiva.core import UserKey, const, req
-from factiva.core.tools import mask_string
+from . import UserKey, const, req
+from .tools import mask_string
 
 
 def parse_field(field, field_name):

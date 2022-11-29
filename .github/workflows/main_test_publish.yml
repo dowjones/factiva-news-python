@@ -3,10 +3,11 @@ name: "Test and Publish"
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   FACTIVA_USERKEY: ${{secrets.FACTIVA_USERKEY}}
+  FACTIVA_CLIENT_EMAIL: ${{secrets.FACTIVA_CLIENT_EMAIL}}
   FACTIVA_SNAPSHOTID: ${{secrets.FACTIVA_SNAPSHOTID}}
   FACTIVA_SNAPSHOT_UPDATEID: ${{secrets.FACTIVA_SNAPSHOT_UPDATEID}}
   FACTIVA_STREAMID: ${{secrets.FACTIVA_STREAMID}}
@@ -65,9 +66,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          python -m pip install pytest pytest-cov factiva-core google-cloud-core google-cloud-pubsub fastavro
+          python -m pip install pytest pytest-cov
 
-      - name: Setup factiva-news <MASTER> (this repo)
+      - name: Setup factiva-news <MAIN> (this repo)
         run: |
           python -m pip install -e .
 

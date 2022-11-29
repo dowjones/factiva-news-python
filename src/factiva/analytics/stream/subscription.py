@@ -1,7 +1,7 @@
 """Implement Subscription class."""
-from factiva.core import (StreamUser, UserKey, const, factiva_logger,
+from .. import (UserKey, const, factiva_logger,
                           get_factiva_logger, req)
-from factiva.core.tools import load_environment_value
+from ..tools import load_environment_value
 
 from .listener import Listener
 
@@ -82,7 +82,7 @@ class Subscription:
         RuntimeError: when user is not a StreamUser
 
         """
-        if not isinstance(user, StreamUser) and not isinstance(user, UserKey):
+        if not isinstance(user, UserKey) and not isinstance(user, UserKey):  # TODO: Ensure to use UserKey
             raise RuntimeError('user is not a StreamUser instance')
 
         self.listener = Listener(

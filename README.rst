@@ -1,15 +1,15 @@
-Dow Jones Factiva News Python Library
-#####################################
-.. image:: https://github.com/dowjones/factiva-news-python/actions/workflows/master_test_publish.yml/badge.svg
+Dow Jones Factiva Analytics Python Library
+##########################################
+.. image:: https://github.com/dowjones/factiva-analytics-python/actions/workflows/master_test_publish.yml/badge.svg
 
-This library simplifies the integration to Factiva API services for news-related services.
+This library simplifies the integration to Factiva Analytics API services that delivers premium news content.
 
 The following services are currently implemented.
 
+* **auth**: Contains tools to handle UserKey authentication and account statistics.
 * **Snapshots**: Allows to run each snapshot creation, monitoring, download and local exploration, in an individual manner. Also allows to run the whole process within a single method.
 * **Streams**: In addition to creating and getting stream details, contains the methods to easily implement a stream listener and push the content to other locations appropriate for high-available setups.
-
-The previous components rely on the API-Key authentication method, which is a prerequisite when using either of those services.
+* **Taxonomy**: Operations that return taxonomies applied to classify news content.
 
 Installation
 ============
@@ -17,36 +17,44 @@ To install this library, run the following commands.
 
 .. code-block::
 
-    $ pip install --upgrade factiva-news
+    $ pip install --upgrade factiva-analytics
 
 Using Library services
 ======================
-Both services, Snapshots and Streams are implemented in this library.
+Most Factiva Analytics services are implemented in this library. There may be a delay (commonly weeks) when new features are released and their operations are implemented in this package.
 
-Enviroment vars
-===============
-To be able to use Stream Listener options, add the following environment vars depending on your selected listener tool
+Creating a User Instance and Getting its statistics
+---------------------------------------------------
+Create `UserKey` instance and retrieve a summary of the account statistics.
 
-To use BigQuery Stream Listener
+.. code-block:: python
+
+    from factiva.analytics import UserKey
+    u = UserKey(
+        key='abcd1234abcd1234abcd1234abcd1234',  # Not needed if the ENV variable FACTIVA_USERKEY is set
+        stats=True)  # Connects to the API and pulls the latest account status
+    print(u)
+
 .. code-block::
 
-    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/Files/credentials.json"
-    $ export STREAMLOG_BQ_TABLENAME=project.dataset.table
-
-To use MongoDB Stream Listener
-.. code-block::
-
-    $ export MONGODB_CONNECTION_STRING=mongodb://localhost:27017
-    $ export MONGODB_DATABASE_NAME=factiva-news
-    $ export MONGODB_COLLECTION_NAME=stream-listener  
-
-To define custom directories. If they are not set, the project root path will be used
-.. code-block::
-
-    $ export DOWNLOAD_FILES_DIR=/users/dowloads
-    $ export STREAM_FILES_DIR=/users/listeners
-    $ export LOG_FILES_DIR=/users/logs
-
+    <class 'factiva.core.userkey.UserKey'>
+    |-key = ****************************1234
+    |-cloud_token = **Not Fetched**
+    |-account_name = AccName1234
+    |-account_type = account_with_contract_limits
+    |-active_products = DNA
+    |-max_allowed_concurrent_extractions = 5
+    |-max_allowed_extracted_documents = 200,000
+    |-max_allowed_extractions = 3
+    |-currently_running_extractions = 0
+    |-total_downloaded_bytes = 7,253,890
+    |-total_extracted_documents = 2,515
+    |-total_extractions = 1
+    |-total_stream_instances = 4
+    |-total_stream_subscriptions = 1
+    |-enabled_company_identifiers = [{'id': 4, 'name': 'isin'}, {'id': 3, 'name': 'cusip'}, {'id': 1, 'name': 'sedol'}, {'id': 5, 'name': 'ticker_exchange'}]
+    |-remaining_documents = 197,485
+    |-remaining_extractions = 2
 
 Snapshots
 ---------
@@ -54,7 +62,7 @@ Create a new snapshot and download to a local repository just require a few line
 
 .. code-block:: python
 
-    from factiva.news.snapshot import Snapshot
+    from factiva.analytics import Snapshot
     my_query = "publication_datetime >= '2020-01-01 00:00:00' AND LOWER(language_code) = 'en'"
     my_snapshot = Snapshot(
         user_key='abcd1234abcd1234abcd1234abcd1234',  # Can be ommited if exist as env variable
@@ -71,7 +79,7 @@ Create a stream instance and get the details to configure the stream client and 
 
 .. code-block:: python
 
-    from factiva.news.stream import Stream
+    from factiva.analytics import Stream
 
     stream_query = Stream(
         user_key='abcd1234abcd1234abcd1234abcd1234',   # Can be ommited if exist as env variable

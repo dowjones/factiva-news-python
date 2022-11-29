@@ -1,6 +1,6 @@
 """Represent a Factiva Snapshot Class."""
-from factiva.core import const, factiva_logger, get_factiva_logger
-from factiva.news.bulknews import BulkNewsBase
+from .. import const, factiva_logger, get_factiva_logger
+from ..bulknews import BulkNewsBase
 
 from .jobs import AnalyticsJob, ExplainJob, ExtractionJob, UpdateJob
 from .query import SnapshotQuery

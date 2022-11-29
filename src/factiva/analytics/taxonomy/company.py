@@ -1,6 +1,6 @@
-from factiva.core import (UserKey, factiva_logger, get_factiva_logger, req,
+from .. import (UserKey, factiva_logger, get_factiva_logger, req,
                           tools)
-from factiva.core.const import (API_COMPANIES_IDENTIFIER_TYPE, API_HOST,
+from ..const import (API_COMPANIES_IDENTIFIER_TYPE, API_HOST,
                                 API_SNAPSHOTS_COMPANIES_BASEPATH,
                                 API_SNAPSHOTS_COMPANIES_PIT,
                                 API_SNAPSHOTS_TAXONOMY_BASEPATH,
