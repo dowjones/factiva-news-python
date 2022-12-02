@@ -83,7 +83,7 @@ class ExtractionJob(BulkNewsJob):
 
         if snapshot_id and user_key:
             self.job_id = snapshot_id
-            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{snapshot_id}'
+            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key.lower()}-{snapshot_id}'
 
     # pylint: disable=no-self-use
     def get_endpoint_url(self):
@@ -154,7 +154,7 @@ class UpdateJob(ExtractionJob):
             self.job_id = update_id
             self.update_type = update_id.split('-')[1]
             self.snapshot_id = update_id.split('-')[0]
-            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{update_id}'
+            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key.lower()}-{update_id}'
             self.get_job_results()
 
         elif update_type and snapshot_id:
@@ -165,7 +165,7 @@ class UpdateJob(ExtractionJob):
 
     def get_endpoint_url(self):
         """Get endpoint URL."""
-        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{self.snapshot_id}/{self.update_type}'
+        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.key.lower()}-{self.snapshot_id}/{self.update_type}'
 
     def get_job_id(self, source):
         """Get job ID from source."""
