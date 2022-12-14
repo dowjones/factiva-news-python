@@ -1,6 +1,6 @@
 """Represent a Factiva Snapshot Class."""
-from .. import const, factiva_logger, get_factiva_logger
-from ..bulknews import BulkNewsBase
+from .. import common, factiva_logger, get_factiva_logger
+from .bulknews import BulkNewsBase
 
 from .jobs import AnalyticsJob, ExplainJob, ExtractionJob, UpdateJob
 from .query import SnapshotQuery
@@ -150,7 +150,7 @@ class Snapshot(BulkNewsBase):
             otherwise.
 
         """
-        self.last_explain_job.extraction_type= const.API_SAMPLES_EXTRACTION_TYPE
+        self.last_explain_job.extraction_type= common.API_SAMPLES_EXTRACTION_TYPE
         return self.last_explain_job.get_job_samples(num_samples)
 
     @factiva_logger
@@ -480,11 +480,12 @@ class Snapshot(BulkNewsBase):
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
         """Create string representation for Snapshot Class."""
         pprop = self.__dict__.copy()
-        child_prefix = '  |    |-'
+        del pprop['log']
+        child_prefix = '  |  ' + prefix
         ret_val = str(self.__class__) + '\n'
 
         ret_val += f'{prefix}user_key: '
-        ret_val += self.user_key.__str__()
+        ret_val += self.user_key.__str__(detailed=False, prefix=child_prefix)
         del pprop['user_key']
         ret_val += '\n'
 

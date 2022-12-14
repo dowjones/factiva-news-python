@@ -1,6 +1,10 @@
 """
-    Factiva Core Auth Module
-"""
-__all__ = ['userkey', 'UserKey']
+Factiva Auth Module
+-------------------
 
-from .userkey import (UserKey)
+
+"""
+__all__ = ['UserKey', 'OAuthUser']
+
+from .userkey import UserKey
+from .oauthuser import OAuthUser

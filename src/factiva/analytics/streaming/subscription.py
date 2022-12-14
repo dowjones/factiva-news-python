@@ -1,7 +1,8 @@
 """Implement Subscription class."""
-from .. import (UserKey, const, factiva_logger,
-                          get_factiva_logger, req)
-from ..tools import load_environment_value
+from ..common import req
+from .. import (UserKey, common, factiva_logger,
+                          get_factiva_logger)
+from ..common.tools import load_environment_value
 
 from .listener import Listener
 
@@ -49,9 +50,9 @@ class Subscription:
             try:
                 stream_id = load_environment_value('FACTIVA_STREAM_SUBSCRIPTION_ID')
             except Exception:
-                raise const.UNDEFINED_STREAM_ID_ERROR
+                raise common.UNDEFINED_STREAM_ID_ERROR
 
-        self.url = f'{const.API_HOST}{const.API_STREAMS_BASEPATH}'
+        self.url = f'{common.API_HOST}{common.API_STREAMS_BASEPATH}'
         self.stream_id = stream_id
         # pylint: disable=invalid-name
         self.id = id

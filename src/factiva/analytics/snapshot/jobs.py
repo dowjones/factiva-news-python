@@ -2,15 +2,15 @@
 import pandas as pd
 
 
-from .. import const
-from ..bulknews import BulkNewsJob
+from .. import common
+from .bulknews import BulkNewsJob
 
 
 class ExplainJob(BulkNewsJob):
     """Represent the operation of creating an explain from Factiva Snapshots API."""
 
     document_volume = 0
-    extraction_type = const.API_DEFAULT_EXTRACTION_TYPE
+    extraction_type = common.API_DEFAULT_EXTRACTION_TYPE
 
     def __init__(self, user_key):
         """Initialize class."""
@@ -23,13 +23,13 @@ class ExplainJob(BulkNewsJob):
     def get_endpoint_url(self):
         """Get endpoint URL."""
         endpoint = ''
-        if (self.extraction_type == const.API_SAMPLES_EXTRACTION_TYPE):
-            endpoint = f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}{const.API_EXTRACTIONS_SAMPLES_SUFFIX}'
+        if (self.extraction_type == common.API_SAMPLES_EXTRACTION_TYPE):
+            endpoint = f'{common.API_HOST}{common.API_EXTRACTIONS_BASEPATH}{common.API_EXTRACTIONS_SAMPLES_SUFFIX}'
         else:
-            endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}{const.API_EXPLAIN_SUFFIX}'
+            endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_BASEPATH}{common.API_EXPLAIN_SUFFIX}'
 
         # Set default for safety
-        self.extraction_type = const.API_DEFAULT_EXTRACTION_TYPE
+        self.extraction_type = common.API_DEFAULT_EXTRACTION_TYPE
         return endpoint
 
     # pylint: disable=no-self-use
@@ -54,7 +54,7 @@ class AnalyticsJob(BulkNewsJob):
     # pylint: disable=no-self-use
     def get_endpoint_url(self):
         """Get endpoint URL."""
-        return f'{const.API_HOST}{const.API_ANALYTICS_BASEPATH}'
+        return f'{common.API_HOST}{common.API_ANALYTICS_BASEPATH}'
 
     # pylint: disable=no-self-use
     def get_job_id(self, source):
@@ -65,7 +65,7 @@ class AnalyticsJob(BulkNewsJob):
         """Sets job data."""
         self.data = pd.DataFrame(source['data']['attributes']['results'])
 
-        for field in const.API_GROUP_DIMENSIONS_FIELDS:
+        for field in common.API_GROUP_DIMENSIONS_FIELDS:
             if field not in self.data.columns:
                 self.data[field] = f'ALL_{field.upper().strip()}'
 
@@ -83,12 +83,12 @@ class ExtractionJob(BulkNewsJob):
 
         if snapshot_id and user_key:
             self.job_id = snapshot_id
-            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{snapshot_id}'
+            self.link = f'{common.API_HOST}{common.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key.lower()}-{snapshot_id}'
 
     # pylint: disable=no-self-use
     def get_endpoint_url(self):
         """Obtain endpoint URL."""
-        return f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}'
+        return f'{common.API_HOST}{common.API_SNAPSHOTS_BASEPATH}'
 
     # pylint: disable=no-self-use
     def get_job_id(self, source):
@@ -154,7 +154,7 @@ class UpdateJob(ExtractionJob):
             self.job_id = update_id
             self.update_type = update_id.split('-')[1]
             self.snapshot_id = update_id.split('-')[0]
-            self.link = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{update_id}'
+            self.link = f'{common.API_HOST}{common.API_SNAPSHOTS_BASEPATH}/dj-synhub-extraction-{self.user_key.key.lower()}-{update_id}'
             self.get_job_results()
 
         elif update_type and snapshot_id:
@@ -165,7 +165,7 @@ class UpdateJob(ExtractionJob):
 
     def get_endpoint_url(self):
         """Get endpoint URL."""
-        return f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.key}-{self.snapshot_id}/{self.update_type}'
+        return f'{common.API_HOST}{common.API_EXTRACTIONS_BASEPATH}/dj-synhub-extraction-{self.user_key.key.lower()}-{self.snapshot_id}/{self.update_type}'
 
     def get_job_id(self, source):
         """Get job ID from source."""

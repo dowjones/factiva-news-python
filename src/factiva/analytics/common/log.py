@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 from inspect import getframeinfo, stack
-from .const import LOGS_DEFAULT_FOLDER
+from .config import LOGS_DEFAULT_FOLDER
 import datetime
 
 class CustomFormatter(logging.Formatter):

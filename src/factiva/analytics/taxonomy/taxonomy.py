@@ -2,9 +2,10 @@
 from io import StringIO
 
 import pandas as pd
-from .. import (UserKey, const, factiva_logger, get_factiva_logger,
-                          req)
-from ..tools import validate_type
+
+from ..common import req
+from .. import (UserKey, common, factiva_logger, get_factiva_logger)
+from ..common.tools import validate_type
 
 
 class Taxonomy():
@@ -68,7 +69,7 @@ class Taxonomy():
             'user-key': self.user_key.key
         }
 
-        endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}'
+        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_TAXONOMY_BASEPATH}'
 
         response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
@@ -106,7 +107,7 @@ class Taxonomy():
             'user-key': self.user_key.key
         }
 
-        endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANY_IDENTIFIERS_BASEPATH}'
+        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_COMPANY_IDENTIFIERS_BASEPATH}'
 
         response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
@@ -161,7 +162,7 @@ class Taxonomy():
             'user-key': self.user_key.key
         }
 
-        endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
+        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
 
         response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict, stream=True)
         if response.status_code == 200:
@@ -211,7 +212,7 @@ class Taxonomy():
             'user-key': self.user_key.key
         }
 
-        endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}/{company_code}'
+        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}/{company_code}'
 
         response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
@@ -269,7 +270,7 @@ class Taxonomy():
             }
         }
 
-        endpoint = f'{const.API_HOST}{const.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}'
+        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_COMPANIES_BASEPATH}/{code_type}'
 
         response = req.api_send_request(method='POST', endpoint_url=endpoint, headers=headers_dict, payload=payload_dict)
 

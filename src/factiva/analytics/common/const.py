@@ -1,16 +1,9 @@
 """
-Factiva Analytics package constants
+Constants for the Factiva Analytics package
 """
-from __future__ import absolute_import, division, print_function
 
-import os
-
-from ..tools import load_environment_value
-from .errors import *
-
-"""Define library's constant literals."""
 API_HOST = 'https://api.dowjones.com'
-API_ACCOUNT_OAUTH2_HOST = 'https://accounts.dowjones.com/oauth2/v1/token'
+API_ACCOUNT_OAUTH2_URL = 'https://accounts.dowjones.com/oauth2/v1/token'
 API_LATEST_VERSION = "2.0"
 
 # UserKey
@@ -43,7 +36,7 @@ API_COMPANIES_IDENTIFIER_TYPE = [
     SEDOL_COMPANY_IDENTIFIER, TICKER_COMPANY_IDENTIFIER
 ]
 
-# ANALYTICS
+# Extraction
 API_AVRO_FORMAT = 'avro'
 API_CSV_FORMAT = 'csv'
 API_JSON_FORMAT = 'json'
@@ -51,6 +44,7 @@ API_EXTRACTION_FILE_FORMATS = [
     API_AVRO_FORMAT, API_JSON_FORMAT, API_CSV_FORMAT
 ]
 
+# Time Series Query
 API_DAY_PERIOD = 'DAY'
 API_MONTH_PERIOD = 'MONTH'
 API_YEAR_PERIOD = 'YEAR'
@@ -79,6 +73,9 @@ API_STREAMS_BASEPATH = '/alpha/streams'
 DOC_COUNT_EXCEEDED = "DOC_COUNT_EXCEEDED"
 CHECK_EXCEEDED_WAIT_SPACING = 300
 PUBSUB_MESSAGES_WAIT_SPACING = 10
+
+# Article Retrieval
+API_RETRIEVAL_ENDPOINT_BASEURL = '/content/refs'
 
 # API STATES
 API_JOB_CREATED_STATE = 'JOB_CREATED'
@@ -112,13 +109,6 @@ SNAPSHOT_FILE_DELETE_FIELDS = [
     'art', 'credit', 'document_type', 'publication_date', 'modfication_date'
 ]  # publication_date and modification_date are deprecated
 
-# Files options
-DOWNLOAD_DEFAULT_FOLDER = load_environment_value(
-    "DOWNLOAD_FILES_DIR", os.path.join(os.getcwd(), 'downloads'))
-LISTENER_FILES_DEFAULT_FOLDER = load_environment_value(
-    'STREAM_FILES_DIR', os.path.join(os.getcwd(), 'listener'))
-LOGS_DEFAULT_FOLDER = load_environment_value(
-    'LOG_FILES_DIR', os.path.join(os.getcwd(), 'logs'))
 
 #TIMESTAMP
 TIMESTAMP_FIELDS = [

@@ -1,7 +1,7 @@
 """Implement query class definition."""
-from .. import const
-from ..tools import validate_type, validate_field_options
-from factiva.analytics.bulknews import BulkNewsQuery
+from .. import common
+from ..common.tools import validate_type, validate_field_options
+from factiva.analytics.snapshot.bulknews import BulkNewsQuery
 
 
 def validate_group_options(by_source, by_dimensions):
@@ -27,9 +27,9 @@ class SnapshotQuery(BulkNewsQuery):
                  excludes=None,
                  select_fields=None,
                  limit=0,
-                 file_format=const.API_AVRO_FORMAT,
-                 frequency=const.API_MONTH_PERIOD,
-                 date_field=const.API_PUBLICATION_DATETIME_FIELD,
+                 file_format=common.API_AVRO_FORMAT,
+                 frequency=common.API_MONTH_PERIOD,
+                 date_field=common.API_PUBLICATION_DATETIME_FIELD,
                  group_by_source_code=None,
                  group_dimensions=None,
                  top=10):
@@ -47,17 +47,17 @@ class SnapshotQuery(BulkNewsQuery):
 
         validate_type(file_format, str, "Unexpected value for file_format")
         file_format = file_format.lower().strip()
-        validate_field_options(file_format, const.API_EXTRACTION_FILE_FORMATS)
+        validate_field_options(file_format, common.API_EXTRACTION_FILE_FORMATS)
         self.file_format = file_format
 
         validate_type(frequency, str, "Unexpected value for frequency")
         frequency = frequency.upper().strip()
-        validate_field_options(frequency, const.API_DATETIME_PERIODS)
+        validate_field_options(frequency, common.API_DATETIME_PERIODS)
         self.frequency = frequency
 
         validate_type(date_field, str, "Unexpected value for date_field")
         date_field = date_field.lower().strip()
-        validate_field_options(date_field, const.API_DATETIME_FIELDS)
+        validate_field_options(date_field, common.API_DATETIME_FIELDS)
         self.date_field = date_field
 
         validate_group_options(group_by_source_code, group_dimensions)
@@ -84,11 +84,11 @@ class SnapshotQuery(BulkNewsQuery):
         query_dict = self.get_base_query()
 
         self.frequency = self.frequency.upper().strip()
-        validate_field_options(self.frequency, const.API_DATETIME_PERIODS)
+        validate_field_options(self.frequency, common.API_DATETIME_PERIODS)
         query_dict["query"].update({"frequency": self.frequency})
 
         self.date_field = self.date_field.lower().strip()
-        validate_field_options(self.date_field, const.API_DATETIME_FIELDS)
+        validate_field_options(self.date_field, common.API_DATETIME_FIELDS)
         query_dict["query"].update({"date_field": self.date_field})
 
         validate_group_options(self.group_by_source_code, self.group_dimensions)
@@ -100,7 +100,7 @@ class SnapshotQuery(BulkNewsQuery):
             if(self.group_dimensions):
                 if(len(self.group_dimensions)<=4):
                     for option in self.group_dimensions:
-                        validate_field_options(option, const.API_GROUP_DIMENSIONS_FIELDS)
+                        validate_field_options(option, common.API_GROUP_DIMENSIONS_FIELDS)
                 else:
                     raise ValueError("The maximiun group_dimensions options is 4")
             else:
@@ -130,8 +130,8 @@ class SnapshotQuery(BulkNewsQuery):
     def __str__(self, detailed=False, prefix='  |-', root_prefix=''):
         """Create string representation for Query Class."""
         pprop = self.__dict__.copy()
+        ret_val = str(self.__class__) + '\n'
 
-        ret_val = f'{root_prefix}{str(self.__class__)}\n'
         if detailed:
             ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
         else:
@@ -139,5 +139,5 @@ class SnapshotQuery(BulkNewsQuery):
             ret_val += (self.where[:77] + '...') if len(self.where) > 80 else self.where
             ret_val += f'\n{prefix}...'
             del pprop['where']
-            ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
+            # ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
         return ret_val

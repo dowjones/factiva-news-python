@@ -6,31 +6,10 @@ from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
-from . import UserKey, const, req
-from .tools import mask_string
 
-
-def parse_field(field, field_name):
-    """Parse field according to field type.
-
-    Parameters
-    ----------
-    field: str, dict
-        field to be parsed. When a dictionary is given, it will return it
-        as is. When a string is provided it will return the eval version
-        of it, in order to return a dict
-    field_name: str
-        name of the field to be parsed. It is displayed in the error message
-        when the field type is not valid.
-
-    """
-    if isinstance(field, dict):
-        return field
-
-    if isinstance(field, str):
-        return eval(field)
-
-    raise ValueError(f'Unexpected value for {field_name}')
+from ..common import req
+from .. import UserKey, common
+from ..common.tools import mask_string, parse_field
 
 
 class BulkNewsBase():
@@ -295,7 +274,7 @@ class BulkNewsJob():
                 'Content-Type': 'application/json'
             }
         if use_latest_api_version:
-            version_header = {'X-API-VERSION': const.API_LATEST_VERSION}
+            version_header = {'X-API-VERSION': common.API_LATEST_VERSION}
             headers_dict.update(version_header)
 
         response = req.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
@@ -340,9 +319,9 @@ class BulkNewsJob():
         if response.status_code == 200:
             response_data = response.json()
             self.job_state = response_data['data']['attributes']['current_state']
-            if self.job_state == const.API_JOB_DONE_STATE:
+            if self.job_state == common.API_JOB_DONE_STATE:
                 self.set_job_data(response_data)
-            elif self.job_state == const.API_JOB_FAILED_STATE:
+            elif self.job_state == common.API_JOB_FAILED_STATE:
                 errors = response_data['errors']
                 raise RuntimeError(f"Job Failed with reason: {[e['title'] + e['detail'] for e in errors]}")
         elif response.status_code == 404:
@@ -378,13 +357,13 @@ class BulkNewsJob():
         self.submit_job(payload=payload, use_latest_api_version=use_latest_api_version)
         self.get_job_results()
 
-        while self.job_state != const.API_JOB_DONE_STATE:
-            if self.job_state not in const.API_JOB_EXPECTED_STATES:
+        while self.job_state != common.API_JOB_DONE_STATE:
+            if self.job_state not in common.API_JOB_EXPECTED_STATES:
                 raise RuntimeError('Unexpected job state')
-            if self.job_state == const.API_JOB_FAILED_STATE:
+            if self.job_state == common.API_JOB_FAILED_STATE:
                 raise Exception('Job failed')
 
-            time.sleep(const.API_JOB_ACTIVE_WAIT_SPACING)
+            time.sleep(common.API_JOB_ACTIVE_WAIT_SPACING)
             self.get_job_results()
 
         return True
@@ -493,10 +472,15 @@ class BulkNewsJob():
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
         """Create string representation for BulkNews Class."""
         pprop = self.__dict__.copy()
-        ret_val = str(self.__class__)
-        ret_val += '\n'
+        child_prefix = '  |  ' + prefix
+        ret_val = str(self.__class__) + '\n'
+
         if self.job_id == '':
             ret_val += f'{prefix}<Empty>'
         else:
+            ret_val += f'{prefix}user_key: '
+            ret_val += self.user_key.__str__(detailed=False, prefix=child_prefix) + '\n'
+            del pprop['user_key']
+            
             ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
         return ret_val

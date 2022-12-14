@@ -1,7 +1,7 @@
 Dow Jones Factiva Analytics Python Library
 ##########################################
 
-This package simplifies the integration process to the Dow Jones Analytics services.
+This package simplifies the integration process to the Dow Jones Factiva Analytics services.
 
 Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com>`_ for more information about all available services.
 
@@ -17,13 +17,8 @@ Check out the `Dow Jones Developer Platofrm site <https://developer.dowjones.com
 
 .. toctree::
    :maxdepth: 2
-   :caption: Factiva Analytics
+   :caption: Reference
    :glob:
 
    factiva.analytics/auth
-   factiva.analytics/snapshot
-   factiva.analytics/stream
-   factiva.analytics/taxonomy
-   factiva.analytics/tools
-   factiva.analytics/dicts
-   factiva.analytics/const
+   factiva.analytics/article_retrieval

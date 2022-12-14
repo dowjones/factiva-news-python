@@ -1,5 +1,5 @@
-from factiva.analytics import const
-from factiva.analytics.tools import load_environment_value
+from factiva.analytics import common
+from factiva.analytics.common.tools import load_environment_value
 from factiva.analytics.snapshot.jobs import UpdateJob
 # from factiva.news.snapshot import Snapshot
 
@@ -20,4 +20,4 @@ def test_update_creation():
     test_update.get_job_results()
     assert len(test_update.files) > 0
     assert len(test_update.job_id) > 0
-    assert test_update.job_state == const.API_JOB_DONE_STATE
+    assert test_update.job_state == common.API_JOB_DONE_STATE

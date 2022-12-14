@@ -1,7 +1,7 @@
 import pytest
 
-from factiva.analytics import const
-from factiva.analytics.tools import load_environment_value
+from factiva.analytics import common
+from factiva.analytics.common.tools import load_environment_value
 from factiva.analytics.snapshot import Snapshot
 
 ENVIRONMENT_USER_KEY = load_environment_value('FACTIVA_USERKEY')
@@ -21,7 +21,7 @@ def test_process_explain():
     }
     s.process_explain()
     assert s.last_explain_job.document_volume > 0
-    assert s.last_explain_job.job_state == const.API_JOB_DONE_STATE
+    assert s.last_explain_job.job_state == common.API_JOB_DONE_STATE
     assert len(s.last_explain_job.job_id) == 36
 
 

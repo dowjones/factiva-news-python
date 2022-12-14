@@ -3,7 +3,7 @@
 """
 import unittest
 from factiva.analytics import UserKey
-from factiva.analytics.tools import load_environment_value
+from factiva.analytics.common.tools import load_environment_value
 
 FACTIVA_USERKEY = load_environment_value("FACTIVA_USERKEY")
 DUMMY_KEY = 'abcd1234abcd1234abcd1234abcd1234'

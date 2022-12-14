@@ -1,21 +1,9 @@
 """Multiple methods and other resources for the Factiva Analytics package."""
-# __all__ = ['JSONLFileHandler', 'BigQueryHandler', 'MongoDBHandler']
-
-# from .listener_handlers import JSONLFileHandler, BigQueryHandler, MongoDBHandler
 
 import datetime
 import os
 from dateutil import parser
-from .. import const
-
-
-def load_environment_value(config_key, default=None) -> str:
-    """Obtain a environmental variable."""
-    tmp_val = os.getenv(config_key, default)
-    if tmp_val is None:
-        raise Exception(
-            "Environment Variable {} not found!".format(config_key))
-    return tmp_val
+from .. import common
 
 
 def mask_string(raw_str, right_padding=4) -> str:
@@ -79,7 +67,7 @@ def format_timestamps(message: dict) -> dict:
     dict
         Dict with datetimes formated
     """
-    for fieldname in const.TIMESTAMP_FIELDS:
+    for fieldname in common.TIMESTAMP_FIELDS:
         if fieldname in message.keys():
             message[fieldname] = isots_to_tsms(message[fieldname])
     message["delivery_datetime"] = now_to_tsms()
@@ -97,7 +85,7 @@ def format_timestamps_mongodb(message: dict) -> dict:
     dict
         Dict with datetimes formated
     """
-    for fieldname in const.TIMESTAMP_FIELDS:
+    for fieldname in common.TIMESTAMP_FIELDS:
         if fieldname in message.keys():
             message[fieldname] = parser.parse(message[fieldname])
     message["delivery_datetime"] = parser.parse(
@@ -126,11 +114,11 @@ def format_multivalues(message: dict) -> dict:
     dict
         Dict with multivalues formated
     """
-    for fieldname in const.MULTIVALUE_FIELDS_SPACE:
+    for fieldname in common.MULTIVALUE_FIELDS_SPACE:
         if fieldname in message.keys():
             message[fieldname] = multivalue_to_list(message[fieldname],
                                                     sep=' ')
-    for fieldname in const.MULTIVALUE_FIELDS_COMMA:
+    for fieldname in common.MULTIVALUE_FIELDS_COMMA:
         if fieldname in message.keys():
             message[fieldname] = multivalue_to_list(message[fieldname])
     return message
@@ -149,3 +137,26 @@ def create_path_if_not_exist(path):
     """
     if not os.path.exists(path):
         os.makedirs(path)
+
+
+def parse_field(field, field_name):
+    """Parse field according to field type.
+
+    Parameters
+    ----------
+    field: str, dict
+        field to be parsed. When a dictionary is given, it will return it
+        as is. When a string is provided it will return the eval version
+        of it, in order to return a dict
+    field_name: str
+        name of the field to be parsed. It is displayed in the error message
+        when the field type is not valid.
+
+    """
+    if isinstance(field, dict):
+        return field
+
+    if isinstance(field, str):
+        return eval(field)
+
+    raise ValueError(f'Unexpected value for {field_name}')

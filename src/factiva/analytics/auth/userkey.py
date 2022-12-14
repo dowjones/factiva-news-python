@@ -1,11 +1,15 @@
-"""Factiva Core UserKey Class."""
+"""
+This module contains classes and tools to instantiate and support the lifecycle
+of UserKey objects. UserKey is the most used authentication method within
+Factiva Analytics APIs.
+"""
 import json
 import pandas as pd
-from .. import const
-from ..log import factiva_logger, get_factiva_logger
-from ..req import api_send_request
-from ..tools import flatten_dict, load_environment_value, mask_string
-
+from ..common import log
+from ..common import req
+from ..common import tools
+from ..common import const
+from ..common import config
 
 class UserKey:
     """Class that represents an API user. This entity is identifiable by a User Key.
@@ -92,13 +96,13 @@ class UserKey:
 
     def __init__(self, key=None, stats=False):
         """Construct the instance of the class."""
-        self.log = get_factiva_logger()
+        self.log = log.get_factiva_logger()
         if key is None:
             try:
-                key = load_environment_value('FACTIVA_USERKEY')
+                key = config.load_environment_value('FACTIVA_USERKEY')
             except Exception as error:
                 raise ValueError(
-                    'Factiva user key not provided and environment variable FACTIVA_USERKEY not set.'
+                    'key parameter not provided and environment variable FACTIVA_USERKEY not set.'
                 ) from error
 
         if len(key) != 32:
@@ -146,7 +150,7 @@ class UserKey:
         """Number of currently running Streaming Instances"""
         return self.get_streams()
 
-    @factiva_logger()
+    @log.factiva_logger()
     def get_stats(self) -> bool:
         """Request the account details to the Factiva Account API Endpoint.
 
@@ -203,7 +207,7 @@ class UserKey:
         """
         account_endpoint = f'{self.__API_ENDPOINT_BASEURL}{self.key}'
         req_head = {'user-key': self.key}
-        resp = api_send_request(method='GET', endpoint_url=account_endpoint, headers=req_head)
+        resp = req.api_send_request(method='GET', endpoint_url=account_endpoint, headers=req_head)
         if resp.status_code == 200:
             try:
                 resp_obj = json.loads(resp.text)
@@ -228,7 +232,7 @@ class UserKey:
             raise RuntimeError('Unexpected Account Information API Error')
         return True
 
-    @factiva_logger()
+    @log.factiva_logger()
     def get_cloud_token(self) -> bool:
         """
         Request a cloud token to the API and saves its value
@@ -246,7 +250,7 @@ class UserKey:
 
         """
         req_head = {'user-key': self.key}
-        response = api_send_request(
+        response = req.api_send_request(
             method="GET",
             endpoint_url=f'{self.__API_CLOUD_TOKEN_URL}',
             headers=req_head
@@ -266,7 +270,7 @@ class UserKey:
         self.cloud_token = json.loads(streaming_credentials_string)
         return True
 
-    @factiva_logger()
+    @log.factiva_logger()
     def get_extractions(self, updates=False) -> pd.DataFrame:
         """Request a list of the extractions of the account.
 
@@ -290,7 +294,7 @@ class UserKey:
 
         headers_dict = {'user-key': self.key}
 
-        response = api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
+        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
 
         if response.status_code != 200:
             if response.status_code == 403:
@@ -300,7 +304,7 @@ class UserKey:
 
         response_data = response.json()
 
-        extraction_df = pd.DataFrame([flatten_dict(extraction) for extraction in response_data['data']])
+        extraction_df = pd.DataFrame([tools.flatten_dict(extraction) for extraction in response_data['data']])
         extraction_df.rename(columns={'id': 'object_id'}, inplace=True)
         ids_df = extraction_df['object_id'].str.split('-', expand=True)
 
@@ -345,7 +349,7 @@ class UserKey:
         print(extractions.loc[:, extractions.columns != 'object_id'])
 
 
-    @factiva_logger()
+    @log.factiva_logger()
     def get_streams(self, running=True) -> pd.DataFrame:
         """Obtain streams from a given user.
 
@@ -374,7 +378,7 @@ class UserKey:
 
         """
         request_headers = {'user-key': self.key}
-        response = api_send_request(
+        response = req.api_send_request(
             method="GET",
             endpoint_url=f'{const.API_HOST}{const.API_STREAMS_BASEPATH}',
             headers=request_headers
@@ -391,7 +395,7 @@ class UserKey:
                     return id_list
 
                 response_data = response.json()
-                stream_df = pd.DataFrame([flatten_dict(extraction) for extraction in response_data['data']])
+                stream_df = pd.DataFrame([tools.flatten_dict(extraction) for extraction in response_data['data']])
                 stream_df.rename(columns={'id': 'object_id'}, inplace=True)
                 ids_df = stream_df['object_id'].str.split('-', expand=True)
                 stream_df['stream_id'] = ids_df[4]
@@ -445,7 +449,7 @@ class UserKey:
 
     def is_active(self) -> bool:
         request_headers = {'user-key': self.key}
-        response = api_send_request(
+        response = req.api_send_request(
             method="GET",
             endpoint_url=f'{const.API_HOST}{const.API_SNAPSHOTS_TAXONOMY_BASEPATH}',
             headers=request_headers
@@ -455,41 +459,6 @@ class UserKey:
         else:
             return False
 
-
-    def __print_property__(self, property_value) -> str:
-        if isinstance(property_value, int):
-            pval = f'{property_value:,d}'
-        else:
-            pval = property_value
-        return pval
-
-
-    def __repr__(self):
-        """Return a string representation of the object."""
-        return self.__str__()
-
-
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
-        # TODO: Improve the output for enabled_company_identifiers
-        pprop = self.__dict__.copy()
-        del pprop['key']
-        del pprop['cloud_token']
-        masked_key = mask_string(self.key)
-        if self.cloud_token == {}:
-            masked_token = '**Not Fetched**'
-        else:
-            masked_token = mask_string(self.cloud_token['private_key'][58:92], 12)
-
-        ret_val = f'{root_prefix}{str(self.__class__)}\n'
-        ret_val += f'{prefix}key = {masked_key}\n'
-        ret_val += f'{prefix}cloud_token = {masked_token}\n'
-        if detailed:
-            ret_val += '\n'.join((f'{prefix}{item} = {self.__print_property__(pprop[item])}' for item in pprop))
-            ret_val += f'\n{prefix}remaining_documents = {self.__print_property__(self.remaining_documents)}\n'
-            ret_val += f'{prefix}remaining_extractions = {self.__print_property__(self.remaining_extractions)}\n'
-        else:
-            ret_val += f'{prefix}...'
-        return ret_val
 
     @staticmethod
     def create_user_key(key=None, stats=False):
@@ -530,3 +499,43 @@ class UserKey:
                 raise RuntimeError("User cannot be obtained from ENV variables") from error
 
         raise RuntimeError("Unexpected api_user value")
+
+
+    def __print_property__(self, property_value) -> str:
+        if isinstance(property_value, int):
+            pval = f'{property_value:,d}'
+        else:
+            pval = property_value
+        return pval
+
+
+    def __repr__(self):
+        """Return a string representation of the object."""
+        return self.__str__()
+
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        # TODO: Improve the output for enabled_company_identifiers
+        pprop = self.__dict__.copy()
+        del pprop['key']
+        del pprop['cloud_token']
+        del pprop['log']
+        masked_key = tools.mask_string(self.key)
+        
+        if self.cloud_token == {}:
+            masked_token = '**Not Fetched**'
+        else:
+            masked_token = tools.mask_string(self.cloud_token['private_key'][58:92], 12)
+
+        ret_val = f'{root_prefix}{str(self.__class__)}\n'
+        ret_val += f'{prefix}key = {masked_key}\n'
+
+        if detailed:
+            ret_val += f'{prefix}cloud_token = {masked_token}\n'
+            ret_val += '\n'.join((f'{prefix}{item} = {self.__print_property__(pprop[item])}' for item in pprop))
+            ret_val += f'\n{prefix}remaining_documents = {self.__print_property__(self.remaining_documents)}\n'
+            ret_val += f'{prefix}remaining_extractions = {self.__print_property__(self.remaining_extractions)}\n'
+        else:
+            ret_val += f'{prefix}...'
+        return ret_val
+

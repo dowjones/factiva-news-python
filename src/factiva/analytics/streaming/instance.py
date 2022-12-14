@@ -1,13 +1,15 @@
 """Implement Stream Class definition."""
 from typing import List
-from .. import const, req, get_factiva_logger, factiva_logger, UserKey
-from ..stream_response import StreamResponse
-from ..bulknews import BulkNewsQuery
+
+from ..common import req
+from .. import common, get_factiva_logger, factiva_logger, UserKey
+from .stream_response import StreamResponse
+from ..snapshot.bulknews import BulkNewsQuery
 from .subscription import Subscription
 
 
-class Stream:
-    """Represent a Stream workflow for Factiva API.
+class StreamingInstance:
+    """Represent a Streaming Instance in Factiva Analytics.
 
     Parameters
     ----------
@@ -95,7 +97,7 @@ class Stream:
     @property
     def stream_url(self) -> str:
         """List Stream's URL address."""
-        return f'{const.API_HOST}{const.API_STREAMS_BASEPATH}'
+        return f'{common.API_HOST}{common.API_STREAMS_BASEPATH}'
 
     @property
     def all_subscriptions(self) -> List[str]:
@@ -168,7 +170,7 @@ class Stream:
 
         """
         if not self.stream_id:
-            raise const.UNDEFINED_STREAM_ID_ERROR
+            raise common.UNDEFINED_STREAM_ID_ERROR
         uri = '{}/{}'.format(self.stream_url, self.stream_id)
         headers = {
                 'user-key': self.stream_user.key
@@ -202,7 +204,7 @@ class Stream:
 
         """
         if not self.stream_id:
-            raise const.UNDEFINED_STREAM_ID_ERROR
+            raise common.UNDEFINED_STREAM_ID_ERROR
 
         uri = f'{self.stream_url}/{self.stream_id}'
         headers = {
@@ -221,7 +223,7 @@ class Stream:
         if response == 404:
             raise RuntimeError('The Stream does not exist')
 
-        raise const.UNEXPECTED_HTTP_ERROR
+        raise common.UNEXPECTED_HTTP_ERROR
 
     @factiva_logger
     def create(self) -> StreamResponse:
@@ -303,7 +305,7 @@ class Stream:
 
         """
         if sus_id not in self.subscriptions:
-            raise const.INVALID_SUBSCRIPTION_ID_ERROR
+            raise common.INVALID_SUBSCRIPTION_ID_ERROR
         try:
             if self.subscriptions[sus_id].delete(
                 headers={'user-key': self.stream_user.key}
@@ -350,7 +352,7 @@ class Stream:
 
         """
         if not self.stream_id:
-            raise const.UNDEFINED_STREAM_ID_ERROR
+            raise common.UNDEFINED_STREAM_ID_ERROR
         uri = '{}/{}'.format(self.stream_url, self.stream_id)
         headers = {
                 'user-key': self.stream_user.key
@@ -364,7 +366,7 @@ class Stream:
             response = response.json()
             self.create_default_subscription(response)
         else:
-            raise const.UNEXPECTED_HTTP_ERROR
+            raise common.UNEXPECTED_HTTP_ERROR
 
     def consume_messages(
         self,
@@ -396,7 +398,7 @@ class Stream:
 
         """
         if subscription_id not in self.subscriptions:
-            raise const.INVALID_SUBSCRIPTION_ID_ERROR
+            raise common.INVALID_SUBSCRIPTION_ID_ERROR
         self.subscriptions[subscription_id].consume_messages(
             callback=callback,
             maximum_messages=maximum_messages,
@@ -427,7 +429,7 @@ class Stream:
 
         """
         if subscription_id not in self.subscriptions:
-            raise const.INVALID_SUBSCRIPTION_ID_ERROR
+            raise common.INVALID_SUBSCRIPTION_ID_ERROR
         self.subscriptions[subscription_id].consume_async_messages(
             callback=callback,
             ack_enabled=ack_enabled,
@@ -454,7 +456,7 @@ class Stream:
                 'user-key': self.stream_user.key,
                 'content-type': 'application/json'
             }
-        uri = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}/{self.snapshot_id}/streams'
+        uri = f'{common.API_HOST}{common.API_SNAPSHOTS_BASEPATH}/{self.snapshot_id}/streams'
         response = req.api_send_request(
             method='POST',
             endpoint_url=uri,
@@ -467,7 +469,7 @@ class Stream:
 
             return StreamResponse(data=response['data'], links=response.get('links', None))
 
-        raise const.UNEXPECTED_HTTP_ERROR
+        raise common.UNEXPECTED_HTTP_ERROR
 
     def _create_by_query(self) -> StreamResponse:
         """Create by query that allows a user to create a stream subscription using a query.
@@ -512,4 +514,43 @@ class Stream:
 
             return StreamResponse(data=response['data'], links=response.get('links', None))
 
-        raise const.UNEXPECTED_HTTP_ERROR
+        raise common.UNEXPECTED_HTTP_ERROR
+
+    def __repr__(self):
+        """Create string representation for Snapshot Class."""
+        return self.__str__()
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        """Create string representation for Snapshot Class."""
+        pprop = self.__dict__.copy()
+        del pprop['log']
+        child_prefix = '  |  ' + prefix
+        ret_val = str(self.__class__) + '\n'
+
+        ret_val += f'{prefix}user_key: '
+        ret_val += self.user_key.__str__()
+        del pprop['user_key']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}query: '
+        ret_val += self.query.__str__(detailed=False, prefix=child_prefix)
+        del pprop['query']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_explain_job: '
+        ret_val += self.last_explain_job.__str__(detailed=False, prefix=child_prefix)
+        del pprop['last_explain_job']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_analytics_job: '
+        ret_val += self.last_analytics_job.__str__(detailed=False, prefix=child_prefix)
+        del pprop['last_analytics_job']
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_extraction_job: '
+        ret_val += self.last_extraction_job.__str__(detailed=False, prefix=child_prefix)
+        del pprop['last_extraction_job']
+        ret_val += '\n'
+
+        ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
+        return ret_val

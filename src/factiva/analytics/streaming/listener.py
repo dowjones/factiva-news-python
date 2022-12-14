@@ -3,8 +3,10 @@ import json
 import time
 from threading import Thread
 
-from .. import const, factiva_logger, get_factiva_logger, req
-from ..tools import load_environment_value
+from ..common import req
+
+from .. import common, factiva_logger, get_factiva_logger
+from ..common.tools import load_environment_value
 from google.api_core.exceptions import GoogleAPICallError, NotFound
 
 
@@ -79,7 +81,7 @@ class Listener:
             try:
                 subscription_id = load_environment_value('FACTIVA_STREAM_SUBSCRIPTION_ID')
             except Exception:
-                raise const.UNDEFINED_SUBSCRIPTION_ERROR
+                raise common.UNDEFINED_SUBSCRIPTION_ERROR
 
         if not stream_user:
             raise ValueError('Undefined stream_user')
@@ -97,97 +99,6 @@ class Listener:
         stream_id = '-'.join(self.subscription_id.split("-")[:-2])
         return f'{host}/streams/{stream_id}'
 
-    @factiva_logger
-    def _check_account_status(self):
-        """Check the account status for max allowed extracts done.
-
-        Raises
-        ------
-        RuntimeError: When HTTP API Response is unexpected
-
-        """
-        # TODO: Implement using UserKey.get_stats()
-        host = self.user_key.get_uri_context()
-        headers = self.user_key.get_authentication_headers()
-        limits_uri = f'{host}/accounts/{self.user_key.user_key}'
-        limit_response = req.api_send_request(
-            method='GET',
-            endpoint_url=limits_uri,
-            headers=headers
-            )
-        if limit_response.status_code == 200:
-            limit_response = limit_response.json()
-            self.limit_msg = limit_response['data']['attributes']['max_allowed_extracts']
-        else:
-            raise RuntimeError(
-                '''
-                Unexpected HTTP Response from API
-                while checking for limits
-                '''
-                )
-    
-    @factiva_logger
-    def _check_stream_status(self):
-        """Check the stream status.
-
-        if it has reached an
-        exceeded status at some point
-
-        Raises
-        ------
-        RuntimeError: When HTTP API Response is unexpected
-
-        """
-        headers = self.user_key.get_authentication_headers()
-        response = req.api_send_request(
-            method='GET',
-            endpoint_url=self.stream_id_uri,
-            headers=headers
-            )
-        if response.status_code == 200:
-            response = response.json()
-            job_status = response['data']['attributes']['job_status']
-            if job_status == const.DOC_COUNT_EXCEEDED:
-                self._check_account_status()
-        else:
-            raise RuntimeError('HTTP API Response unexpected')
-
-    @factiva_logger
-    def _check_exceeded(self):
-        """Check exceeded time function.
-
-        checks if the documents have been exceeded
-        (max allowed extractions exceeded)
-        """
-        while self.is_consuming:
-            print('Checking if extractions limit is reached')
-            self._check_stream_status()
-            time.sleep(const.CHECK_EXCEEDED_WAIT_SPACING)
-        if not self.limit_msg:
-            print('Job finished')
-        else:
-            print(
-                '''
-                OOPS! Looks like you\'ve exceeded the maximum number of
-                documents received for your account ({}). As such, no
-                new documents will be added to your stream\'s queue.
-                However, you won\'t lose access to any documents that
-                have already been added to the queue. These will continue
-                to be streamed to you. Contact your account administrator
-                with any questions or to upgrade your account limits.
-                '''.format(self.limit_msg)
-            )
-    
-    @factiva_logger
-    def check_exceeded_thread(self):
-        """Check exceeded thread function.
-
-        creates threads for checking
-        if the doc count has been exceeded
-
-        """
-        self._check_exceeds_thread = Thread(target=self._check_exceeded)
-        self._check_exceeds_thread.start()
 
     # pylint: disable=too-many-arguments
     @factiva_logger
@@ -284,7 +195,6 @@ class Listener:
             raise ValueError('undefined maximum messages to proceed')
 
         pubsub_client = self.user_key.get_client_subscription()
-        self.check_exceeded_thread()
 
         streaming_credentials = self.user_key.fetch_credentials()
         subscription_path = pubsub_client.subscription_path(
@@ -334,7 +244,7 @@ class Listener:
                     the stream again.
                     '''
                     )
-                time.sleep(const.PUBSUB_MESSAGES_WAIT_SPACING)
+                time.sleep(common.PUBSUB_MESSAGES_WAIT_SPACING)
                 pubsub_client = self.user_key.get_client_subscription()
 
         self.is_consuming = False
@@ -367,7 +277,6 @@ class Listener:
                 message.ack()
 
         pubsub_client = self.user_key.get_client_subscription()
-        self.check_exceeded_thread()
 
         streaming_credentials = self.user_key.fetch_credentials()
         subscription_path = pubsub_client.subscription_path(

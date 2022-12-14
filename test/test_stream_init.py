@@ -2,8 +2,8 @@ import time
 
 import pytest
 from factiva.analytics import StreamResponse, UserKey
-from factiva.analytics.tools import load_environment_value
-from factiva.analytics.stream import Stream
+from factiva.analytics.common.tools import load_environment_value
+from factiva.analytics.streaming import Stream
 
 # [MB] This file needs to test mainly constructor outputs. Specific
 # operations are tested in separate files.

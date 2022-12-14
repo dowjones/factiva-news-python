@@ -3,10 +3,10 @@ import shutil
 import unittest
 
 import pytest
-from factiva.analytics.const import (DOWNLOAD_DEFAULT_FOLDER,
+from factiva.analytics.common import (DOWNLOAD_DEFAULT_FOLDER,
                                 ISIN_COMPANY_IDENTIFIER,
                                 TICKER_COMPANY_IDENTIFIER)
-from factiva.analytics.tools import load_environment_value
+from factiva.analytics.common.tools import load_environment_value
 from factiva.analytics.taxonomy import Company
 
 FACTIVA_USERKEY = load_environment_value("FACTIVA_USERKEY")

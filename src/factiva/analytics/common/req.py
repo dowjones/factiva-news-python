@@ -5,8 +5,10 @@ import json
 import os
 from datetime import datetime
 import requests
-from .. import const, tools
-from ..log import factiva_logger, get_factiva_logger
+
+from . import tools
+from . import const
+from .log import factiva_logger, get_factiva_logger
 
 log = get_factiva_logger()
 

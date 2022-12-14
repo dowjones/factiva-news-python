@@ -17,14 +17,14 @@ from factiva.analytics.__version__ import __version__
 sys.path.insert(0, os.path.abspath('../../src'))
 sys.path.insert(0, os.path.abspath('../../src/factiva'))
 sys.path.insert(0, os.path.abspath('../../src/factiva/analytics'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/article_retrieval'))
 sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/auth'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/const'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/dicts'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/tools'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/snapshot'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/stream'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/taxonomy'))
-sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/tools'))
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/common'))
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/integration'))
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/lists'))
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/snapshot'))
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/streaming'))
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/taxonomy'))
 
 # -- Project information -----------------------------------------------------
 

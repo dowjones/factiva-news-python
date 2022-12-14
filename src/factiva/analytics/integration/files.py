@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import fastavro
-from .. import const
+from .. import common
 
 
 class SnapshotFiles(object):
@@ -30,7 +30,7 @@ class SnapshotFiles(object):
             r_df = pd.DataFrame.from_records(records)
 
         if only_stats is True:
-            r_df = r_df[const.SNAPSHOT_FILE_STATS_FIELDS]
+            r_df = r_df[common.SNAPSHOT_FILE_STATS_FIELDS]
 
         if (only_stats is False) & (merge_body is True):
             r_df['body'] = r_df['snippet'] + '\n\n' + r_df['body']
@@ -39,7 +39,7 @@ class SnapshotFiles(object):
         if only_stats is False:
             r_df['body'] = r_df[['body']].apply(lambda x: '{}'.format(x[0]), axis=1)
 
-        for d_field in const.SNAPSHOT_FILE_DELETE_FIELDS:
+        for d_field in common.SNAPSHOT_FILE_DELETE_FIELDS:
             if d_field in r_df.columns:
                 r_df.drop(d_field, axis=1, inplace=True)
 
