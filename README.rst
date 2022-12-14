@@ -1,6 +1,6 @@
 Dow Jones Factiva Analytics Python Library
 ##########################################
-.. image:: https://github.com/dowjones/factiva-analytics-python/actions/workflows/master_test_publish.yml/badge.svg
+.. image:: https://github.com/dowjones/factiva-analytics-python/actions/workflows/main_test_publish.yml/badge.svg
 
 This library simplifies the integration to Factiva Analytics API services that delivers premium news content.
 
