@@ -1,82 +1,45 @@
-"""Taxonomy class implementation."""
-from io import StringIO
-
-import pandas as pd
-
+from ..common import tools
 from ..common import req
-from .. import (UserKey, common, factiva_logger, get_factiva_logger)
-from ..common.tools import validate_type
+from .. import (UserKey, factiva_logger, get_factiva_logger)
+from ..common import (API_COMPANIES_IDENTIFIER_TYPE, API_HOST,
+                                API_SNAPSHOTS_COMPANIES_BASEPATH,
+                                API_SNAPSHOTS_COMPANIES_PIT,
+                                API_SNAPSHOTS_TAXONOMY_BASEPATH,
+                                DOWNLOAD_DEFAULT_FOLDER,
+                                TICKER_COMPANY_IDENTIFIER)
 
 
-class Taxonomy():
-    """Class that represents the taxonomy available within the Snapshots API.
-
+class Company():
+    """Class that represents the company available within the Snapshots API.
+    
     Parameters
     ----------
     user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the FACTIVA_USERKEY
         environment variable.
-
+    
     Examples
     --------
-    Creating a taxonomy instance providing the user key
-        >>> t = Taxonomy(u='abcd1234abcd1234abcd1234abcd1234')
+    Creating a company instance providing the user key
+        >>> c = Company(u='abcd1234abcd1234abcd1234abcd1234')
 
-    Creating a taxonomy instance with an existing UserKey instance
-        >>> u = UserKey('abcd1234abcd1234abcd1234abcd1234')
-        >>> t = Taxonomy(user_key=u)
-
+    Creating a company instance with an existing UserKey instance
+        >>> u = UserKey('abcd1234abcd1234abcd1234abcd1234', True)
+        >>> c = Company(user_key=u)
     """
 
-    categories = []
-    identifiers = []
+    __API_ENDPOINT_TAXONOMY = f'{API_HOST}{API_SNAPSHOTS_TAXONOMY_BASEPATH}'
+    __API_ENDPOINT_COMPANY = f'{API_HOST}{API_SNAPSHOTS_COMPANIES_BASEPATH}'
+    __TICKER_COMPANY_IDENTIFIER_NAME = 'ticker_exchange'
 
-
+    user_key=None
+    
     def __init__(self, user_key=None):
-        """Class initializer."""
-        self.user_key = UserKey.create_user_key(user_key)
-        self.categories = self.get_categories()
-        self.identifiers = self.get_identifiers()
+        """Class initializar"""
+        self.user_key = UserKey.create_user_key(user_key, True)
         self.log= get_factiva_logger()
 
-    @factiva_logger
-    def get_categories(self) -> list:
-        """Request for a list of available taxonomy categories.
-
-        Returns
-        -------
-        List of available taxonomy categories.
-
-        Raises
-        ------
-        RuntimeError: When API request returns unexpected error
-
-        Examples
-        --------
-        This method is called with in the __init__ method, so the categories can be accessed as is.
-            >>> taxonomy = Taxonomy()
-            >>> print(taxonomy.categories)
-            ['news_subjects', 'regions', 'companies', 'industries', 'executives']
-
-        Calling the method on its own
-            >>> taxonomy = Taxonomy()
-            >>> print(taxonomy.get_categories())
-            ['news_subjects', 'regions', 'companies', 'industries', 'executives']
-
-        """
-        headers_dict = {
-            'user-key': self.user_key.key
-        }
-
-        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_TAXONOMY_BASEPATH}'
-
-        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict)
-
-        if response.status_code == 200:
-            return [entry['attributes']['name'] for entry in response.json()['data']]
-
-        raise RuntimeError('API Request returned an unexpected HTTP status')
 
     @factiva_logger
     def get_identifiers(self) -> list:
@@ -117,66 +80,118 @@ class Taxonomy():
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
 
-    # TODO: Implement a save_path parameter to alternatively store the taxonomy
-    # file locally, and don't load its content to a DataFrame
-    # https://github.com/dowjones/factiva-news-python/issues/4#issue-956942535
-    # Check also differences by loading the data in AVRO. In case the issue is
-    # too common with Executives, force the download option.
     @factiva_logger
-    def get_category_codes(self, category) -> pd.DataFrame:
-        """Request for available codes in the taxonomy for the specified category.
+    def validate_point_time_request(self, identifier):
+        """Validate if the user is allowes to perform company operation and if the identifier given is valid
+        
+        Parameters
+        ----------
+        identifier : str
+            A company identifier type
+        
+        Raises
+        ------
+        ValueError: When the user is not allowed to permorm this operation
+        ValueError: When the identifier requested is not valid
+        """
+
+        if (not len(self.user_key.enabled_company_identifiers)):
+            raise ValueError('User is not allowed to perform this operation')
+
+        tools.validate_field_options(identifier, API_COMPANIES_IDENTIFIER_TYPE)
+
+        if (identifier == TICKER_COMPANY_IDENTIFIER):
+            identifier = self.__TICKER_COMPANY_IDENTIFIER_NAME
+
+        identifier_description = list(
+            filter(lambda company: company['name'] == identifier,
+                   self.user_key.enabled_company_identifiers))
+        if (not len(identifier_description)):
+            raise ValueError('User is not allowed to perform this operation')
+
+    @factiva_logger
+    def point_in_time_download_all(self,
+                                   identifier,
+                                   file_name,
+                                   file_format,
+                                   to_save_path=None,
+                                   add_timestamp=False) -> str:
+        """Returns a file with the historical and current identifiers for each category and news coded companies.
 
         Parameters
         ----------
-        category : str
-            String with the name of the taxonomy category to request the codes from
+        identifier : str
+            A company identifier type
+        file_name : str
+            Name to be used as local filename
+        file_format : str
+            Format of the file
+        to_save_path : str, optional
+            Path to be used to store the file
+        add_timestamp : bool, optional
+            Flag to determine if include timestamp info at the filename
 
         Returns
         -------
-        Dataframe containing the codes for the specified category
+        str:
+            Dowloaded file path
 
         Raises
         ------
-        ValueError: When category is not of a valid type
-        RuntimeError: When API request returns unexpected error
-
-        Examples
-        --------
-        Getting the codes for the 'industries' category
-            >>> taxonomy = Taxonomy()
-            >>> industry_codes = taxonomy.get_category_codes('industries')
-            >>> print(industry_codes)
-                    code                description
-            0     i25121             Petrochemicals
-            1     i14001         Petroleum Refining
-            2       i257            Pharmaceuticals
-            3     iphrws  Pharmaceuticals Wholesale
-            4       i643     Pharmacies/Drug Stores
-
+        ValueError: When the user is not allowed to permorm this operation
+        ValueError: When the identifier requested is not valid
+        ValueError: When the format file requested is not valid
         """
-        validate_type(category, str, 'Unexpected value: category value must be string')
 
-        response_format = 'csv'
+        self.validate_point_time_request(identifier)
+        if (to_save_path is None):
+            to_save_path = DOWNLOAD_DEFAULT_FOLDER
 
-        headers_dict = {
-            'user-key': self.user_key.key
-        }
+        headers_dict = {'user-key': self.user_key.key}
+        endpoint = f'{self.__API_ENDPOINT_TAXONOMY}{API_SNAPSHOTS_COMPANIES_PIT}/{identifier}/{file_format}'
 
-        endpoint = f'{common.API_HOST}{common.API_SNAPSHOTS_TAXONOMY_BASEPATH}/{category}/{response_format}'
-
-        response = req.api_send_request(method='GET', endpoint_url=endpoint, headers=headers_dict, stream=True)
-        if response.status_code == 200:
-            r_df = pd.read_csv(StringIO(response.content.decode()))
-            if 'executiveFactivaCode' in r_df.columns:
-                r_df.rename(columns = {'executiveFactivaCode':'code'}, inplace = True)
-            elif 'Code' in r_df.columns:
-                r_df.rename(columns = {'Code':'code'}, inplace = True)
-            r_df.set_index('code', inplace=True)
-            return r_df
-
-        raise RuntimeError('API Request returned an unexpected HTTP Status')
+        local_file_name = req.download_file(endpoint, headers_dict, file_name,
+                                            file_format, to_save_path,
+                                            add_timestamp)
+        return local_file_name
 
     @factiva_logger
+    def point_in_time_query(self, identifier, value) -> dict:
+        """Returns the resolved Factiva code and date ranges when the instrument from the identifier, was valid.
+        
+        Parameters
+        ----------
+        identifier : str
+            A company identifier type
+        value : str
+            Identifier value
+        
+        Returns
+        -------
+        dict:
+            Factiva code and date ranges from a company
+        
+        Raises
+        ------
+        ValueError: When the user is not allowed to permorm this operation
+        ValueError: When the identifier requested is not valid
+        """
+
+        self.validate_point_time_request(identifier)
+        headers_dict = {'user-key': self.user_key.key}
+        endpoint = f'{self.__API_ENDPOINT_COMPANY}{API_SNAPSHOTS_COMPANIES_PIT}/{identifier}/{value}'
+
+        response = req.api_send_request(endpoint_url=endpoint,
+                                        headers=headers_dict)
+        if response.status_code == 200:
+            response = response.json()
+            return response
+        else:
+            raise RuntimeError(
+                '''Unexpected HTTP Response from API while checking for limits'''
+            )
+
+    @log.factiva_logger
     def get_single_company(self, code_type, company_code) -> pd.DataFrame:
         """Request information about a single company.
 
@@ -205,8 +220,8 @@ class Taxonomy():
             0  ABCNMST00394  ABCYT  Systemy Company S.A.
 
         """
-        validate_type(code_type, str, 'Unexpected value: code_type must be str')
-        validate_type(company_code, str, 'Unexpected value: company must be str')
+        tools.validate_type(code_type, str, 'Unexpected value: code_type must be str')
+        tools.validate_type(company_code, str, 'Unexpected value: company must be str')
 
         headers_dict = {
             'user-key': self.user_key.key
@@ -222,9 +237,10 @@ class Taxonomy():
 
         raise RuntimeError('API Request returned an unexpected HTTP status')
 
-    @factiva_logger
+    @log.factiva_logger
     def get_multiple_companies(self, code_type, company_codes) -> pd.DataFrame:
-        """Request information about a list of companies.
+        """
+        Request information about a list of companies.
 
         Parameters
         ----------
@@ -253,10 +269,10 @@ class Taxonomy():
             2  MN9431810453     MNM     M***********
 
         """
-        validate_type(code_type, str, 'Unexpected value: code_type must be str')
-        validate_type(company_codes, list, 'Unexpected value: companies must be list')
+        tools.validate_type(code_type, str, 'Unexpected value: code_type must be str')
+        tools.validate_type(company_codes, list, 'Unexpected value: companies must be list')
         for single_company_code in company_codes:
-            validate_type(single_company_code, str, 'Unexpected value: each company in companies must be str')
+            tools.validate_type(single_company_code, str, 'Unexpected value: each company in companies must be str')
 
         headers_dict = {
             'user-key': self.user_key.key
@@ -279,7 +295,7 @@ class Taxonomy():
             return pd.DataFrame.from_records(response_data['data']['attributes']['successes'])
         raise RuntimeError(f'API Request returned an unexpected HTTP status with message: {response.text}')
 
-    @factiva_logger
+    @log.factiva_logger
     def get_company(self, code_type, company_codes) -> pd.DataFrame:
         """Request information about either a single company or a list of companies.
 

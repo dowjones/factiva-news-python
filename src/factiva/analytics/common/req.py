@@ -12,7 +12,7 @@ from .log import factiva_logger, get_factiva_logger
 
 log = get_factiva_logger()
 
-def send_get_request(endpoint_url=const.API_HOST,
+def _send_get_request(endpoint_url=const.API_HOST,
                      headers=None,
                      qs_params=None,
                      stream=False):
@@ -25,7 +25,7 @@ def send_get_request(endpoint_url=const.API_HOST,
                         stream=stream)
 
 
-def send_post_request(endpoint_url=const.API_HOST, headers=None, payload=None):
+def _send_post_request(endpoint_url=const.API_HOST, headers=None, payload=None):
     """Send post request."""
     if payload is not None:
         if isinstance(payload, dict):
@@ -54,13 +54,13 @@ def api_send_request(method='GET',
 
     try:
         if method == 'GET':
-            response = send_get_request(endpoint_url=endpoint_url,
+            response = _send_get_request(endpoint_url=endpoint_url,
                                         headers=headers,
                                         qs_params=qs_params,
                                         stream=stream)
 
         elif method == 'POST':
-            response = send_post_request(endpoint_url=endpoint_url,
+            response = _send_post_request(endpoint_url=endpoint_url,
                                          headers=headers,
                                          payload=payload)
 
@@ -114,7 +114,7 @@ def download_file(file_url,
     if add_timestamp:
         file_name = f'{file_name}-{datetime.now()}'
 
-    response = send_get_request(endpoint_url=file_url,
+    response = _send_get_request(endpoint_url=file_url,
                                 headers=headers,
                                 stream=True)
 

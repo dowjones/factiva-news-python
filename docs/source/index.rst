@@ -16,9 +16,10 @@ Check out the `Dow Jones Developer Portal <https://developer.dowjones.com>`_ for
    overview/quickstart
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Reference
    :glob:
 
    factiva.analytics/auth
+   factiva.analytics/taxonomy
    factiva.analytics/article_retrieval

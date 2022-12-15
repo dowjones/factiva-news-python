@@ -8,16 +8,8 @@ after processing Snapshots or Streams news articles.
 ArticleRetrieval
 ****************
 
-.. automodule:: factiva.analytics.article_retrieval.ArticleRetrieval
+.. automodule:: factiva.analytics.article_retrieval.article_retrieval
    :members:
    :undoc-members:
    :show-inheritance:
 
-
-UIArticle
-*********
-
-.. automodule:: factiva.analytics.article_retrieval.UIArticle
-   :members:
-   :undoc-members:
-   :show-inheritance:

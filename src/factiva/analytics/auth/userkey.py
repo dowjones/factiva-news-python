@@ -11,6 +11,7 @@ from ..common import tools
 from ..common import const
 from ..common import config
 
+
 class UserKey:
     """Class that represents an API user. This entity is identifiable by a User Key.
 
