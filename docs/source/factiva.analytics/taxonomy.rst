@@ -9,6 +9,4 @@ FactivaTaxonomy
 
 .. automodule:: factiva.analytics.taxonomy.factiva_taxonomies
    :members:
-   :undoc-members:
-   :show-inheritance:
 
