@@ -140,6 +140,30 @@ MULTIVALUE_FIELDS_COMMA = [
 
 MULTIVALUE_FIELDS_SPACE = ["region_of_origin"]
 
+
+# Taxonomy column renaming proposal
+# Code,Descriptor,Description,direct_parents_1,direct_parents_2,direct_parents_3,direct_parents_4,direct_parents_5,direct_parents_6,indirect_parents_1,indirect_parents_2,indirect_parents_3,indirect_parents_4,indirect_parents_5,indirect_parents_6,indirect_parents_7,indirect_parents_8
+TAXONOMY_H_FIELDS_RENAME_DICT = {
+                                  'Descriptor':'descriptor',
+                                  'Description': 'description',
+                                  'direct_parents_1': 'direct_parent'
+                                  # TODO: Consider adding columns for hierarchical parents and alterative hierarchies
+                                }
+
+TAXONOMY_H_FIELDS_REMOVE = ['direct_parents_2',
+                            'direct_parents_3',
+                            'direct_parents_4',
+                            'direct_parents_5',
+                            'direct_parents_6',
+                            'indirect_parents_1',
+                            'indirect_parents_2',
+                            'indirect_parents_3',
+                            'indirect_parents_4',
+                            'indirect_parents_5',
+                            'indirect_parents_6',
+                            'indirect_parents_7',
+                            'indirect_parents_8']
+
 ADD_ACTION = 'add'
 REP_ACTION = 'rep'
 DEL_ACTION = 'del'
