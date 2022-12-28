@@ -3,9 +3,9 @@
 """
 import pytest
 from factiva.analytics import UserKey
-from factiva.analytics.common.tools import load_environment_value
+from factiva.analytics.common import config
 
-FACTIVA_USERKEY = load_environment_value("FACTIVA_USERKEY")
+FACTIVA_USERKEY = config.load_environment_value("FACTIVA_USERKEY")
 DUMMY_KEY = 'abcd1234abcd1234abcd1234abcd1234'
 
 # API Response sample with the most complete set of attributes
@@ -54,11 +54,12 @@ DUMMY_KEY = 'abcd1234abcd1234abcd1234abcd1234'
 # }
 
 
-def check_userkey_types(usr):
+def _test_userkey_types(usr):
     """"
     Checks the correct types were returned.
     """
-    usr = UserKey(stats=True)
+    if isinstance(usr, str):
+        usr = UserKey(stats=True)
     assert isinstance(usr.key, str)
     assert isinstance(usr.cloud_token, dict)
     assert isinstance(usr.account_name, str)
@@ -76,84 +77,51 @@ def check_userkey_types(usr):
     assert isinstance(usr.enabled_company_identifiers, list)
 
 
+def _test_userkey_values(usr):
+    """
+    Checks if values within the expected lengths and ranges
+    were returned
+    """
+    if isinstance(usr, str):
+        usr = UserKey(stats=True)
+    assert usr.key == FACTIVA_USERKEY
+    assert len(usr.account_name) >= 0
+    assert len(usr.active_products) >= 0
+    assert usr.max_allowed_concurrent_extractions >= 0
+    assert usr.max_allowed_extracted_documents >= 0
+    assert usr.max_allowed_extractions >= 0
+    assert usr.total_downloaded_bytes >= 0
+    assert usr.total_extracted_documents >= 0
+    assert usr.total_extractions >= 0
+    assert usr.total_stream_instances >= 0
+    assert usr.total_stream_subscriptions >= 0
+    assert len(usr.enabled_company_identifiers) >= 0
+
 def test_userkey_with_stats():
     """"
     Creates the object using the ENV variable and request the usage details to the API service
     """
-    aku = UserKey(stats=True)
-    check_userkey_types(aku)
-    assert aku.key == FACTIVA_USERKEY
-    assert len(aku.account_name) > 0
-    assert len(aku.active_products) > 0
-    assert aku.max_allowed_concurrent_extractions >= 0
-    assert aku.max_allowed_extracted_documents >= 0
-    assert aku.max_allowed_extractions >= 0
-    assert aku.total_downloaded_bytes >= 0
-    assert aku.total_extracted_documents >= 0
-    assert aku.total_extractions >= 0
-    assert aku.total_stream_instances >= 0
-    assert aku.total_stream_subscriptions >= 0
-    assert len(aku.enabled_company_identifiers) > 0
+    usr = UserKey(stats=True)
+    _test_userkey_types(usr)
+    _test_userkey_values(usr)
 
 
 def test_userkey_without_stats():
     """
     Creates an empty object from the ENV variable with a value only for the key property
     """
-    aku = UserKey()
-    check_userkey_types(aku)
-    assert aku.key == FACTIVA_USERKEY
-    assert len(aku.account_name) == 0
-    assert len(aku.active_products) == 0
-    assert aku.max_allowed_concurrent_extractions == 0
-    assert aku.max_allowed_extracted_documents == 0
-    assert aku.max_allowed_extractions == 0
-    assert aku.total_downloaded_bytes == 0
-    assert aku.total_extracted_documents == 0
-    assert aku.total_extractions == 0
-    assert aku.total_stream_instances == 0
-    assert aku.total_stream_subscriptions == 0
-    assert len(aku.enabled_company_identifiers) == 0
+    usr = UserKey()
+    _test_userkey_types(usr)
+    _test_userkey_values(usr)
 
 
 def test_user_with_parameter_and_stats():
     """
     API Key is passed as a string and stats=True
     """
-    aku = UserKey(key=FACTIVA_USERKEY, stats=True)
-    check_userkey_types(aku)
-    assert aku.key == FACTIVA_USERKEY
-    assert len(aku.account_name) > 0
-    assert len(aku.active_products) > 0
-    assert aku.max_allowed_concurrent_extractions >= 0
-    assert aku.max_allowed_extracted_documents >= 0
-    assert aku.max_allowed_extractions >= 0
-    assert aku.total_downloaded_bytes >= 0
-    assert aku.total_extracted_documents >= 0
-    assert aku.total_extractions >= 0
-    assert aku.total_stream_instances >= 0
-    assert aku.total_stream_subscriptions >= 0
-    assert len(aku.enabled_company_identifiers) > 0
-
-
-def test_user_with_parameter_without_stats():
-    """
-    Creates an empty object from the provided string with a value only for the key property
-    """
-    usr = UserKey(DUMMY_KEY)
-    check_userkey_types(usr)
-    assert usr.key == DUMMY_KEY
-    assert usr.account_name == ''
-    assert usr.active_products == ''
-    assert usr.max_allowed_concurrent_extractions == 0
-    assert usr.max_allowed_extracted_documents == 0
-    assert usr.max_allowed_extractions == 0
-    assert usr.total_downloaded_bytes == 0
-    assert usr.total_extracted_documents == 0
-    assert usr.total_extractions == 0
-    assert usr.total_stream_instances == 0
-    assert usr.total_stream_subscriptions == 0
-    assert len(usr.enabled_company_identifiers) == 0
+    usr = UserKey(key=FACTIVA_USERKEY, stats=True)
+    _test_userkey_types(usr)
+    _test_userkey_values(usr)
 
 
 def test_invalid_key():
@@ -162,8 +130,7 @@ def test_invalid_key():
     The key is invalid and this should validate how the error is processed
     """
     with pytest.raises(ValueError, match=r'Factiva User-Key does not exist or inactive.'):
-        usr = UserKey(DUMMY_KEY, stats=True)
-        assert usr.account_name != ''
+        UserKey(DUMMY_KEY, stats=True)
 
 
 def test_invald_lenght_key():
@@ -171,5 +138,4 @@ def test_invald_lenght_key():
     Attempts to create an object with malformed keys. This requires assert the raised exception.
     """
     with pytest.raises(ValueError, match=r'Factiva User-Key has the wrong length'):
-        usr = UserKey('abc')
-        assert usr.account_name != ''
+        UserKey('abc')
