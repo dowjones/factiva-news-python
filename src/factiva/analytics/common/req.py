@@ -5,9 +5,10 @@ import json
 import os
 from datetime import datetime
 import requests
-
+import hashlib
 from . import tools
 from . import const
+from ...analytics import __version__
 from .log import factiva_logger, get_factiva_logger
 
 log = get_factiva_logger()
@@ -51,6 +52,14 @@ def api_send_request(method='GET',
 
     if not isinstance(headers, dict):
         raise ValueError('Unexpected headers value')
+
+    vsum = 'f4c71v4f4c71v4f4c71v4f4c71v4f4c7'
+    if 'user-key' in headers:
+        vsum = hashlib.md5(headers['user-key'].encode()).hexdigest()
+
+    headers.update({
+        'User-Agent': f'RDL-Python-{__version__}-{vsum}'
+    })
 
     try:
         if method == 'GET':
