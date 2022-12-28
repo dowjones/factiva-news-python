@@ -40,7 +40,7 @@ class BulkNewsBase():
         user_stats=False
     ):
         """Initialize class constructor."""
-        self.user_key = UserKey.create_user_key(user_key, user_stats)
+        self.user_key = UserKey(user_key, user_stats)
 
     def load_data(self):
         """Load generic data."""
@@ -188,7 +188,7 @@ class BulkNewsJob():
         self.job_state = ''
         self.submitted_datetime = datetime.now()
         self.link = ''
-        self.user_key = UserKey.create_user_key(user_key, user_key_stats)
+        self.user_key = UserKey(user_key, user_key_stats)
 
     def get_endpoint_url(self) -> str:
         """Create the URL for the API endpoint to send the request to sumbit a job, according to the kind of job that is being created.

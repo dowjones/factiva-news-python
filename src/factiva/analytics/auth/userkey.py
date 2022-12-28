@@ -19,9 +19,9 @@ class UserKey:
     ----------
     key : str
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_USERKEY
+        constructor will try to obtain its value from the ``FACTIVA_USERKEY``
         environment variable.
-    stats : bool, optional (Default: False)
+    stats : bool, optional --Default: False--
         Indicates if user data has to be pulled from the server. This operation
         fills account detail properties along with maximum, used and remaining
         values. It may take several seconds to complete.
@@ -29,52 +29,64 @@ class UserKey:
     Examples
     --------
     Creating a new UserKey instance providing the key string explicitly and requesting to retrieve the latest account details:
-        >>> u = UserKey('abcd1234abcd1234abcd1234abcd1234', stats=True)
-        >>> print(u)
-            <class 'factiva.core.userkey.UserKey'>
-            |-key = ****************************1234
-            |-cloud_token = **Not Fetched**
-            |-account_name = AccName1234
-            |-account_type = account_with_contract_limits
-            |-active_products = DNA
-            |-max_allowed_concurrent_extractions = 5
-            |-max_allowed_extracted_documents = 200,000
-            |-max_allowed_extractions = 3
-            |-currently_running_extractions = 0
-            |-total_downloaded_bytes = 7,253,890
-            |-total_extracted_documents = 2,515
-            |-total_extractions = 1
-            |-total_stream_instances = 4
-            |-total_stream_subscriptions = 1
-            |-enabled_company_identifiers = [{'id': 4, 'name': 'isin'}, {'id': 3, 'name': 'cusip'}, {'id': 1, 'name': 'sedol'}, {'id': 5, 'name': 'ticker_exchange'}]
-            |-remaining_documents = 197,485
-            |-remaining_extractions = 2
+
+    .. code-block:: python
+
+        from factiva.analytics import UserKey
+        u = UserKey('abcd1234abcd1234abcd1234abcd1234', stats=True)
+        print(u)
+
+    .. code-block::
+
+        <class 'factiva.core.userkey.UserKey'>
+        |-key = ****************************1234
+        |-cloud_token = **Not Fetched**
+        |-account_name = AccName1234
+        |-account_type = account_with_contract_limits
+        |-active_products = DNA
+        |-max_allowed_concurrent_extractions = 5
+        |-max_allowed_extracted_documents = 200,000
+        |-max_allowed_extractions = 3
+        |-currently_running_extractions = 0
+        |-total_downloaded_bytes = 7,253,890
+        |-total_extracted_documents = 2,515
+        |-total_extractions = 1
+        |-total_stream_instances = 4
+        |-total_stream_subscriptions = 1
+        |-enabled_company_identifiers = [{'id': 4, 'name': 'isin'}, {'id': 3, 'name': 'cusip'}, {'id': 1, 'name': 'sedol'}, {'id': 5, 'name': 'ticker_exchange'}]
+        |-remaining_documents = 197,485
+        |-remaining_extractions = 2
 
     Creating a new instance taking the key value from the environment varaible FACTIVA_USERKEY, and not requesting account statistics (default).
-        >>> u = UserKey()
-        >>> print(u)
-            <class 'factiva.core.userkey.UserKey'>
-            |-key = ****************************1234
-            |-cloud_token = **Not Fetched**
-            |-account_name =
-            |-account_type =
-            |-active_products =
-            |-max_allowed_concurrent_extractions = 0
-            |-max_allowed_extracted_documents = 0
-            |-max_allowed_extractions = 0
-            |-currently_running_extractions = 0
-            |-total_downloaded_bytes = 0
-            |-total_extracted_documents = 0
-            |-total_extractions = 0
-            |-total_stream_instances = 0
-            |-total_stream_subscriptions = 0
-            |-enabled_company_identifiers = []
-            |-remaining_documents = 0
-            |-remaining_extractions = 0
+
+    .. code-block:: python
+
+        from factiva.analytics import UserKey
+        u = UserKey()
+        print(u)
+
+    .. code-block::
+
+        <class 'factiva.core.userkey.UserKey'>
+        |-key = ****************************1234
+        |-cloud_token = **Not Fetched**
+        |-account_name =
+        |-account_type =
+        |-active_products =
+        |-max_allowed_concurrent_extractions = 0
+        |-max_allowed_extracted_documents = 0
+        |-max_allowed_extractions = 0
+        |-currently_running_extractions = 0
+        |-total_downloaded_bytes = 0
+        |-total_extracted_documents = 0
+        |-total_extractions = 0
+        |-total_stream_instances = 0
+        |-total_stream_subscriptions = 0
+        |-enabled_company_identifiers = []
+        |-remaining_documents = 0
+        |-remaining_extractions = 0
 
     """
-    # pylint: disable=too-many-instance-attributes
-    # Twelve is reasonable in this case.
 
     __API_ENDPOINT_BASEURL = f'{const.API_HOST}{const.API_ACCOUNT_BASEPATH}/'
     __API_CLOUD_TOKEN_URL = f'{const.API_HOST}{const.ALPHA_BASEPATH}{const.API_ACCOUNT_STREAM_CREDENTIALS_BASEPATH}'
@@ -132,29 +144,33 @@ class UserKey:
 
     @property
     def remaining_extractions(self):
-        """Account remaining extractions."""
+        """
+        Dynamic property that calculates the account's remaining extractions
+        """
         return self.max_allowed_extractions - self.total_extractions
 
 
     @property
     def remaining_documents(self):
-        """Account remaining documents."""
+        """
+        Dynamic property that calculates the account's remaining documents
+        """
         return self.max_allowed_extracted_documents - self.total_extracted_documents
 
-    @property
-    def extractions_done(self):
-        """Number of executed extractions"""
-        return self.get_extractions()
+    # @property
+    # def extractions_done(self):
+    #     """Number of executed extractions"""
+    #     return self.get_extractions()
 
-    @property
-    def streams_running(self):
-        """Number of currently running Streaming Instances"""
-        return self.get_streams()
+    # @property
+    # def streams_running(self):
+    #     """Number of currently running Streaming Instances"""
+    #     return self.get_streams()
 
     @log.factiva_logger()
     def get_stats(self) -> bool:
-        """Request the account details to the Factiva Account API Endpoint.
-
+        """
+        Request the account details to the Factiva Account API Endpoint.
         This operation can take several seconds to complete.
 
         Returns
@@ -164,8 +180,16 @@ class UserKey:
 
         Examples
         --------
-        >>> u = UserKey('abcd1234abcd1234abcd1234abcd1234')
-        >>> print(u)
+        Creates a local ``UserKey`` instance and then retrieves the stats.
+
+        .. code-block:: python
+
+            from factiva.analytics import UserKey
+            u = UserKey('abcd1234abcd1234abcd1234abcd1234')
+            print(u)
+
+        .. code-block::
+
             <class 'factiva.core.userkey.UserKey'>
             |-key = ****************************1234
             |-cloud_token = **Not Fetched**
@@ -184,8 +208,14 @@ class UserKey:
             |-enabled_company_identifiers = []
             |-remaining_documents = 0
             |-remaining_extractions = 0
-        >>> u.get_stats()
-        >>> print(u)
+        
+        .. code-block:: python
+
+            u.get_stats()
+            print(u)
+
+        .. code-block::
+
             <class 'factiva.core.userkey.UserKey'>
             |-key = ****************************1234
             |-cloud_token = **Not Fetched**
@@ -271,6 +301,7 @@ class UserKey:
         self.cloud_token = json.loads(streaming_credentials_string)
         return True
 
+
     @log.factiva_logger()
     def get_extractions(self, updates=False) -> pd.DataFrame:
         """Request a list of the extractions of the account.
@@ -345,6 +376,31 @@ class UserKey:
         - ValueError when the API Key provided is not valid
         - RuntimeError when the API returns an unexpected error
 
+        Examples
+        --------
+        Show the extractions for the current user:
+
+        .. code-block:: python
+
+            from factiva.analytics import UserKey
+            u = UserKey()
+            u.show_extractions()
+
+        .. code-block::
+
+                  current_state format extraction_type snapshot_sid update_id
+            0    JOB_STATE_DONE   avro       documents   0pjfkz33ra      None
+            1    JOB_STATE_DONE   json       documents   0rsfemt846      None
+            2    JOB_STATE_DONE   json       documents   1snv7pjx1a      None
+            3    JOB_STATE_DONE   json       documents   2toxzrekx1      None
+            4    JOB_STATE_DONE    csv       documents   2udvglt9xy      None
+            ..              ...    ...             ...          ...       ...
+            18   JOB_STATE_DONE   avro       documents   re9xq88syg      None
+            19   JOB_STATE_DONE   json       documents   wfbf3eacz8      None
+            20   JOB_STATE_DONE   json       documents   ymhsvx20tl      None
+            21   JOB_STATE_DONE   json       documents   yonrtw2hbe      None
+            22   JOB_STATE_DONE   avro       documents   zpxgqyrqgr      None
+
         """
         extractions = self.get_extractions(updates=updates)
         print(extractions.loc[:, extractions.columns != 'object_id'])
@@ -352,17 +408,14 @@ class UserKey:
 
     @log.factiva_logger()
     def get_streams(self, running=True) -> pd.DataFrame:
-        """Obtain streams from a given user.
-
-        Function which returns the streams a given user with
-        its respective key using the default stream url
+        """
+        Function which returns the list of streams for the user.
 
         Parameters
         ----------
         running : bool
             Flag that indicates whether the retrieved list should be restricted
-            to only running streams (True) or also include cancelled and failed
-            ones (False).
+            to only running streams (True) or also include historical ones (False).
 
         Returns
         -------
@@ -432,7 +485,7 @@ class UserKey:
 
         Returns
         -------
-        None
+        Display a table convenient for Python manual execution or notebooks.
 
         Raises
         ------
@@ -442,6 +495,21 @@ class UserKey:
             When API key is not valid
         RuntimeError:
             When API request returns unexpected error
+
+        Examples
+        --------
+        Show running streams:
+
+        .. code-block:: python
+
+            from factiva.analytics import UserKey
+            u = UserKey()
+            u.show_streams()
+
+        .. code-block::
+
+              job_status        stream_id  stream_type                subscriptions n_subscriptions
+            1 JOB_STATE_RUNNING kmzx8wrbzs      stream [kmzx8wrbzs-filtered-1nJvA5]               1
 
         """
         account_streams = self.get_streams(running=running)
@@ -462,8 +530,9 @@ class UserKey:
 
 
     @staticmethod
-    def create_user_key(key=None, stats=False):
-        """Determine the way to initialize an api key user according to the type of parameter provided.
+    def _create_user_key(key=None, stats=False):
+        """
+        Determine the way to initialize an api key user according to the type of parameter provided.
 
         Parameters
         ----------

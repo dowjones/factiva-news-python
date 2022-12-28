@@ -37,7 +37,7 @@ class Company():
     
     def __init__(self, user_key=None):
         """Class initializar"""
-        self.user_key = UserKey.create_user_key(user_key, True)
+        self.user_key = UserKey(user_key, True)
         self.log= get_factiva_logger()
 
 

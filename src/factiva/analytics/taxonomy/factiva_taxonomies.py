@@ -76,7 +76,7 @@ class FactivaTaxonomy():
 
     def __init__(self, user_key=None):
         """Class initializer."""
-        self.user_key = UserKey.create_user_key(user_key)
+        self.user_key = UserKey(user_key)
         self.log= log.get_factiva_logger()
         self.all_subjects = None
         self.all_regions = None

@@ -16,39 +16,25 @@ class OAuthUser:
     Parameters
     ----------
     client_id : str
-        Assigned Client ID and communicated via the Welcome Letter.
+        Assigned Client ID and communicated via the Welcome Letter. Retrieves
+        the value from the environment variable ``FACTIVA_CLIENTID`` it not provided.
     username : str
-        Assigned Username and communicated via the Welcome Letter.
+        Assigned Username and communicated via the Welcome Letter. Retrieves
+        the value from the environment variable ``FACTIVA_USERNAME`` it not provided.
     password : str
-        Assigned password and communicated via the Welcome Letter.
+        Assigned password and communicated via the Welcome Letter. Retrieves
+        the value from the environment variable ``FACTIVA_PASSWORD`` it not provided.
 
     """
 
     __API_OAUTH_BASEURL = const.API_ACCOUNT_OAUTH2_URL
 
-    client_id = None
-    """
-    Property assigned at creation time based on the passed parameter or the content
-    of the FACTIVA_CLIENTID environment variable. The value for this attribute is
-    provided by Dow Jones based on an existing agreement.
-    """
-
-    username = None
-    """
-    Property assigned at creation time based on the passed parameter or the content
-    of the FACTIVA_USERNAME environment variable. The value for this attribute is
-    provided by Dow Jones based on an existing agreement.
-    """
-
-    password = None
-    """
-    Property assigned at creation time based on the passed parameter or the content
-    of the FACTIVA_PASSWORD environment variable. The value for this attribute is
-    provided by Dow Jones based on an existing agreement.
-    """
-
+    _client_id = None
+    _username = None
+    _password = None
     _access_token = None
     _id_token = None
+    _id_expiration = None
     _refresh_token = None
     _jwt_token = None
     _jwt_expiration = None
@@ -56,31 +42,48 @@ class OAuthUser:
 
     def __init__(
         self,
-        client_id=None,
-        username=None,
-        password=None
+        client_id:str=None,
+        username:str=None,
+        password:str=None
     ):
         """Constructs the instance of the class."""
+        
         if client_id is None:
             try:
-                self.client_id = config.load_environment_value('FACTIVA_CLIENTID')
+                self._client_id = config.load_environment_value('FACTIVA_CLIENTID')
             except Exception as error:
                 raise ValueError('client_id parameter not provided and environment variable FACTIVA_CLIENTID not set.') from error
+        else:
+            if not isinstance(client_id, str):
+                raise ValueError('The client_id param must be a string')
+            else:
+                self._client_id = client_id
 
         if username is None:
             try:
-                self.username = config.load_environment_value('FACTIVA_USERNAME')
+                self._username = config.load_environment_value('FACTIVA_USERNAME')
             except Exception as error:
                 raise ValueError('username parameter not provided and environment variable FACTIVA_USERNAME not set.') from error
+        else:
+            if not isinstance(username, str):
+                raise ValueError('The username param must be a string')
+            else:
+                self._username = username
 
         if password is None:
             try:
-                self.password = config.load_environment_value('FACTIVA_PASSWORD')
+                self._password = config.load_environment_value('FACTIVA_PASSWORD')
             except Exception as error:
                 raise ValueError('password parameter not provided and environment variable FACTIVA_PASSWORD not set.') from error
+        else:
+            if not isinstance(password, str):
+                raise ValueError('The password param must be a string')
+            else:
+                self._password = password
         
         self._access_token = None
         self._id_token = None
+        self._id_expiration = None
         self._jwt_token = None
         self._jwt_expiration = None
 
@@ -98,21 +101,40 @@ class OAuthUser:
         return self._jwt_token
 
 
+    @property
+    def token_status(self) -> str:
+        """
+        Provides the current token status:
+
+        - ``not_authenticated`` (``get_id_token()`` has not been executed)
+        - ``id_token_expired`` (previously obtained ID token has expired)
+        - ``not_authorized`` (``get_jwt_token()`` has not been executed)
+        - ``jwt_token_expired`` (previously obtained JWT token has expired)
+        - ``OK`` (token is ready for authenticated requests)
+        """
+        if not self._id_token:
+            return 'not_authenticated'
+        elif self._id_expiration <= datetime.datetime.now(datetime.timezone.utc):
+            return 'id_token_expired'
+        elif not self._jwt_token:
+            return 'not_authorized'
+        elif self._jwt_expiration <= datetime.datetime.now(datetime.timezone.utc):
+            return 'jwt_token_expired'
+        return 'OK'
+
+
     def get_id_token(self) -> bool:
         """
         Requests an ID token to the DJ auth service and store the necessary
         information for furher requests in the instance properties.
         """
-        # TODO: Validate params format
-        #       Handle exceptions or unexpected responses like 403
-
         id_token_payload = {
-            "client_id": self.client_id,
-            "username": self.username,
+            "client_id": self._client_id,
+            "username": self._username,
             "grant_type": "password",
             "connection": "service-account",
             "scope": "openid service_account_id",
-            "password": self.password
+            "password": self._password
         }
         authn_response = req.api_send_request(
             method="POST",
@@ -120,13 +142,20 @@ class OAuthUser:
             payload=id_token_payload,
             headers={}
         )
-        response_body = authn_response.json()
-        self._id_token = response_body['id_token']
-        self._access_token = response_body['access_token']
-        return True
+        if authn_response.status_code == 200:
+            response_body = authn_response.json()
+            self._id_token = response_body['id_token']
+            self._access_token = response_body['access_token']
+            bearer_payload = eval(base64.b64decode(self._access_token.split('.')[1] + '==').decode('utf-8'))
+            self._id_expiration = datetime.datetime.utcfromtimestamp(int(bearer_payload['exp'])).replace(tzinfo=datetime.timezone.utc)
+            return True
+        elif authn_response.status_code == 403:
+            raise PermissionError('Invalid user credentials')
+        else:
+            raise RuntimeError('Unspecified error')
 
 
-    def get_jwt_token(self):
+    def get_jwt_token(self) -> bool:
         """
         Requests a JWT Authorization token to the Factiva Auth service. The
         returned token is stored internally and available via the `current_jwt_token`
@@ -139,7 +168,7 @@ class OAuthUser:
         #       Handle exceptions or unexpected responses like 403
 
         authz_token_payload = {
-            "client_id": self.client_id,
+            "client_id": self._client_id,
             "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
             "connection": "service-account",
             "scope": "openid pib",
@@ -159,37 +188,20 @@ class OAuthUser:
         return True
 
 
-    def __print_property__(self, property_value) -> str:
-        if not property_value:
-            pval = '<NotSet>'
-        elif isinstance(property_value, int):
-            pval = f'{property_value:,d}'
-        elif isinstance(property_value, float):
-            pval = f'{property_value:,f}'
-        else:
-            pval = property_value
-        return pval
-
-
     def __repr__(self):
         """Return a string representation of the object."""
         return self.__str__()
 
 
     def __str__(self, detailed=False, prefix='  |-', root_prefix=''):
-        pprop = self.__dict__.copy()
-        del pprop['client_id']
-        del pprop['password']
-        del pprop['username']
-
         ret_val = f'{root_prefix}{str(self.__class__)}\n'
-        ret_val += f'{prefix}username = {self.username}\n'
+        ret_val += f'{prefix}client_id = {self._client_id}\n'
+        ret_val += f'{prefix}token_status = {self.token_status}\n'
         if detailed:
-            masked_client_id = tools.mask_string(self.client_id)
-            masked_password = tools.mask_string(self.password)
+            masked_client_id = tools.mask_string(self._username)
+            masked_password = tools.mask_string(self._password)
             ret_val += f'{prefix}client_id = {masked_client_id}\n'
             ret_val += f'{prefix}password = {masked_password}\n'
-            ret_val += '\n'.join((f'{prefix}{item} = {self.__print_property__(pprop[item])}' for item in pprop))
         else:
             ret_val += f'{prefix}...'
         return ret_val

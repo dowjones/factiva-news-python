@@ -18,9 +18,10 @@ class ArticleRetrieval():
     User instance wich provides the credentials to connect to the Article Retrieval API endpoints.
     """
 
+    # TODO: When UIArticle is implemente, this will become a list of UIArticle
     last_retrieval_response = None
     """
-    Attribute to store the last retrieved article(s).
+    List that stores last retrieved articles.
     """
 
 
@@ -30,12 +31,12 @@ class ArticleRetrieval():
           self.oauth_user = OAuthUser()
         else:
           self.oauth_user = oauth_user
-        if (not isinstance(self.oauth_user.current_jwt_token, str)) or (len(self.oauth_user.current_jwt_token) < 100):
+        if (not isinstance(self.oauth_user.current_jwt_token, str)) or (len(self.oauth_user.current_jwt_token.split('.')) != 3):
           raise ValueError('Unexpected token for the OAuthUser instance')
         self.last_retrieval_response = []
 
 
-    def retrieve_single_article(self, an=None):
+    def retrieve_single_article(self, an):
         """
         Method that retrieves a single article to be displayed in a user interface.
         The returned variable is a JSON object. Additionally, the retrieved data is
@@ -44,13 +45,19 @@ class ArticleRetrieval():
         Parameters
         ----------
         an : str
-            String containing the 32-character long article ID (AN)
+            String containing the 32-character long article ID (AN).
+            e.g. TRIB000020191217efch0001w
 
         Examples
         --------
-        Creating a new UserKey instance providing the key string explicitly and requesting to retrieve the latest account details:
-            >>> ar = ArticleRetrieval()  # Take credentials from env variables
-            >>> ar.retrieve_single_article(an='TRIB000020191217efch0001w')
+        Creating a new ``ArticleRetrieval`` instance which reads credentials values from
+        environment variables and retrieves a single article:
+
+        .. code-block:: python
+
+            from factiva.analytics import ArticleRetrieval
+            ar = ArticleRetrieval()
+            ar.retrieve_single_article(an='TRIB000020191217efch0001w')
 
         """
         if (not isinstance(an, str) or (not len(an) == 25)):
@@ -68,10 +75,40 @@ class ArticleRetrieval():
         self.last_retrieval_response = [article_dict]
         return article_dict
 
+
+    # TODO: Implement a metod to retrieve multiple articles based on a list of ANs param
+
+
+    def __repr__(self):
+        """Create string representation for Snapshot Class."""
+        return self.__str__()
+
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        """Create string representation for Snapshot Class."""
+        child_prefix = '  |' + prefix
+        ret_val = str(self.__class__) + '\n'
+
+        ret_val += f'{prefix}oauth_user: '
+        ret_val += self.oauth_user.__str__(detailed=False, prefix=child_prefix)
+        ret_val += '\n'
+
+        ret_val += f'{prefix}last_retrieval_response: <list>\n'
+        if len(self.last_retrieval_response) > 0:
+            ret_val += f'{child_prefix}list_items = {len(self.last_retrieval_response)}\n'
+            ret_val += f'{child_prefix}list_ids = {[article["data"]["id"] for article in self.last_retrieval_response]}'
+        else:
+            ret_val += f'{child_prefix}<empty>'
+
+        return ret_val
+
+
 class UIArticle():
     """
     Class that represents a single article for visualization purposes. Methods
     and attributes are tailored for front-end environments .
     """
+    # TODO: Implement this class that must represent an article and allows to render
+    #       its content using multiple output formats (JSON, HTML and TEXT)
     pass
 
