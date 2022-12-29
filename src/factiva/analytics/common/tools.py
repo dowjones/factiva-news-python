@@ -2,8 +2,13 @@
 
 import datetime
 import os
+import hashlib
 from dateutil import parser
 from .. import common
+
+
+def md5hash(text:str) -> str:
+    return hashlib.md5(text.encode()).hexdigest()
 
 
 def mask_string(raw_str, right_padding=4) -> str:
