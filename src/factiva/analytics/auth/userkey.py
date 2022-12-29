@@ -13,7 +13,9 @@ from ..common import config
 
 
 class UserKey:
-    """Class that represents an API user. This entity is identifiable by a User Key.
+    """
+    Class that represents an API user and can be instantiated based on the
+    user-key value provided by the Dow Jones Developer Support team.
 
     Parameters
     ----------
@@ -21,14 +23,17 @@ class UserKey:
         String containing the 32-character long APi Key. If not provided, the
         constructor will try to obtain its value from the ``FACTIVA_USERKEY``
         environment variable.
-    stats : bool, optional --Default: False--
-        Indicates if user data has to be pulled from the server. This operation
-        fills account detail properties along with maximum, used and remaining
-        values. It may take several seconds to complete.
+    stats : bool
+        Indicates if user data has to be pulled from the server at creation
+        time (``True``) or just create an instance with no stats data
+        (``False`` - default). This operation fills account detail properties
+        along with maximum, used and remaining values. It may take several 
+        seconds to complete.
 
     Examples
     --------
-    Creating a new UserKey instance providing the key string explicitly and requesting to retrieve the latest account details:
+    Creating a new UserKey instance providing the ``key`` string explicitly and
+    retrieving the latest account details:
 
     .. code-block:: python
 
@@ -57,7 +62,8 @@ class UserKey:
         |-remaining_documents = 197,485
         |-remaining_extractions = 2
 
-    Creating a new instance taking the key value from the environment varaible FACTIVA_USERKEY, and not requesting account statistics (default).
+    Creating a new instance taking the key value from the ``FACTIVA_USERKEY``
+    environment varaible, and not requesting account statistics.
 
     .. code-block:: python
 
@@ -175,8 +181,10 @@ class UserKey:
 
         Returns
         -------
-        True if the operation was completed successfully. All returned values
-        are assigned to the object's properties directly.
+        bool:
+            ``True`` if the operation was completed successfully. ``False``
+            otherwise. All returned values are assigned to the object's 
+            properties directly.
 
         Examples
         --------
@@ -187,6 +195,8 @@ class UserKey:
             from factiva.analytics import UserKey
             u = UserKey('abcd1234abcd1234abcd1234abcd1234')
             print(u)
+
+        output
 
         .. code-block::
 
@@ -213,6 +223,8 @@ class UserKey:
 
             u.get_stats()
             print(u)
+
+        output
 
         .. code-block::
 
@@ -266,18 +278,14 @@ class UserKey:
     @log.factiva_logger()
     def get_cloud_token(self) -> bool:
         """
-        Request a cloud token to the API and saves its value
-        in the cloud_token property
+        Request a cloud token and stores its content in the ``cloud_token``
+        property
 
         Returns
         -------
-        True if the operation was completed successfully. Returned value
-        is assigned to the cloud_token property.
-
-        Raises
-        ------
-        ValueError: When the credentials are not valid
-        RuntimeError: When API request returns unexpected error
+        bool:
+            ``True`` if the operation was completed successfully. ``False``
+            otherwise.
 
         """
         req_head = {'user-key': self.key}
@@ -304,22 +312,19 @@ class UserKey:
 
     @log.factiva_logger()
     def get_extractions(self, updates=False) -> pd.DataFrame:
-        """Request a list of the extractions of the account.
+        """
+        Request a list of historical extractions for the account.
 
         Parameters
         ----------
         updates : bool
-            Flag that indicates whether the retrieved list should include (True)
-            or not (False) Snapshot Update calls.
+            Indicates whether the retrieved list should include update
+            operations (``True``) or not (``False`` - default).
 
         Returns
         -------
-        Dataframe containing the list of historical extractions for the account.
-
-        Raises
-        ------
-        - ValueError when the API Key provided is not valid
-        - RuntimeError when the API returns an unexpected error
+        padas.Dataframe:
+            containing the list of historical extractions for the account.
 
         """
         endpoint = f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}'
@@ -359,26 +364,24 @@ class UserKey:
 
 
     def show_extractions(self, updates=False):
-        """Shows a list of the extractions of the account.
+        """
+        Shows the list of historical extractions for the account. Intended
+        to be used in notebooks or manual Python command executions.
 
         Parameters
         ----------
         updates : bool
-            Flag that indicates whether the displayed list should include (True)
-            or not (False) Snapshot Update calls.
+            Indicates whether the retrieved list should include update
+            operations (``True``) or not (``False`` - default).
 
         Returns
         -------
-        Dataframe containing the list of historical extractions for the account.
-
-        Raises
-        ------
-        - ValueError when the API Key provided is not valid
-        - RuntimeError when the API returns an unexpected error
+        nothing:
+            Displays a table with the extraction list.
 
         Examples
         --------
-        Show the extractions for the current user:
+        Show the historical extractions for the current user:
 
         .. code-block:: python
 
@@ -395,11 +398,11 @@ class UserKey:
             3    JOB_STATE_DONE   json       documents   2toxzrekx1      None
             4    JOB_STATE_DONE    csv       documents   2udvglt9xy      None
             ..              ...    ...             ...          ...       ...
-            18   JOB_STATE_DONE   avro       documents   re9xq88syg      None
-            19   JOB_STATE_DONE   json       documents   wfbf3eacz8      None
-            20   JOB_STATE_DONE   json       documents   ymhsvx20tl      None
-            21   JOB_STATE_DONE   json       documents   yonrtw2hbe      None
-            22   JOB_STATE_DONE   avro       documents   zpxgqyrqgr      None
+            12   JOB_STATE_DONE   avro       documents   re9xq88syg      None
+            13   JOB_STATE_DONE   json       documents   wfbf3eacz8      None
+            14   JOB_STATE_DONE   json       documents   ymhsvx20tl      None
+            15   JOB_STATE_DONE   json       documents   yonrtw2hbe      None
+            16   JOB_STATE_DONE   avro       documents   zpxgqyrqgr      None
 
         """
         extractions = self.get_extractions(updates=updates)
@@ -409,26 +412,19 @@ class UserKey:
     @log.factiva_logger()
     def get_streams(self, running=True) -> pd.DataFrame:
         """
-        Function which returns the list of streams for the user.
+        Retrieves the list of streams for the user.
 
         Parameters
         ----------
         running : bool
-            Flag that indicates whether the retrieved list should be restricted
-            to only running streams (True) or also include historical ones (False).
+            Indicates whether the retrieved list should be restricted
+            to only running streams (``True`` - default) or also include
+            historical ones (``False``).
 
         Returns
         -------
-        DataFrame -> DataFrame with the list of historical extractions
-
-        Raises
-        ------
-        AttributeError:
-            When is not possible to parse the data as json or dataframe
-        ValueError:
-            When API key is not valid
-        RuntimeError:
-            When API request returns unexpected error
+        pandas.DataFrame:
+            DataFrame with the list of historical extractions
 
         """
         request_headers = {'user-key': self.key}
@@ -440,7 +436,6 @@ class UserKey:
         if response.status_code == 200:
             try:
                 def extract_subscriptions(subscription):
-                    # Fixed issue#12 (https://github.com/dowjones/factiva-core-python/issues/12)
                     id_list = []
                     for i in subscription:
                         s_idp = i['id'].split('-')
@@ -471,7 +466,8 @@ class UserKey:
 
 
     def show_streams(self, running=True):
-        """Shows the list of streams for a given user.
+        """
+        Shows the list of streams for a given user.
 
         This function runs the existing function get_streams and
         prints a user-friendly table with stream details.
@@ -485,16 +481,8 @@ class UserKey:
 
         Returns
         -------
-        Display a table convenient for Python manual execution or notebooks.
-
-        Raises
-        ------
-        AttributeError:
-            When is not possible to parse the data as json or dataframe
-        ValueError:
-            When API key is not valid
-        RuntimeError:
-            When API request returns unexpected error
+        nothing:
+            Displays a table with the extraction list.
 
         Examples
         --------
@@ -532,18 +520,20 @@ class UserKey:
     @staticmethod
     def _create_user_key(key=None, stats=False):
         """
-        Determine the way to initialize an api key user according to the type of parameter provided.
+        Private method.
+        Determine the way to initialize an api key user according to the type
+        of parameter provided.
 
         Parameters
         ----------
         api_user : None, str, UserKey
-                Source to create a UserKey instance
+            Source to create a UserKey instance
         stats : boolean, optional (Default: False)
-                Indicates if user data has to be pulled from the server
+            Indicates if user data has to be pulled from the server
 
         Returns
         -------
-        UserKey instance accordingly:
+        UserKey:
             - When None is passed, UserKey instance using credentials from ENV variables
             - When str is passed, UserKey instance using the provided parameter as credentials
             - When UserKey is passed, it returns the same instance

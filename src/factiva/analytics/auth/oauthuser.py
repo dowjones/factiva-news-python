@@ -11,19 +11,50 @@ import base64
 import datetime
 
 class OAuthUser:
-    """Class that represents a Dow Jones OAuth user.
+    """
+    Class that represents a Dow Jones OAuth user.
 
     Parameters
     ----------
     client_id : str
         Assigned Client ID and communicated via the Welcome Letter. Retrieves
-        the value from the environment variable ``FACTIVA_CLIENTID`` it not provided.
+        the value from the ENV variable ``FACTIVA_CLIENTID`` it not provided.
     username : str
         Assigned Username and communicated via the Welcome Letter. Retrieves
-        the value from the environment variable ``FACTIVA_USERNAME`` it not provided.
+        the value from the ENV variable ``FACTIVA_USERNAME`` it not provided.
     password : str
         Assigned password and communicated via the Welcome Letter. Retrieves
-        the value from the environment variable ``FACTIVA_PASSWORD`` it not provided.
+        the value from the ENV variable ``FACTIVA_PASSWORD`` it not provided.
+
+    Examples
+    --------
+    Create an ``OAuthUser`` instance from ENV variables and assign the JWT
+    token to a request headers dictionary.
+    
+    .. code-block:: python
+
+        from factiva.analytics import OAuthUser
+        o = OAuthUser()
+        headers = {
+            'Authorization': f'Bearer {o.current_jwt_token}'
+        }
+
+    Shows the relevant properties of a ``OAuthUser`` instance.
+
+    .. code-block:: python
+
+        from factiva.analytics import OAuthUser
+        o = OAuthUser()
+        o
+
+    output
+
+    .. code-block::
+
+        <class 'factiva.analytics.auth.oauthuser.OAuthUser'>
+          |-client_id = fbwqyORz0te484RQTt0E7qj6Tooj4Cs6
+          |-token_status = OK
+          |-...
 
     """
 
@@ -91,7 +122,7 @@ class OAuthUser:
     @property
     def current_jwt_token(self):
         """
-        Returns a valid token to be used in the authorization HTTP header.
+        Returns a valid token to be used in the ``Authorization`` HTTP header.
         Recalculates the JWT token automatically if needed.
         """
         if not self._jwt_token:
@@ -125,8 +156,16 @@ class OAuthUser:
 
     def get_id_token(self) -> bool:
         """
-        Requests an ID token to the DJ auth service and store the necessary
-        information for furher requests in the instance properties.
+        Requests an ID token to the DJ auth service (authentication operation)
+        and store the necessary information for furher requests in the relevant
+        instance properties.
+
+        Returns
+        -------
+        bool:
+            ``True`` if the operation was completed successfully. ``False``
+            otherwise.
+
         """
         id_token_payload = {
             "client_id": self._client_id,
@@ -158,8 +197,16 @@ class OAuthUser:
     def get_jwt_token(self) -> bool:
         """
         Requests a JWT Authorization token to the Factiva Auth service. The
-        returned token is stored internally and available via the `current_jwt_token`
-        property. Usual expiration is 1 hour.
+        returned token is stored internally and available via the
+        ``current_jwt_token`` property. Usual expiration is 1 hour
+        (3600 seconds).
+
+        Returns
+        -------
+        bool:
+            ``True`` if the operation was completed successfully. ``False``
+            otherwise.
+
         """
         if (not self._access_token) or (not self._id_token):
             self.get_id_token()
