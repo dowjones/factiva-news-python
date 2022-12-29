@@ -13,10 +13,11 @@ from .log import factiva_logger, get_factiva_logger
 
 log = get_factiva_logger()
 
-def _send_get_request(endpoint_url=const.API_HOST,
-                     headers=None,
+
+def _send_get_request(endpoint_url:str=const.API_HOST,
+                     headers:dict=None,
                      qs_params=None,
-                     stream=False):
+                     stream:bool=False):
     """Send get request."""
     if (qs_params is not None) and (not isinstance(qs_params, dict)):
         raise ValueError('Unexpected qs_params value')
@@ -26,7 +27,9 @@ def _send_get_request(endpoint_url=const.API_HOST,
                         stream=stream)
 
 
-def _send_post_request(endpoint_url=const.API_HOST, headers=None, payload=None):
+def _send_post_request(endpoint_url:str=const.API_HOST,
+                       headers:dict=None,
+                       payload=None):
     """Send post request."""
     if payload is not None:
         if isinstance(payload, dict):
@@ -39,13 +42,14 @@ def _send_post_request(endpoint_url=const.API_HOST, headers=None, payload=None):
 
     return requests.post(endpoint_url, headers=headers)
 
+
 @factiva_logger()
-def api_send_request(method='GET',
-                     endpoint_url=const.API_HOST,
-                     headers=None,
+def api_send_request(method:str='GET',
+                     endpoint_url:str=const.API_HOST,
+                     headers:dict=None,
                      payload=None,
                      qs_params=None,
-                     stream=False):
+                     stream:bool=False):
     """Send a generic request to a certain API end point."""
     if headers is None:
         raise ValueError('Heders for Factiva requests cannot be empty')
@@ -55,7 +59,7 @@ def api_send_request(method='GET',
 
     vsum = 'f4c71v4f4c71v4f4c71v4f4c71v4f4c7'
     if 'user-key' in headers:
-        vsum = hashlib.md5(headers['user-key'].encode()).hexdigest()
+        vsum = tools.md5hash(headers['user-key'])
 
     headers.update({
         'User-Agent': f'RDL-Python-{__version__}-{vsum}'
@@ -86,11 +90,11 @@ def api_send_request(method='GET',
 
 
 @factiva_logger()
-def download_file(file_url,
-                  headers,
-                  file_name,
-                  file_extension,
-                  to_save_path,
+def download_file(file_url:str,
+                  headers:dict,
+                  file_name:str,
+                  file_extension:str,
+                  to_save_path:str,
                   add_timestamp=False) -> str:
     """Download a file on a specific path.
     
@@ -122,6 +126,14 @@ def download_file(file_url,
 
     if add_timestamp:
         file_name = f'{file_name}-{datetime.now()}'
+
+    vsum = 'f4c71v4f4c71v4f4c71v4f4c71v4f4c7'
+    if 'user-key' in headers:
+        vsum = tools.md5hash(headers['user-key'])
+
+    headers.update({
+        'User-Agent': f'RDL-Python-{__version__}-{vsum}'
+    })
 
     response = _send_get_request(endpoint_url=file_url,
                                 headers=headers,
