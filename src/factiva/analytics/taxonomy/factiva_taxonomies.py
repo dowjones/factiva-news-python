@@ -18,11 +18,19 @@ class FactivaTaxonomyCategories(Enum):
     version is implemented. The simple version is a sub-set of the
     hierarchical dataset.
 
-        >>> FactivaTaxonomyCategories.SUBJECTS
-        >>> FactivaTaxonomyCategories.REGIONS
-        >>> FactivaTaxonomyCategories.COMPANIES
-        >>> FactivaTaxonomyCategories.INDUSTRIES
-        >>> FactivaTaxonomyCategories.EXECUTIVES
+    Examples
+    --------
+    Use it directly when needed. Usually as param in ``FactivaTaxonomy`` methods.
+
+    .. code-block:: python
+
+        from factiva.analytics import FactivaTaxonomyCategories
+        FactivaTaxonomyCategories.SUBJECTS
+        FactivaTaxonomyCategories.REGIONS
+        FactivaTaxonomyCategories.COMPANIES
+        FactivaTaxonomyCategories.INDUSTRIES
+        FactivaTaxonomyCategories.EXECUTIVES
+
     """
     SUBJECTS = 'hierarchySubject'
     REGIONS = 'hierarchyRegion'
@@ -36,7 +44,7 @@ class FactivaTaxonomy():
     Class that represents the Factiva Taxonomy endpoints in Factiva
     Analytics.
     
-    `Subject`, `industry` and `region` taxonomies have two separate
+    ``Subject``, ``industry`` and ``region`` taxonomies have two separate
     categories in the API. However, current implementation uses only a 
     simplified version where the dataset returns all codes with
     the minimum set of columns to build a hierarchy.
@@ -46,24 +54,36 @@ class FactivaTaxonomy():
     user_key: str or UserKey
         String containing the 32-character long APi Key or UserKey instance
         that represents an existing user. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_USERKEY
+        constructor will try to obtain its value from the ``FACTIVA_USERKEY``
         environment variable.
 
     Examples
     --------
     Creating a taxonomy instance with no user key. Fails if the environment
-    variable FACTIVA_USERKEY is not set.
+    variable ``FACTIVA_USERKEY`` is not set.
 
-        >>> t = FactivaTaxonomy()
+    .. code-block:: python
 
-    Creating a taxonomy instance providing the user key
+        from factiva.analytics import FactivaTaxonomy
+        t = FactivaTaxonomy()
 
-        >>> t = FactivaTaxonomy(user_key='abcd1234abcd1234abcd1234abcd1234')
+    Creating a taxonomy instance providing the user key as string
 
-    Creating a taxonomy instance with an existing UserKey instance
+    .. code-block:: python
 
-        >>> u = UserKey('abcd1234abcd1234abcd1234abcd1234')
-        >>> t = FactivaTaxonomy(user_key=u)
+        from factiva.analytics import FactivaTaxonomy
+        t = FactivaTaxonomy(user_key='abcd1234abcd1234abcd1234abcd1234')
+
+    Creating a taxonomy instance with an existing ``UserKey`` instance
+
+    .. code-block:: python
+
+        from factiva.analytics import UseKey, FactivaTaxonomy
+        u = UserKey('abcd1234abcd1234abcd1234abcd1234')
+        t = FactivaTaxonomy(user_key=u)
+
+    With the ``FactivaTaxonomy`` instance ``t``, it's now possible to call any
+    method. Please see below.
 
     """
 
@@ -76,7 +96,10 @@ class FactivaTaxonomy():
 
     def __init__(self, user_key=None):
         """Class initializer."""
-        self.user_key = UserKey(user_key)
+        if isinstance(user_key, UserKey):
+            self.user_key = user_key
+        else:
+            self.user_key = UserKey(user_key)
         self.log= log.get_factiva_logger()
         self.all_subjects = None
         self.all_regions = None
@@ -88,9 +111,12 @@ class FactivaTaxonomy():
     def get_category_codes(self, category:FactivaTaxonomyCategories) -> pd.DataFrame:
         """
         Request for available codes in the taxonomy for the specified category.
-        WARNING: The taxonomy category FactivaTaxonomyCategories.EXECUTIVES is 
-        not currently supported for this operation. Use the download_category_codes() 
-        method instead.
+
+        .. important::
+
+            The taxonomy category ``FactivaTaxonomyCategories.EXECUTIVES`` is 
+            not currently supported by this operation. Use the ``download_category_codes()`` 
+            method instead.
 
         Parameters
         ----------
@@ -100,25 +126,36 @@ class FactivaTaxonomy():
 
         Returns
         -------
-        Pandas Dataframe containing the codes for the specified category
-
-        Raises
-        ------
-        ValueError: When category is not of a valid type
-        RuntimeError: When API request returns unexpected error
+        pandas.DataFrame:
+            Dataframe containing the codes for the specified category
 
         Examples
         --------
         Getting the codes for the 'industries' category
-            >>> t = FactivaTaxonomy()
-            >>> industry_codes = t.get_category_codes(FactivaTaxonomyCategories.INDUSTRIES)
-            >>> print(industry_codes)
-                    code                description
-            0     i25121             Petrochemicals
-            1     i14001         Petroleum Refining
-            2       i257            Pharmaceuticals
-            3     iphrws  Pharmaceuticals Wholesale
-            4       i643     Pharmacies/Drug Stores
+
+        .. code-block:: python
+
+            from factiva.analytics import FactivaTaxonomy, FactivaTaxonomyCategories
+            t = FactivaTaxonomy()
+            industry_codes = t.get_category_codes(FactivaTaxonomyCategories.INDUSTRIES)
+            industry_codes
+
+        .. code-block::
+
+                          code                descriptor                                        description direct_parent
+            code
+            I0              I0               Agriculture  All farming, forestry, commercial fishing, hun...           NaN
+            I01001      I01001                   Farming  Agricultural crop production, seed supply and ...            i0
+            I03001      I03001               Aquaculture  The farming of aquatic animals and plants such...        i01001
+            I0100144  I0100144             Cocoa Growing                               Growing cocoa beans.        i01001
+            I0100137  I0100137            Coffee Growing                              Growing coffee beans.        i01001
+            ...            ...                       ...                                                ...           ...
+            I162          I162             Gas Utilities  Operating gas distribution and transmission sy...           i16
+            IMULTI      IMULTI            Multiutilities  Utility companies with significant presence in...         iutil
+            I17            I17           Water Utilities  Operating water treatment plants and/or operat...         iutil
+            IDESAL      IDESAL              Desalination  Desalination is the process of removing salt a...           i17
+            IDISHEA    IDISHEA  District Heating/Cooling  Heating systems that involve the distribution ...           i17
+        
         """
 
         if category == FactivaTaxonomyCategories.EXECUTIVES:
@@ -180,24 +217,29 @@ class FactivaTaxonomy():
             codes will be retrieved.
         path : str
             Folder path where the output file will be stored.
-        file_format : str (optional)
-            String specifying the download format ('csv' or 'avro')
+        file_format : str {csv, avro}
+            String specifying the download format
 
         Returns
         -------
-        True if the file is correctly downloaded. False otherwise.
+        bool:
+            ``True`` if the file is correctly downloaded. ``False`` otherwise.
 
         Raises
         ------
-        ValueError: When the parameter file_fomat is invalid or not a string
-        RuntimeError: When API request returns unexpected error
+        ValueError:
+            When the parameter ``file_fomat`` is invalid or not a string
 
         Examples
         --------
         Getting the raw file for the 'industries' category
-            >>> f = FactivaTaxonomy()
-            >>> f.download_raw_category(category=FactivaTaxonomyCategories.INDUSTRIES)
-            {'descriptor': 'Workplace Diversity'}
+
+        .. code-block:: python
+
+            from factiva.analytics import FactivaTaxonomy, FactivaTaxonomyCategories
+            f = FactivaTaxonomy()
+            f.download_raw_category(category=FactivaTaxonomyCategories.INDUSTRIES, path='/home/user/')
+
         """
         if not isinstance(file_format, str):
             raise ValueError('The file_format parameter must be a string')
@@ -233,22 +275,34 @@ class FactivaTaxonomy():
 
         Returns
         -------
-        Dict containing the code details
+        dict:
+            Dict containing the code details
+
+
+        .. important::
+
+            The return dict structure can vary depending on the passed category
+            and the enabled settings for the used account (e.g. company identifiers
+            like ISIN, CUSIP, etc.).
 
         Raises
         ------
         ValueError: When the parameter code is not a string
-        RuntimeError: When API request returns unexpected error
 
         Examples
         --------
         Lookup a code in the 'subjects' category
-            >>> f = FactivaTaxonomy()
-            >>> f.lookup_code(code='CWKDIV', category=FactivaTaxonomyCategories.SUBJECTS)
-            {'code': 'CWKDIV', 'descriptor': 'Workplace Diversity', 'description': 'Diversity
-             and inclusion in the workplace to ensure employees encompass varying traits such 
-             as race, gender, ethnicity, age, religion, sexual orientation, socioeconomic 
-             background or disability.', 'direct_parent': 'C42'}
+
+        .. code-block:: python
+
+            from factiva.analytics import FactivaTaxonomy, FactivaTaxonomyCategories
+            f = FactivaTaxonomy()
+            f.lookup_code(code='CWKDIV', category=FactivaTaxonomyCategories.SUBJECTS)
+
+        .. code-block:: python
+
+            {'code': 'CWKDIV', 'descriptor': 'Workplace Diversity', 'description': 'Diversity and inclusion in the workplace to ensure employees encompass varying traits such as race, gender, ethnicity, age, religion, sexual orientation, socioeconomic background or disability.', 'direct_parent': 'C42'}
+        
         """
         if not isinstance(code, str):
             raise ValueError('Parameter code is not a string')
