@@ -3,6 +3,7 @@
 """
 from ..common import const
 from ..common import req
+from ..common import articleparser as ap
 from ..auth import OAuthUser
 
 
@@ -10,6 +11,31 @@ class ArticleRetrieval():
     """
     Allows to fetch articles against the Article Retrieval Service using
     the provided OAuthUser credentials.
+
+    Parameters
+    ----------
+    oauth_user : OAuthUser
+        An instance of an OAuthUser with working credentials. If not provided
+        the user instance is created automatically from ENV variables.
+
+    Examples
+    --------
+    Create an ArticleRetrieval instance.
+
+    .. code-block:: python
+    
+        from factiva.analytics import ArticleRetrieval
+        ar = ArticleRetrieval()
+        ar
+
+    .. code-block::
+
+        <class 'factiva.analytics.article_retrieval.article_retrieval.ArticleRetrieval'>
+          |-oauth_user: <class 'factiva.analytics.auth.oauthuser.OAuthUser'>
+          |  |-client_id = fbwqyORz0te484RQTt0E7qj6Tooj4Cs6
+          |  |-token_status = OK
+          |  |-...
+
     """
     __API_RETRIEVAL_ENDPOINT_BASEURL = f'{const.API_HOST}{const.API_RETRIEVAL_ENDPOINT_BASEURL}/'
 
@@ -18,14 +44,17 @@ class ArticleRetrieval():
     User instance wich provides the credentials to connect to the Article Retrieval API endpoints.
     """
 
+    # TODO: Clarify how royalties work at user level. If one-click per UIUser is enough, it will
+    #       be possible to implement a 'cache' to avoid excess of retrievals when refreshing a
+    #       page.
     # TODO: When UIArticle is implemente, this will become a list of UIArticle
-    last_retrieval_response = None
-    """
-    List that stores last retrieved articles.
-    """
+    # retrieved_articles = {}
+    # """
+    # List that stores last retrieved articles.
+    # """
 
 
-    def __init__(self, oauth_user=None) -> None:
+    def __init__(self, oauth_user:OAuthUser=None) -> None:
         """Class constructor"""
         if not oauth_user:
           self.oauth_user = OAuthUser()
@@ -33,20 +62,26 @@ class ArticleRetrieval():
           self.oauth_user = oauth_user
         if (not isinstance(self.oauth_user.current_jwt_token, str)) or (len(self.oauth_user.current_jwt_token.split('.')) != 3):
           raise ValueError('Unexpected token for the OAuthUser instance')
-        self.last_retrieval_response = []
+        # self.retrieved_articles = {}
 
 
-    def retrieve_single_article(self, an):
+    def retrieve_single_article(self, an:str) -> dict:
         """
         Method that retrieves a single article to be displayed in a user interface.
-        The returned variable is a JSON object. Additionally, the retrieved data is
-        stored in the class atttribute `last_retrieval_response`.
+        The requested item is initially retrieved from the . Additionally, the retrieved data is
+        stored in the class atttribute ``last_retrieval_response``.
 
         Parameters
         ----------
         an : str
             String containing the 32-character long article ID (AN).
-            e.g. TRIB000020191217efch0001w
+            e.g. WSJO000020221229eict000jh
+
+        Returns
+        -------
+        dict:
+            Python dict containing full articles' data. This will be replaced when
+            the ``UIArticle`` class is implemented.
 
         Examples
         --------
@@ -57,11 +92,35 @@ class ArticleRetrieval():
 
             from factiva.analytics import ArticleRetrieval
             ar = ArticleRetrieval()
-            ar.retrieve_single_article(an='TRIB000020191217efch0001w')
+            article = ar.retrieve_single_article(an='WSJO000020221229eict000jh')
+            article
+
+        output
+
+        .. code-block::
+
+            <class 'factiva.analytics.article_retrieval.article_retrieval.UIArticle'>
+              |-an: WSJO000020221229eict000jh
+              |-headline: Europe Taps Tech's Power-Hungry Data Centers to Heat Homes; Rising energy prices and new regulations are contributing to an increase in projects to use excess heat to warm homes
+              |-source_code: WSJO
+              |-source_name: The Wall Street Journal Online
+              |-publication_date: 2022-12-29
+              |-metadata: <dict> - [4] keys
+              |-content: <dict> - [19] keys
+              |-included: <list> - [0] items
+              |-relationships: <dict> - [0] keys
+
+        Raises
+        ------
+        PermissionError
+            If the user doesn't have access to the requested content
 
         """
         if (not isinstance(an, str) or (not len(an) == 25)):
           raise ValueError('AN parameter not valid. Length should be 25 characters.')
+        
+        # if an in self.retrieved_articles.keys():
+        #     return self.retrieved_articles[an]
         drn_ref = f'drn:archive.newsarticle.{an}'
         req_headers = {
             "Authorization": f'Bearer {self.oauth_user.current_jwt_token}'
@@ -71,21 +130,27 @@ class ArticleRetrieval():
             endpoint_url=f'{self.__API_RETRIEVAL_ENDPOINT_BASEURL}{drn_ref}',
             headers=req_headers
         )
-        article_dict = article_response.json()
-        self.last_retrieval_response = [article_dict]
-        return article_dict
+        if article_response.status_code == 200:
+            article_obj = UIArticle(article_response.json())
+        elif article_response.status_code == 500:
+            err_details = article_response.json()
+            if 'errors' in err_details.keys():
+                err_msg = err_details['errors'][0]['title']
+                raise PermissionError(err_msg)
+        # self.retrieved_articles = [article_obj]
+        return article_obj
 
 
-    # TODO: Implement a metod to retrieve multiple articles based on a list of ANs param
+    # TODO: Implement a metod to retrieve multiple articles based on a param containing a list of ANs
 
 
     def __repr__(self):
-        """Create string representation for Snapshot Class."""
+        """Create string representation for this Class."""
         return self.__str__()
 
 
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
-        """Create string representation for Snapshot Class."""
+        """Create string representation for this Class."""
         child_prefix = '  |' + prefix
         ret_val = str(self.__class__) + '\n'
 
@@ -93,12 +158,12 @@ class ArticleRetrieval():
         ret_val += self.oauth_user.__str__(detailed=False, prefix=child_prefix)
         ret_val += '\n'
 
-        ret_val += f'{prefix}last_retrieval_response: <list>\n'
-        if len(self.last_retrieval_response) > 0:
-            ret_val += f'{child_prefix}list_items = {len(self.last_retrieval_response)}\n'
-            ret_val += f'{child_prefix}list_ids = {[article["data"]["id"] for article in self.last_retrieval_response]}'
-        else:
-            ret_val += f'{child_prefix}<empty>'
+        # ret_val += f'{prefix}retrieved_articles: <list>\n'
+        # if len(self.retrieved_articles) > 0:
+        #     ret_val += f'{child_prefix}list_items = {len(self.retrieved_articles)}\n'
+        #     ret_val += f'{child_prefix}list_ids = {[article["data"]["id"] for article in self.retrieved_articles]}'
+        # else:
+        #     ret_val += f'{child_prefix}<empty>'
 
         return ret_val
 
@@ -106,9 +171,88 @@ class ArticleRetrieval():
 class UIArticle():
     """
     Class that represents a single article for visualization purposes. Methods
-    and attributes are tailored for front-end environments .
+    and attributes are tailored for front-end environments.
+
+    Parameters
+    ----------
+    article_dict : dict
+        A python dict with the structure returned by the Dow Jones Article
+        Retrieval service.
+    
+    Examples
+    --------
+    See ArticleRetrieval class examples.
+
     """
-    # TODO: Implement this class that must represent an article and allows to render
+    # TODO: Improve implementation and add methods to render
     #       its content using multiple output formats (JSON, HTML and TEXT)
-    pass
+    # an, headline, snippet, source_name, source_code, retrieved_datetime
+    # Methods - as_html, as_json, as_text
+
+    an = None
+    """Article unique identifier, also known as Accession Number"""
+    headline = None
+    """Article's headline, also known as title"""
+    source_code = None
+    """Article content creator's code. e.g. WSJO"""
+    source_name = None
+    """Article content creator's name. e.g. The Wall Street Journal Online"""
+    publication_date = None
+    """Article's publication date in ISO format as provided by the source.
+       e.g. '2022-12-03'"""
+    metadata = {}
+    """Article's metadata dict. Contains Dow Jones Intelligent Identifiers
+       among other codes."""
+    content = {}
+    """Article's content dict. Full text with annotations and other UI elements."""
+    included = []
+    """References to objects linked to a specific article"""
+    relationships = {}
+    """References to related objects"""
+
+
+    def __init__(self, article_dict:dict) -> None:
+        if not isinstance(article_dict, dict):
+            raise ValueError('Param article_dict is not a python dict')
+        if ((not 'data' in article_dict.keys()) or
+           (not 'attributes' in article_dict['data']) or
+           (not 'id' in article_dict['data']) or
+           (not 'meta' in article_dict['data'])):
+            raise ValueError('Unexpected dict structure')
+
+        self.an = article_dict['data']['id']
+        self.headline = ap.extract_headline(article_dict['data']['attributes']['headline'])
+        self.source_code = article_dict['data']['attributes']['sources'][0]['code']
+        self.source_name = article_dict['data']['attributes']['sources'][0]['name']
+        self.publication_date = article_dict['data']['attributes']['publication_date']
+        self.metadata = article_dict['data']['meta']
+        self.content = article_dict['data']['attributes']
+        if 'included' in article_dict.keys():
+            self.included = article_dict['included']
+        else:
+            self.included = []
+        if 'relationships' in article_dict['data'].keys():
+            self.relationships = article_dict['data']['relationships']
+        else:
+            self.relationships = {}
+
+    def __repr__(self):
+        """Create string representation for this Class."""
+        return self.__str__()
+
+
+    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+        """Create string representation for this Class."""
+        ret_val = str(self.__class__) + '\n'
+        ret_val += f'{prefix}an: {self.an}\n'
+        ret_val += f'{prefix}headline: {self.headline}\n'
+        ret_val += f'{prefix}source_code: {self.source_code}\n'
+        ret_val += f'{prefix}source_name: {self.source_name}\n'
+        ret_val += f'{prefix}publication_date: {self.publication_date}\n'
+        ret_val += f'{prefix}metadata: <dict> - [{len(self.metadata.keys())}] keys\n'
+        ret_val += f'{prefix}content: <dict> - [{len(self.content.keys())}] keys\n'
+        ret_val += f'{prefix}included: <list> - [{len(self.included)}] items\n'
+        ret_val += f'{prefix}relationships: <dict> - [{len(self.relationships.keys())}] keys\n'
+
+        return ret_val
 

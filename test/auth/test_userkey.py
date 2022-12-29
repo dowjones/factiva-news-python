@@ -1,5 +1,5 @@
 """
-    Tests for the UserKey class
+    Tests for the UserKey module
 """
 import pytest
 from factiva.analytics import UserKey
