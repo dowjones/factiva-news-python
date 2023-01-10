@@ -158,13 +158,6 @@ class ArticleRetrieval():
         ret_val += self.oauth_user.__str__(detailed=False, prefix=child_prefix)
         ret_val += '\n'
 
-        # ret_val += f'{prefix}retrieved_articles: <list>\n'
-        # if len(self.retrieved_articles) > 0:
-        #     ret_val += f'{child_prefix}list_items = {len(self.retrieved_articles)}\n'
-        #     ret_val += f'{child_prefix}list_ids = {[article["data"]["id"] for article in self.retrieved_articles]}'
-        # else:
-        #     ret_val += f'{child_prefix}<empty>'
-
         return ret_val
 
 
