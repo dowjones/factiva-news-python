@@ -96,7 +96,7 @@ class UserKey:
 
     __API_ENDPOINT_BASEURL = f'{const.API_HOST}{const.API_ACCOUNT_BASEPATH}/'
     __API_CLOUD_TOKEN_URL = f'{const.API_HOST}{const.ALPHA_BASEPATH}{const.API_ACCOUNT_STREAM_CREDENTIALS_BASEPATH}'
-
+    
     key = ''
     cloud_token = {}
     account_name = ''
@@ -115,7 +115,7 @@ class UserKey:
 
     def __init__(self, key=None, stats=False):
         """Construct the instance of the class."""
-        self.log = log.get_factiva_logger()
+        self.__logger = log.get_factiva_logger()
         if key is None:
             try:
                 key = config.load_environment_value('FACTIVA_USERKEY')
@@ -172,6 +172,7 @@ class UserKey:
     # def streams_running(self):
     #     """Number of currently running Streaming Instances"""
     #     return self.get_streams()
+
 
     @log.factiva_logger()
     def get_stats(self) -> bool:
@@ -248,6 +249,7 @@ class UserKey:
             |-remaining_extractions = 2
 
         """
+        self.__logger.info('get_stats started')
         account_endpoint = f'{self.__API_ENDPOINT_BASEURL}{self.key}'
         req_head = {'user-key': self.key}
         resp = req.api_send_request(method='GET', endpoint_url=account_endpoint, headers=req_head)
@@ -273,7 +275,9 @@ class UserKey:
             raise ValueError('Factiva User-Key does not exist or inactive.')
         else:
             raise RuntimeError('Unexpected Account Information API Error')
+        self.__logger.info('get_stats ended')
         return True
+
 
     @log.factiva_logger()
     def get_cloud_token(self) -> bool:
@@ -288,6 +292,7 @@ class UserKey:
             otherwise.
 
         """
+        self.__logger.info('get_cloud_token started')
         req_head = {'user-key': self.key}
         response = req.api_send_request(
             method="GET",
@@ -307,6 +312,7 @@ class UserKey:
             raise ValueError('Unable to get a cloud token for the given key. This account might have limited access.') from type_error
 
         self.cloud_token = json.loads(streaming_credentials_string)
+        self.__logger.info('get_cloud_token ended')
         return True
 
 
@@ -327,6 +333,7 @@ class UserKey:
             containing the list of historical extractions for the account.
 
         """
+        self.__logger.info('get_extractions started')
         endpoint = f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}'
 
         headers_dict = {'user-key': self.key}
@@ -360,6 +367,7 @@ class UserKey:
         if not updates:
             extraction_df = extraction_df.loc[extraction_df.update_id.isnull()]
 
+        self.__logger.info('get_extractions ended')
         return extraction_df
 
 
@@ -427,6 +435,7 @@ class UserKey:
             DataFrame with the list of historical extractions
 
         """
+        self.__logger.info('get_streams started')
         request_headers = {'user-key': self.key}
         response = req.api_send_request(
             method="GET",
@@ -456,6 +465,7 @@ class UserKey:
                 if running:
                     stream_df = stream_df.loc[stream_df.job_status == const.API_JOB_RUNNING_STATE]
 
+                self.__logger.info('get_streams ended')
                 return stream_df
             except Exception as error:
                 raise AttributeError('Unexpected Get Streams API Response.') from error
