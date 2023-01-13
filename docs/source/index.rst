@@ -7,13 +7,28 @@ Check out the `Dow Jones Developer Portal <https://developer.dowjones.com>`_ for
 
 .. toctree::
    :maxdepth: 2
-   :caption: Overview
+   :caption: Getting Started
    :glob:
 
-   overview/index
-   overview/installation
-   overview/querybuilding
-   overview/quickstart
+   gettingstarted/overview
+   gettingstarted/installation
+   gettingstarted/envvariables
+   gettingstarted/commonops
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Main Concepts
+   :glob:
+
+   concepts/auth
+   concepts/taxonomies
+   concepts/volumeestimates
+   concepts/extractions
+   concepts/updates
+   concepts/streams
+   concepts/lists
+   concepts/articleretrieval
+   concepts/advancedqueries
 
 .. toctree::
    :maxdepth: 3

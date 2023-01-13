@@ -1,10 +1,12 @@
-Building Queries
+Advanced Queries
 ================
 
 
 Where Attribute
 ---------------
-The where attribute is the most used attribute to select content by applying different conditions to the available fields. Below there are some code snippets that help building a where statement, and notes that help modify the syntax according to the need.
+The where attribute is the most used attribute to select content by applying different conditions 
+to the available fields. Below there are some code snippets that help building a where statement, 
+and notes that help modify the syntax according to the need.
 
 Range of dates
 **************
