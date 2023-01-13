@@ -5,7 +5,6 @@ import json
 import os
 from datetime import datetime
 import requests
-import hashlib
 from . import tools
 from . import const
 from ...analytics import __version__
@@ -21,10 +20,15 @@ def _send_get_request(endpoint_url:str=const.API_HOST,
     """Send get request."""
     if (qs_params is not None) and (not isinstance(qs_params, dict)):
         raise ValueError('Unexpected qs_params value')
-    return requests.get(endpoint_url,
+    log.debug(f'GET request - Start')
+    get_response = requests.get(endpoint_url,
                         headers=headers,
                         params=qs_params,
                         stream=stream)
+    if get_response.status_code >= 400:
+        log.error(f'GET Request Error [{get_response.status_code}]: {get_response.text}')
+    log.debug(f'GET request - End')
+    return get_response
 
 
 def _send_post_request(endpoint_url:str=const.API_HOST,
@@ -38,9 +42,20 @@ def _send_post_request(endpoint_url:str=const.API_HOST,
             payload_str = payload
         else:
             raise ValueError('Unexpected payload value')
-        return requests.post(endpoint_url, headers=headers, data=payload_str)
 
-    return requests.post(endpoint_url, headers=headers)
+        log.debug(f'POST request with payload - Start')
+        post_response = requests.post(endpoint_url, headers=headers, data=payload_str)
+        if post_response.status_code >= 400:
+            log.error(f'POST Request Error [{post_response.status_code}]: {post_response.text}')
+        log.debug(f'POST request with Payload - End')
+        return post_response
+
+    log.debug(f'POST request NO payload - Start')
+    post_response = requests.post(endpoint_url, headers=headers)
+    if post_response.status_code >= 400:
+        log.error(f'POST Request Error [{post_response.status_code}]: {post_response.text}')
+    log.debug(f'POST request NO Payload - End')
+    return post_response
 
 
 @factiva_logger()
