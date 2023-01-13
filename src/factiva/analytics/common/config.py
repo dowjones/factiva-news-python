@@ -9,6 +9,10 @@ def load_environment_value(config_key, default=None) -> str:
             "Environment Variable {} not found!".format(config_key))
     return tmp_val
 
+# Logging Level
+FACTIVA_LOGLEVEL = load_environment_value('FACTIVA_LOGLEVEL', 'INFO')
+
+
 # Default file locations
 DOWNLOAD_DEFAULT_FOLDER = load_environment_value(
     "DOWNLOAD_FILES_DIR", os.path.join(os.getcwd(), 'downloads'))
@@ -16,5 +20,4 @@ LISTENER_FILES_DEFAULT_FOLDER = load_environment_value(
     'STREAM_FILES_DIR', os.path.join(os.getcwd(), 'listener'))
 LOGS_DEFAULT_FOLDER = load_environment_value(
     'LOG_FILES_DIR', os.path.join(os.path.expanduser('~'), '.factiva_logs'))
-
 

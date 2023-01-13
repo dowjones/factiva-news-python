@@ -1,9 +1,10 @@
 import functools
+import time
 import logging
 import os
 import sys
 from inspect import getframeinfo, stack
-from .config import LOGS_DEFAULT_FOLDER
+from .config import LOGS_DEFAULT_FOLDER, FACTIVA_LOGLEVEL
 import datetime
 
 class CustomFormatter(logging.Formatter):
@@ -24,14 +25,16 @@ def get_factiva_logger():
     if not os.path.exists(LOGS_DEFAULT_FOLDER):
         os.mkdir(LOGS_DEFAULT_FOLDER)
     logger = logging.Logger(__name__)
-    logger.setLevel(logging.DEBUG)
-    file_name = f'factiva-{datetime.datetime.now().strftime("%d-%m-%Y-%H")}'
+    logger.setLevel(FACTIVA_LOGLEVEL)
+    file_name = f'factiva-analytics-{datetime.datetime.now().strftime("%Y-%m-%d")}'
     handler = logging.FileHandler(
-        "{0}/{1}.log".format(LOGS_DEFAULT_FOLDER, file_name), 'a+')
+        f"{LOGS_DEFAULT_FOLDER}/{file_name}.log", 'a+')
     handler.setFormatter(
         CustomFormatter(
-            '%(asctime)s - %(levelname)-10s - %(filename)s - %(funcName)s - %(message)s'
+            "%(asctime)s [%(levelname)s] [%(filename)s] %(message)s",
+            datefmt="%Y-%m-%dT%H:%M:%S"
         ))
+    handler.formatter.converter = time.gmtime
     logger.addHandler(handler)
     return logger
 
