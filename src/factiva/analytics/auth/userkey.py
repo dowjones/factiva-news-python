@@ -38,7 +38,7 @@ class UserKey:
     .. code-block:: python
 
         from factiva.analytics import UserKey
-        u = UserKey('abcd1234abcd1234abcd1234abcd1234', stats=True)
+        u = UserKey('abcd1234abcd1234abcd1234abcd1234', True)
         print(u)
 
     .. code-block::
@@ -589,7 +589,6 @@ class UserKey:
         pprop = self.__dict__.copy()
         del pprop['key']
         del pprop['cloud_token']
-        del pprop['log']
         masked_key = tools.mask_string(self.key)
         
         if self.cloud_token == {}:
@@ -597,7 +596,7 @@ class UserKey:
         else:
             masked_token = tools.mask_string(self.cloud_token['private_key'][58:92], 12)
 
-        ret_val = f'{root_prefix}{str(self.__class__)}\n'
+        ret_val = f"{root_prefix}<'factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
         ret_val += f'{prefix}key = {masked_key}\n'
 
         if detailed:
