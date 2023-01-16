@@ -152,7 +152,7 @@ class ArticleRetrieval():
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
         """Create string representation for this Class."""
         child_prefix = '  |' + prefix
-        ret_val = str(self.__class__) + '\n'
+        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
 
         ret_val += f'{prefix}oauth_user: '
         ret_val += self.oauth_user.__str__(detailed=False, prefix=child_prefix)
@@ -236,7 +236,7 @@ class UIArticle():
 
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
         """Create string representation for this Class."""
-        ret_val = str(self.__class__) + '\n'
+        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
         ret_val += f'{prefix}an: {self.an}\n'
         ret_val += f'{prefix}headline: {self.headline}\n'
         ret_val += f'{prefix}source_code: {self.source_code}\n'

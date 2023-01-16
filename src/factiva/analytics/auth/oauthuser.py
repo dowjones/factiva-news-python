@@ -51,10 +51,11 @@ class OAuthUser:
 
     .. code-block::
 
-        <class 'factiva.analytics.auth.oauthuser.OAuthUser'>
-          |-client_id = fbwqyORz0te484RQTt0E7qj6Tooj4Cs6
-          |-token_status = OK
-          |-...
+        <'factiva.analytics.OAuthUser'>
+        |-client_id = ****************************4Cs6
+        |-username = 9ZZZ000000-svcaccount@dowjones.com
+        |-password = ************gRk3
+        |-token_status = not_authenticated
 
     """
 

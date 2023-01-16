@@ -373,7 +373,7 @@ class FactivaTaxonomy():
         del pprop['user_key']
         del pprop['log']
         
-        ret_val = f'{root_prefix}{str(self.__class__)}\n'
+        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
         ret_val += f"{prefix}user_key = {self.user_key.__str__(detailed=False, prefix='  |  |-')}\n"
 
         if detailed:

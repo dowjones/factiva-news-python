@@ -43,7 +43,7 @@ class UserKey:
 
     .. code-block::
 
-        <class 'factiva.core.userkey.UserKey'>
+        <class 'factiva.analytics.UserKey'>
         |-key = ****************************1234
         |-cloud_token = **Not Fetched**
         |-account_name = AccName1234
@@ -73,7 +73,7 @@ class UserKey:
 
     .. code-block::
 
-        <class 'factiva.core.userkey.UserKey'>
+        <class 'factiva.analytics.UserKey'>
         |-key = ****************************1234
         |-cloud_token = **Not Fetched**
         |-account_name =
@@ -201,7 +201,7 @@ class UserKey:
 
         .. code-block::
 
-            <class 'factiva.core.userkey.UserKey'>
+            <class 'factiva.analytics.UserKey'>
             |-key = ****************************1234
             |-cloud_token = **Not Fetched**
             |-account_name =
@@ -229,7 +229,7 @@ class UserKey:
 
         .. code-block::
 
-            <class 'factiva.core.userkey.UserKey'>
+            <class 'factiva.analytics.UserKey'>
             |-key = ****************************1234
             |-cloud_token = **Not Fetched**
             |-account_name = AccName1234
