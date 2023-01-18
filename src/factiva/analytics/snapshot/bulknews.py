@@ -4,12 +4,10 @@ import time
 import json
 from datetime import datetime
 from pathlib import Path
-
 import pandas as pd
-
-from ..common import req
-from .. import UserKey, common
-from ..common.tools import mask_string, parse_field
+from ..common import req, const, tools
+from ..auth import UserKey
+# from ..common.tools import mask_string, parse_field
 
 
 class BulkNewsBase():
@@ -34,6 +32,7 @@ class BulkNewsBase():
     _request_datetime = ''
     _job_status = ''
 
+
     def __init__(
         self,
         user_key=None,
@@ -42,25 +41,29 @@ class BulkNewsBase():
         """Initialize class constructor."""
         self.user_key = UserKey(user_key, user_stats)
 
+
     def load_data(self):
         """Load generic data."""
         pass
+
 
     def process_operation(self):
         """Process generic operation."""
         pass
 
+
     def __str__(self):
         """Create string representation for BulkNewsBase Class."""
         pprop = self.__dict__.copy()
         del pprop['user_key']
-        masked_key = mask_string(self.user_key.user_key)
+        masked_key = tools.mask_string(self.user_key.user_key)
         user_class = str(self.user_key.__class__)
 
         ret_val = str(self.__class__) + '\n'
         ret_val += f'  user_key = {masked_key} ({user_class})\n'
         ret_val += '  '.join(('{} = {}\n'.format(item, pprop[item]) for item in pprop))
         return ret_val
+
 
     def __repr__(self):
         """Create string representation for BulkNewsBase Class."""
@@ -80,50 +83,63 @@ class BulkNewsQuery():  # pylint: disable=too-few-public-methods
         Contains the query includes clause, which defines the codes to include for specific fields.
         - When a dict is given it is assigned as it is.
         - When a string is given, it is expected to have a JSON format and is parsed to be stored as a dict
+    includesList: dict
+        Selects content in ``Lists`` that belong to the ``UserKey``. If not null, needs to follow a format like
+        ``{'column_name_A': ['listID1', 'listID2'...], 'column_name_B': ['listID8']}``
     excludes: str or dict, Optional (Default: None)
         Contains the query excludes clause, which defines the codes to exclude for especific fields.
         - When a dict is given it is assigned as it is.
         - When a string is given, it is expected to have a JSON format and is parsed to be stored as a dict.
-    select_fields: str or list, Optional (Default: None)
-        Contains the query select clause, which defines the fields to be returned by the query.
-        - When a list is given it is assigned as it is
-        - When a string is given, it is expected to have a JSON array format and is parsed to be stored as a list
+    excludesList: dict
+        Filters out content in ``Lists`` that belong to the ``UserKey``. If not null, needs to follow a format like
+        ``{'column_name_A': ['listID1', 'listID2'...], 'column_name_B': ['listID8']}``
 
     """
-
     where = ""
-    includes = ""
-    excludes = ""
-    select_fields = ""
+    includes = None
+    include_lists = None
+    excludes = None
+    exclude_lists = None
+    # select_fields = None
+
 
     def __init__(
         self,
         where,
-        includes=None,
-        excludes=None,
-        select_fields=None
+        includes:list=None,
+        include_lists:dict=None,
+        excludes:list=None,
+        exclude_lists:dict=None
+        # select_fields=None
     ):
         """Initialize class."""
         if isinstance(where, str):
-            self.where = where  # TODO: Validate syntax if possible. At least it's a string.
+            self.where = where
         else:
-            raise ValueError("Unexpected where clause.")
+            raise ValueError("Unexpected where value.")
 
         if includes:
-            self.includes = parse_field(includes, 'includes')
+            self.includes = tools.parse_field(includes, 'includes')
+
+        if include_lists:  # TODO: Validate data structure
+            self.include_lists = tools.parse_field(include_lists, 'includes')
 
         if excludes:
-            self.excludes = parse_field(excludes, 'excludes')
+            self.excludes = tools.parse_field(excludes, 'excludes')
 
-        if select_fields:
-            if isinstance(select_fields, list):
-                self.select_fields = select_fields  # TODO: Validate syntax if possible
-            elif isinstance(select_fields, str):
-                self.select_fields = eval(select_fields)
-            else:
-                raise ValueError("Unexpected value for select_fields")
+        if exclude_lists:  # TODO: Validate data structure
+            self.exclude_lists = tools.parse_field(exclude_lists, 'excludes')
 
-    def get_base_query(self):
+        # if select_fields:
+        #     if isinstance(select_fields, list):
+        #         self.select_fields = select_fields  # TODO: Validate syntax if possible
+        #     elif isinstance(select_fields, str):
+        #         self.select_fields = eval(select_fields)
+        #     else:
+        #         raise ValueError("Unexpected value for select_fields")
+
+
+    def get_base_query(self) -> dict:
         """Create the basic query to be used within the Factiva Snapshots API and the Factiva Streams API.
 
         Returns
@@ -137,14 +153,20 @@ class BulkNewsQuery():  # pylint: disable=too-few-public-methods
             }
         }
 
-        if self.select_fields:
-            query_dict["query"].update({"select": self.select_fields})
+        # if self.select_fields:
+        #     query_dict["query"].update({"select": self.select_fields})
 
         if self.includes:
             query_dict["query"].update({"includes": self.includes})
 
         if self.excludes:
             query_dict["query"].update({'excludes': self.excludes})
+
+        if self.include_lists:
+            query_dict["query"].update({"includesList": self.includes})
+
+        if self.exclude_lists:
+            query_dict["query"].update({'excludesList': self.excludes})
 
         return query_dict
 
@@ -190,6 +212,7 @@ class BulkNewsJob():
         self.link = ''
         self.user_key = UserKey(user_key, user_key_stats)
 
+
     def get_endpoint_url(self) -> str:
         """Create the URL for the API endpoint to send the request to sumbit a job, according to the kind of job that is being created.
 
@@ -205,6 +228,7 @@ class BulkNewsJob():
 
         """
         raise NotImplementedError('Method has not been defined')
+
 
     def get_job_id(self, source: dict) -> str:
         """Obtain the job_id from the source parameter. The job_id is defined diferently according to the type of job.
@@ -225,6 +249,7 @@ class BulkNewsJob():
         """
         raise NotImplementedError('Method has not been defined')
 
+
     def set_job_data(self, source: dict):
         """Obtain the data for the job, based on the response from the API.
 
@@ -243,6 +268,7 @@ class BulkNewsJob():
 
         """
         raise NotImplementedError('Method has not been defined')
+
 
     def submit_job(self, payload=None, use_latest_api_version=False) -> bool:
         """Submit a new job to be processed to the Factiva Snapshots API or Streams API.
@@ -274,7 +300,7 @@ class BulkNewsJob():
                 'Content-Type': 'application/json'
             }
         if use_latest_api_version:
-            version_header = {'X-API-VERSION': common.API_LATEST_VERSION}
+            version_header = {'X-API-VERSION': const.API_LATEST_VERSION}
             headers_dict.update(version_header)
 
         response = req.api_send_request(method='POST', endpoint_url=self.get_endpoint_url(), headers=headers_dict, payload=payload)
@@ -289,6 +315,7 @@ class BulkNewsJob():
         else:
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         return True
+
 
     def get_job_results(self) -> bool:
         """Make a request to the API using the link of the job to get its status.
@@ -319,9 +346,9 @@ class BulkNewsJob():
         if response.status_code == 200:
             response_data = response.json()
             self.job_state = response_data['data']['attributes']['current_state']
-            if self.job_state == common.API_JOB_DONE_STATE:
+            if self.job_state == const.API_JOB_DONE_STATE:
                 self.set_job_data(response_data)
-            elif self.job_state == common.API_JOB_FAILED_STATE:
+            elif self.job_state == const.API_JOB_FAILED_STATE:
                 errors = response_data['errors']
                 raise RuntimeError(f"Job Failed with reason: {[e['title'] + e['detail'] for e in errors]}")
         elif response.status_code == 404:
@@ -332,6 +359,7 @@ class BulkNewsJob():
         else:
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         return True
+
 
     def process_job(self, payload=None, use_latest_api_version=False) -> bool:
         """Submit a new job to be processed, wait until the job is completed and then retrieves the job results.
@@ -357,16 +385,17 @@ class BulkNewsJob():
         self.submit_job(payload=payload, use_latest_api_version=use_latest_api_version)
         self.get_job_results()
 
-        while self.job_state != common.API_JOB_DONE_STATE:
-            if self.job_state not in common.API_JOB_EXPECTED_STATES:
+        while self.job_state != const.API_JOB_DONE_STATE:
+            if self.job_state not in const.API_JOB_EXPECTED_STATES:
                 raise RuntimeError('Unexpected job state')
-            if self.job_state == common.API_JOB_FAILED_STATE:
+            if self.job_state == const.API_JOB_FAILED_STATE:
                 raise Exception('Job failed')
 
-            time.sleep(common.API_JOB_ACTIVE_WAIT_SPACING)
+            time.sleep(const.API_JOB_ACTIVE_WAIT_SPACING)
             self.get_job_results()
 
         return True
+
 
     def download_file(self, endpoint_url: str, download_path: str):
         """Download a file from a job, using the file URL and stores them in download_path.
@@ -398,6 +427,7 @@ class BulkNewsJob():
         else:
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         return True
+
 
     def download_job_files(self, download_path=None):
         """Download all the files from a job ans stores them in the given download_path.
@@ -432,6 +462,7 @@ class BulkNewsJob():
             raise RuntimeError('No files available for download')
         return True
 
+
     def get_job_samples(self, num_samples):
         """Obtain the Explain job samples from the Factiva Snapshots API.
         Returns a dataframe of up to 100 sample documents which  includes title and metadata fields.
@@ -465,9 +496,11 @@ class BulkNewsJob():
         else:
             print(f'Unexpected Response: {response.text}')
 
+
     def __repr__(self):
         """Create string representation for BulkNews Class."""
         return self.__str__()
+
 
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
         """Create string representation for BulkNews Class."""
