@@ -19,7 +19,7 @@ def _send_get_request(endpoint_url:str=const.API_HOST,
                      stream:bool=False):
     """Send get request."""
     if (qs_params is not None) and (not isinstance(qs_params, dict)):
-        raise ValueError('Unexpected qs_params value')
+        raise ValueError('_send_get_request: Unexpected qs_params value')
     log.debug(f'GET request - Start')
     get_response = requests.get(endpoint_url,
                         headers=headers,
@@ -96,10 +96,10 @@ def api_send_request(method:str='GET',
             response = requests.delete(endpoint_url, headers=headers)
 
         else:
-            raise ValueError('Unexpected method value')
+            raise ValueError('api_send_request: Unexpected method value')
 
     except Exception:
-        raise RuntimeError('API Request failed. Unspecified Error.')
+        raise RuntimeError('api_send_request: API Request failed. Unspecified Error.')
 
     return response
 
