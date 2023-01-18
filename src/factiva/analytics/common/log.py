@@ -56,16 +56,16 @@ def factiva_logger(_func=None):
                 'file_name_override': os.path.basename(py_file_caller.filename)
             }
             logger_obj.debug(
-                "Begin function",
+                f"Begin function {func.__name__}",
                 extra=extra_args)
             try:
                 if(self is None):
                     value = func(*args, **kwargs)
                 else:
                     value = func(self, *args, **kwargs)
-                logger_obj.debug("End function")
+                logger_obj.debug(f"End function {func.__name__}")
             except:
-                logger_obj.error("Exception: {}".format(str(sys.exc_info()[1])))
+                logger_obj.error(f"Exception in {func.__name__}: {str(sys.exc_info()[1])}")
                 raise
             return value
 

@@ -10,9 +10,9 @@ from . import const
 from ...analytics import __version__
 from .log import factiva_logger, get_factiva_logger
 
-log = get_factiva_logger()
+__log = get_factiva_logger()
 
-
+@factiva_logger
 def _send_get_request(endpoint_url:str=const.API_HOST,
                      headers:dict=None,
                      qs_params=None,
@@ -20,17 +20,15 @@ def _send_get_request(endpoint_url:str=const.API_HOST,
     """Send get request."""
     if (qs_params is not None) and (not isinstance(qs_params, dict)):
         raise ValueError('_send_get_request: Unexpected qs_params value')
-    log.debug(f'GET request - Start')
     get_response = requests.get(endpoint_url,
                         headers=headers,
                         params=qs_params,
                         stream=stream)
     if get_response.status_code >= 400:
-        log.error(f'GET Request Error [{get_response.status_code}]: {get_response.text}')
-    log.debug(f'GET request - End')
+        __log.error(f'GET Request Error [{get_response.status_code}]: {get_response.text}')
     return get_response
 
-
+@factiva_logger
 def _send_post_request(endpoint_url:str=const.API_HOST,
                        headers:dict=None,
                        payload=None):
@@ -43,22 +41,21 @@ def _send_post_request(endpoint_url:str=const.API_HOST,
         else:
             raise ValueError('Unexpected payload value')
 
-        log.debug(f'POST request with payload - Start')
+        __log.debug(f'POST request with payload - Start')
         post_response = requests.post(endpoint_url, headers=headers, data=payload_str)
         if post_response.status_code >= 400:
-            log.error(f'POST Request Error [{post_response.status_code}]: {post_response.text}')
-        log.debug(f'POST request with Payload - End')
+            __log.error(f'POST Request Error [{post_response.status_code}]: {post_response.text}')
+        __log.debug(f'POST request with Payload - End')
         return post_response
 
-    log.debug(f'POST request NO payload - Start')
+    __log.debug(f'POST request NO payload - Start')
     post_response = requests.post(endpoint_url, headers=headers)
     if post_response.status_code >= 400:
-        log.error(f'POST Request Error [{post_response.status_code}]: {post_response.text}')
-    log.debug(f'POST request NO Payload - End')
+        __log.error(f'POST Request Error [{post_response.status_code}]: {post_response.text}')
+    __log.debug(f'POST request NO Payload - End')
     return post_response
 
-
-@factiva_logger()
+@factiva_logger
 def api_send_request(method:str='GET',
                      endpoint_url:str=const.API_HOST,
                      headers:dict=None,
@@ -67,7 +64,7 @@ def api_send_request(method:str='GET',
                      stream:bool=False):
     """Send a generic request to a certain API end point."""
     if headers is None:
-        raise ValueError('Heders for Factiva requests cannot be empty')
+        raise ValueError('Factiva requests headers cannot be empty')
 
     if not isinstance(headers, dict):
         raise ValueError('Unexpected headers value')
@@ -79,6 +76,8 @@ def api_send_request(method:str='GET',
     headers.update({
         'User-Agent': f'RDL-Python-{__version__}-{vsum}'
     })
+
+    __log.debug(f"{method} Request with User-Agent {headers['User-Agent']}")
 
     try:
         if method == 'GET':
@@ -98,13 +97,14 @@ def api_send_request(method:str='GET',
         else:
             raise ValueError('api_send_request: Unexpected method value')
 
+        __log.debug(f"{method} request status: {response.status_code}, in: {response.elapsed.microseconds/1000} ms")
+
     except Exception:
         raise RuntimeError('api_send_request: API Request failed. Unspecified Error.')
 
     return response
 
 
-@factiva_logger()
 def download_file(file_url:str,
                   headers:dict,
                   file_name:str,

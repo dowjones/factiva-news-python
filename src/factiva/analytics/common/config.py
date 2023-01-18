@@ -10,7 +10,7 @@ def load_environment_value(config_key, default=None) -> str:
     return tmp_val
 
 # Logging Level
-FACTIVA_LOGLEVEL = load_environment_value('FACTIVA_LOGLEVEL', 'INFO')
+FACTIVA_LOGLEVEL = load_environment_value('FACTIVA_LOGLEVEL', 'INFO').upper()
 
 
 # Default file locations
