@@ -5,6 +5,7 @@ from .base import SnapshotBase, SnapshotBaseQuery, SnapshotBaseJobResponse
 from ..auth import UserKey
 from ..common import log, const, req
 from .query import SnapshotQuery
+import time
 import pandas as pd
 
 
@@ -56,7 +57,7 @@ class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, c
 
 
     @log.factiva_logger
-    def submit_job(self, payload=None):
+    def submit_job(self):
         """
         Performs a POST request to the API using the assigned query to start
         an Explain job.
@@ -129,6 +130,8 @@ class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, c
             self.job_response.job_link = response_data['links']['self']
             if self.job_response.job_state == const.API_JOB_DONE_STATE:
                 self.job_response.volume_estimate = response_data['data']['attributes']['counts']
+            if 'errors' in response_data.keys():
+                self.job_response.errors = response_data['errors']
             # elif self.job_response.job_state == const.API_JOB_FAILED_STATE:
                 # errors = response_data['errors']
                 # raise RuntimeError(f"Job Failed with reason: {[e['title'] + e['detail'] for e in errors]}")
@@ -193,6 +196,35 @@ class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, c
         return True
 
 
+    def process_job(self):  # TODO: Implement Retries if a 500 or timeout is returned during the active wait
+        """
+        Submit a new job to be processed, wait until the job is completed
+        and then retrieves the job results.
+
+        Returns
+        -------
+        Boolean : True if the explain processing was successful. An Exception
+            otherwise.
+
+        """
+        self.__log.info('process_job Start')
+        self.submit_job()
+        self.get_job_response()
+
+        while not (self.job_response.job_state in
+                    [const.API_JOB_DONE_STATE,
+                     const.API_JOB_FAILED_STATE]
+                  ):
+            if self.job_response.job_state not in const.API_JOB_EXPECTED_STATES:
+                raise RuntimeError('Unexpected job state')
+            if self.job_response.job_state == const.API_JOB_FAILED_STATE:
+                raise Exception('Job failed')
+            time.sleep(const.API_JOB_ACTIVE_WAIT_SPACING)
+            self.get_job_response()
+        
+        self.__log.info('process_job End')
+        return True
+
     def __repr__(self):
         return super().__repr__()
 
@@ -209,6 +241,7 @@ class SnapshotExplainQuery(SnapshotBaseQuery):
 class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
 
     volume_estimate = None
+    errors = None
 
 
     def __repr__(self):
@@ -221,6 +254,13 @@ class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
             ret_val += f"{prefix}volume_estimate: {self.volume_estimate:,d}"
         else:
             ret_val += f"{prefix}volume_estimate: <NotCalculated>"
+        if self.errors:
+            ret_val += f"\n{prefix}errors: [{len(self.errors)}]"
+            err_list = [f"\n{prefix[0:-1]}  |-{err['title']}: {err['detail']}" for err in self.errors]
+            for err in err_list:
+                ret_val += err
+        else:
+            ret_val += f"\n{prefix}errors: <NoErrors>"
         return ret_val
 
 
@@ -228,6 +268,7 @@ class SnapshotExplainSamplesResponse():
 
     num_samples = None
     samples = None
+    errors = None
 
 
     def __init__(self, samples_list:list) -> None:
