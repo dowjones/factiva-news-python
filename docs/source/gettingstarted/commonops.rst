@@ -15,24 +15,25 @@ Assumes the ENV variable ``FACTIVA_USERKEY`` is set.
 
 .. code-block::
 
-    <class 'factiva.core.userkey.UserKey'>
-    |-key = ****************************1234
-    |-cloud_token = **Not Fetched**
-    |-account_name = AccName1234
-    |-account_type = account_with_contract_limits
-    |-active_products = DNA
-    |-max_allowed_concurrent_extractions = 5
-    |-max_allowed_extracted_documents = 200,000
-    |-max_allowed_extractions = 3
-    |-currently_running_extractions = 0
-    |-total_downloaded_bytes = 7,253,890
-    |-total_extracted_documents = 2,515
-    |-total_extractions = 1
-    |-total_stream_instances = 4
-    |-total_stream_subscriptions = 1
-    |-enabled_company_identifiers = [{'id': 4, 'name': 'isin'}, {'id': 3, 'name': 'cusip'}, {'id': 1, 'name': 'sedol'}, {'id': 5, 'name': 'ticker_exchange'}]
-    |-remaining_documents = 197,485
-    |-remaining_extractions = 2
+    <class 'factiva.analytics.UserKey'>
+    ├─key: ****************************1234
+    ├─cloud_token: <NotLoaded>
+    ├─account_name: <NotLoaded>
+    ├─account_type: <NotLoaded>
+    ├─active_product: <NotLoaded>
+    ├─max_allowed_concurrent_extractions: 0
+    ├─max_allowed_extracted_documents: 0
+    ├─max_allowed_extractions: 0
+    ├─currently_running_extractions: 0
+    ├─total_downloaded_bytes: 0
+    ├─total_extracted_documents: 0
+    ├─total_extractions: 0
+    ├─total_stream_instances: 0
+    ├─total_stream_subscriptions: 0
+    ├─enabled_company_identifiers:
+    │  └─<NotLoaded>
+    ├─remaining_documents: 0
+    └─remaining_extractions: 0
 
 
 Get Account's Historical Full Extractions

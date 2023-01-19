@@ -149,14 +149,14 @@ class ArticleRetrieval():
         return self.__str__()
 
 
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
         """Create string representation for this Class."""
-        child_prefix = '  |' + prefix
+        child_prefix = '  │' + prefix
         ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
 
         ret_val += f'{prefix}oauth_user: '
         ret_val += self.oauth_user.__str__(detailed=False, prefix=child_prefix)
-        ret_val += '\n'
+        ret_val += f'\n{prefix[0:-2]}└─'
 
         return ret_val
 
@@ -234,7 +234,7 @@ class UIArticle():
         return self.__str__()
 
 
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
         """Create string representation for this Class."""
         ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
         ret_val += f'{prefix}an: {self.an}\n'
@@ -245,7 +245,6 @@ class UIArticle():
         ret_val += f'{prefix}metadata: <dict> - [{len(self.metadata.keys())}] keys\n'
         ret_val += f'{prefix}content: <dict> - [{len(self.content.keys())}] keys\n'
         ret_val += f'{prefix}included: <list> - [{len(self.included)}] items\n'
-        ret_val += f'{prefix}relationships: <dict> - [{len(self.relationships.keys())}] keys\n'
-
+        ret_val += f'{prefix[0:-2]}└─relationships: <dict> - [{len(self.relationships.keys())}] keys\n'
         return ret_val
 

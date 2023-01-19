@@ -367,18 +367,20 @@ class FactivaTaxonomy():
         return self.__str__()
 
 
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
         # TODO: Improve the output for enabled_company_identifiers
         pprop = self.__dict__.copy()
         del pprop['user_key']
         del pprop['log']
+        del pprop['all_companies']
         
         ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
-        ret_val += f"{prefix}user_key = {self.user_key.__str__(detailed=False, prefix='  |  |-')}\n"
+        ret_val += f"{prefix}user_key: {self.user_key.__str__(detailed=False, prefix='  │  ├─')}\n"
 
         if detailed:
-            ret_val += '\n'.join((f'{prefix}{item} = {self.__print_property__(pprop[item])}' for item in pprop))
+            ret_val += '\n'.join((f'{prefix}{item}: {self.__print_property__(pprop[item])}' for item in pprop))
+            ret_val += f"\n{prefix[0:-2]}└─all_companies: {self.__print_property__(self.all_companies)}"
         else:
-            ret_val += f'{prefix}...'
+            ret_val += f'\n{prefix[0:-2]}└─...'
         return ret_val
 

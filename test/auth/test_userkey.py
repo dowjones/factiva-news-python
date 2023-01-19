@@ -63,7 +63,7 @@ def _test_userkey_types(usr):
     assert isinstance(usr.key, str)
     assert isinstance(usr.cloud_token, dict)
     assert isinstance(usr.account_name, str)
-    assert isinstance(usr.active_products, str)
+    assert isinstance(usr.active_product, str)
     assert isinstance(usr.max_allowed_concurrent_extractions, int)
     assert isinstance(usr.max_allowed_extracted_documents, int)
     assert isinstance(usr.max_allowed_extractions, int)
@@ -86,7 +86,7 @@ def _test_userkey_values(usr):
         usr = UserKey(stats=True)
     assert usr.key == FACTIVA_USERKEY
     assert len(usr.account_name) >= 0
-    assert len(usr.active_products) >= 0
+    assert len(usr.active_product) >= 0
     assert usr.max_allowed_concurrent_extractions >= 0
     assert usr.max_allowed_extracted_documents >= 0
     assert usr.max_allowed_extractions >= 0
