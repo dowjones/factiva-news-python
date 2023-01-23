@@ -2,14 +2,13 @@
   Classes to interact with the Snapshot Explain endpoint
 """
 from .base import SnapshotBase, SnapshotBaseQuery, SnapshotBaseJobResponse
-from ..auth import UserKey
 from ..common import log, const, req
-from .query import SnapshotQuery
+from .query import SnapshotQuery  # TODO: Remove this dependency by implementing a SnapshotBaseQuery --> SnapshotExplainQuery
 import time
 import pandas as pd
 
 
-class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, create a common class SnapshotBase
+class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across Explain, TimeSeries and Extraction
     """
     Class that interacts with the Factiva Snapshot Explain service.
 
@@ -23,9 +22,11 @@ class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, c
         Query used to run any of the Snapshot-related operations. If a str is
         provided, a simple query with a `where` clause is created. If other
         query fields are required, either provide the SnapshotQuery object at
-        creation, or set the appropriate object values after creation. This
-        parameter is not compatible with snapshot_id.
-
+        creation, or set the appropriate object values after creation. Not 
+        compatible with the parameter ``job_id``.
+    job_id : str, optional
+        Explain Job ID with a format like ``abcd1234-ab12-ab12-ab12-abcdef123456``.
+        Not compatible if the parameter ``query``.
     """
 
     __SAMPLES_BASEURL = f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}{const.API_EXTRACTIONS_SAMPLES_SUFFIX}'
@@ -48,10 +49,10 @@ class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, c
             self.get_job_response()
 
         elif query:
-            if isinstance(query, str):
-                self.query = SnapshotQuery(query)
-            elif isinstance(query, SnapshotQuery):
+            if isinstance(query, SnapshotQuery):
                 self.query = query
+            elif isinstance(query, str):
+                self.query = SnapshotQuery(query)
             else:
                 raise ValueError('Unexpected query type')
 
@@ -224,6 +225,7 @@ class SnapshotExplain(SnapshotBase): # TODO: When identifying repetitive code, c
         
         self.__log.info('process_job End')
         return True
+
 
     def __repr__(self):
         return super().__repr__()
