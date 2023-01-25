@@ -49,9 +49,9 @@ class SnapshotBase():
         else:
             ret_val += f"{prefix}query: <NotRetrieved>\n"
         if self.job_response:
-            ret_val += f"{prefix.replace('├', '└')}job_response: {self.job_response.__str__(detailed=False, prefix='     ├─')}"
+            ret_val += f"{prefix}job_response: {self.job_response.__str__(detailed=False, prefix='  │  ├─')}"
         else:
-            ret_val += f"{prefix.replace('├', '└')}job_response: <NotSubmitted>"
+            ret_val += f"{prefix}job_response: <NotSubmitted>"
         return ret_val
 
 

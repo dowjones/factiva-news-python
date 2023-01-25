@@ -2,7 +2,7 @@
   Classes to interact with the Snapshot Explain endpoint
 """
 from .base import SnapshotBase, SnapshotBaseQuery, SnapshotBaseJobResponse
-from ..common import log, const, req
+from ..common import log, const, req, tools
 import time
 import pandas as pd
 
@@ -31,7 +31,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
 
     __SAMPLES_BASEURL = f'{const.API_HOST}{const.API_EXTRACTIONS_BASEPATH}{const.API_EXTRACTIONS_SAMPLES_SUFFIX}'
     __MAX_SAMPLES = 100
-    samples_response = None
+    samples = None
 
     def __init__(
         self,
@@ -45,7 +45,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
 
         if job_id:
             self.__log.info(f'Creating SnapshotExplain instance with JobID {job_id}')
-            self.job_response = SnapshotExplainJobReponse(job_id)
+            self.job_response = SnapshotExplainJobResponse(job_id)
             self.get_job_response()
 
         elif query:
@@ -87,7 +87,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
 
         if response.status_code == 201:
             response_data = response.json()
-            self.job_response = SnapshotExplainJobReponse(response_data["data"]["id"])
+            self.job_response = SnapshotExplainJobResponse(response_data["data"]["id"])
             self.job_response.job_state = response_data['data']['attributes']['current_state']
             self.job_response.job_link = response_data['links']['self']
         elif response.status_code == 400:
@@ -185,7 +185,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
         if response.status_code == 200:
             self.__log.info(f'Samples for Job ID {self.job_response.job_id} retrieved successfully')
             response_data = response.json()
-            self.samples_response = SnapshotExplainSamplesResponse(response_data['data']['attributes']['sample'])
+            self.samples = SnapshotExplainSamplesResponse(response_data['data']['attributes']['sample'])
         elif response.status_code == 404:
             raise RuntimeError('Job ID does not exist.')
         elif response.status_code == 400:
@@ -233,11 +233,40 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
 
     def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
         ret_val = super().__str__(detailed, prefix, root_prefix)
+        if self.samples:
+            ret_val += f"\n{prefix[0:-2]}└─samples: {self.samples.__str__(detailed=False, prefix='     ├─')}"
+        else:
+            ret_val += f"\n{prefix[0:-2]}└─samples: <NotRetrieved>"
         return ret_val
 
 
 class SnapshotExplainQuery(SnapshotBaseQuery):
+    """
+    Snapshot Query for Explain operations class. Used only in the context of
+    SnapshotExplain, but can be transformed to other SnapshotQuery types when 
+    those are created using an instance of this class as parameter.
 
+    Parameters
+    ----------
+    where : str
+        String containing the query WHERE statement.
+    includes : dict, optional
+        Collection of bulk values to be added to the selection criteria.
+        Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
+        column_name2: ['value1', 'value2', ...]}``.
+    excludes : dict, optional
+        Collection of bulk values to be removed from the selection criteria.
+        Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
+        column_name2: ['value1', 'value2', ...]}``.
+    include_list : dict, optional
+        Collection of column-List values to be added to the selection crieria
+        Python dictionary with the format ``{column_name1: ['listID1', 'listID2, ...],
+        column_name2: ['listID1', 'listID2', ...]}``.
+    exclude_list : dict, optional
+        Collection of bulk values to be removed from the selection criteria.
+        Python dictionary with the format ``{column_name1: ['ListID1', 'listID2, ...],
+        column_name2: ['listID1', 'listID2', ...]}``.
+    """
 
     def __init__(self,
                 where=None,
@@ -260,8 +289,12 @@ class SnapshotExplainQuery(SnapshotBaseQuery):
         return super().__str__(detailed, prefix, root_prefix)
 
 
-class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
+class SnapshotExplainJobResponse(SnapshotBaseJobResponse):
+    """
+    Snapshot Explain Job Response class. Essentially contains the volume
+    of estimate documents.
 
+    """
     volume_estimate = None
     errors = None
 
@@ -270,7 +303,7 @@ class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
         return super().__repr__()
 
 
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
         ret_val = super().__str__(detailed, prefix, root_prefix)
         if isinstance(self.volume_estimate, int):
             ret_val += f"{prefix}volume_estimate: {self.volume_estimate:,d}"
@@ -287,18 +320,29 @@ class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
 
 
 class SnapshotExplainSamplesResponse():
+    """
+    Snapshot Explain Samples Response class. Essentially contains the list of
+    metadata samples randomly selected from a previously sent criteria linked
+    to the Job ID.
 
+    """
     num_samples = None
-    samples = None
-    errors = None
+    data = None
 
 
     def __init__(self, samples_list:list) -> None:
         if not isinstance(samples_list, list):
             raise ValueError('Unexpected samples_list parameter.')
 
-        self.samples = pd.DataFrame(samples_list)
+        self.data = pd.DataFrame(samples_list)
         self.num_samples = len(samples_list)
+
+
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix='') -> None:
+        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}"
+        ret_val += f"\n{prefix}num_samples: {tools.print_property(self.num_samples)}"
+        ret_val += f"\n{prefix[0:-2]}└─data: {tools.print_property(self.data)}"
+        return ret_val
 
     # Returns the following columns.
     # TODO: Create methods to split multi-value fields.
