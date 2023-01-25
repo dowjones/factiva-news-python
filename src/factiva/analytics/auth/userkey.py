@@ -617,7 +617,7 @@ class UserKey:
             ret_val += f'{prefix}active_product: {self.active_product}\n' if self.active_product != '' else f'{prefix}active_product: <NotLoaded>\n'
             ret_val += '\n'.join((f'{prefix}{item}: {self.__print_property__(pprop[item])}' for item in pprop))
             ret_val += f"\n{prefix}enabled_company_identifiers:"
-            ci_list = [f"\n{prefix[0:-1]}  |-[{ci['id']}]: {ci['name']}" for ci in self.enabled_company_identifiers]
+            ci_list = [f"\n{prefix.replace('├', '│')[0:-1]}  ├─[{ci['id']}]: {ci['name']}" for ci in self.enabled_company_identifiers]
             if len(ci_list) >= 1:
                 ci_list.sort()
                 for ci in ci_list:
