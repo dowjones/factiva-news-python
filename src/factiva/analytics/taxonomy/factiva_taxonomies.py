@@ -348,20 +348,6 @@ class FactivaTaxonomy():
                 'descriptor': f'ERR: Code {code} not found in {category.value}'}
 
 
-    def __print_property__(self, property_value) -> str:
-        if isinstance(property_value, pd.DataFrame):
-            pval = f"<pandas.DataFrame> - [{property_value.shape[0]}] rows"
-        elif not property_value:
-            pval = '<NotSet>'
-        elif isinstance(property_value, int):
-            pval = f'{property_value:,d}'
-        elif isinstance(property_value, float):
-            pval = f'{property_value:,f}'
-        else:
-            pval = property_value
-        return pval
-
-
     def __repr__(self):
         """Return a string representation of the object."""
         return self.__str__()
@@ -378,8 +364,8 @@ class FactivaTaxonomy():
         ret_val += f"{prefix}user_key: {self.user_key.__str__(detailed=False, prefix='  │  ├─')}\n"
 
         if detailed:
-            ret_val += '\n'.join((f'{prefix}{item}: {self.__print_property__(pprop[item])}' for item in pprop))
-            ret_val += f"\n{prefix[0:-2]}└─all_companies: {self.__print_property__(self.all_companies)}"
+            ret_val += '\n'.join((f'{prefix}{item}: {tools.print_property(pprop[item])}' for item in pprop))
+            ret_val += f"\n{prefix[0:-2]}└─all_companies: {tools.print_property(self.all_companies)}"
         else:
             ret_val += f'\n{prefix[0:-2]}└─...'
         return ret_val
