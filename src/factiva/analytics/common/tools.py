@@ -3,6 +3,7 @@
 import datetime
 import os
 import hashlib
+import pandas as pd
 from dateutil import parser
 from .. import common
 
@@ -165,3 +166,17 @@ def parse_field(field, field_name):
         return eval(field)
 
     raise ValueError(f'Unexpected value for {field_name}')
+
+
+def print_property(property_value, default='<NotSet>') -> str:
+    if isinstance(property_value, pd.DataFrame):
+        pval = f"<pandas.DataFrame> - [{property_value.shape[0]}] rows"
+    elif not property_value:
+        pval = default
+    elif isinstance(property_value, int):
+        pval = f'{property_value:,d}'
+    elif isinstance(property_value, float):
+        pval = f'{property_value:,f}'
+    else:
+        pval = property_value
+    return pval
