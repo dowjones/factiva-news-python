@@ -37,4 +37,5 @@ Check out the `Dow Jones Developer Portal <https://developer.dowjones.com>`_ for
 
    factiva.analytics/auth
    factiva.analytics/taxonomy
+   factiva.analytics/snapshotexplain
    factiva.analytics/article_retrieval
