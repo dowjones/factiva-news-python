@@ -3,7 +3,6 @@
 """
 from .base import SnapshotBase, SnapshotBaseQuery, SnapshotBaseJobResponse
 from ..common import log, const, req
-from .query import SnapshotQuery  # TODO: Remove this dependency by implementing a SnapshotBaseQuery --> SnapshotExplainQuery
 import time
 import pandas as pd
 
@@ -16,12 +15,13 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
     ----------
     user_key : str or UserKey
         String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the FACTIVA_USERKEY
+        constructor will try to obtain its value from the ``FACTIVA_USERKEY``
         environment variable.
-    query : str or SnapshotQuery, optional
-        Query used to run any of the Snapshot-related operations. If a str is
+    query : str or SnapshotExplainQuery, optional
+        If no value is provided the init operation attempt to get a value from the ENV
+        variable ``FACTIVA_WHERE``. If a str is
         provided, a simple query with a `where` clause is created. If other
-        query fields are required, either provide the SnapshotQuery object at
+        query fields are required, either provide the SnapshotExplainQuery object at
         creation, or set the appropriate object values after creation. Not 
         compatible with the parameter ``job_id``.
     job_id : str, optional
@@ -49,10 +49,10 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
             self.get_job_response()
 
         elif query:
-            if isinstance(query, SnapshotQuery):
+            if isinstance(query, SnapshotExplainQuery):
                 self.query = query
             elif isinstance(query, str):
-                self.query = SnapshotQuery(query)
+                self.query = SnapshotExplainQuery(query)
             else:
                 raise ValueError('Unexpected query type')
 
@@ -81,7 +81,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
             }
         
         submit_url = f'{self.__JOB_BASE_URL}{const.API_EXPLAIN_SUFFIX}'
-        submit_payload = self.query.get_explain_query()
+        submit_payload = self.query.get_payload()
 
         response = req.api_send_request(method='POST', endpoint_url=submit_url, headers=headers_dict, payload=submit_payload)
 
@@ -231,13 +231,33 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
         return super().__repr__()
 
 
-    def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
         ret_val = super().__str__(detailed, prefix, root_prefix)
         return ret_val
 
 
 class SnapshotExplainQuery(SnapshotBaseQuery):
-    pass
+
+
+    def __init__(self,
+                where=None,
+                includes: dict = None,
+                include_lists: dict = None,
+                excludes: dict = None,
+                exclude_lists: dict = None):
+        super().__init__(where, includes, include_lists, excludes, exclude_lists)
+
+
+    def get_payload(self) -> dict:
+        return super().get_payload()
+
+
+    def __repr__(self):
+        return super().__repr__()
+
+
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
+        return super().__str__(detailed, prefix, root_prefix)
 
 
 class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
@@ -257,12 +277,12 @@ class SnapshotExplainJobReponse(SnapshotBaseJobResponse):
         else:
             ret_val += f"{prefix}volume_estimate: <NotCalculated>"
         if self.errors:
-            ret_val += f"\n{prefix}errors: [{len(self.errors)}]"
+            ret_val += f"\n{prefix.replace('├', '└')}errors: [{len(self.errors)}]"
             err_list = [f"\n{prefix[0:-1]}  |-{err['title']}: {err['detail']}" for err in self.errors]
             for err in err_list:
                 ret_val += err
         else:
-            ret_val += f"\n{prefix}errors: <NoErrors>"
+            ret_val += f"\n{prefix.replace('├', '└')}errors: <NoErrors>"
         return ret_val
 
 
