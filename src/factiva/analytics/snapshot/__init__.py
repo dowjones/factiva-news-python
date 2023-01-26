@@ -2,14 +2,13 @@
     Define methods and properties for Snapshot Service module.
 """
 
-__all__ = ['SnapshotExplain', 'SnapshotExplainQuery', 'SnapshotExplainJobResponse', 'SnapshotExplainSamplesResponse',
-    'SnapshotQuery',
-    'Snapshot', 'SnapshotFiles',
-    'AnalyticsJob', 'ExplainJob', 'ExtractionJob', 'UpdateJob',
-    'query', 'jobs', 'snapshot', 'files']
+__all__ = [
+    'SnapshotExplain', 'SnapshotExplainQuery', 'SnapshotExplainJobResponse', 'SnapshotExplainSamplesResponse',
+    'SnapshotTimeSeries', 'SnapshotTimeSeriesQuery', 'SnapshotTimeSeriesJobReponse']
 
 from .query import SnapshotQuery
 from .jobs import AnalyticsJob, ExplainJob, ExtractionJob, UpdateJob
 from .snapshot import Snapshot
 
 from .explain import SnapshotExplain, SnapshotExplainQuery, SnapshotExplainJobResponse, SnapshotExplainSamplesResponse
+from .time_series import SnapshotTimeSeries, SnapshotTimeSeriesQuery, SnapshotTimeSeriesJobReponse

@@ -5,7 +5,8 @@ __all__ = [
     'ArticleRetrieval', 'UIArticle',
     'UserKey', 'OAuthUser',
     'FactivaTaxonomy', 'FactivaTaxonomyCategories',
-    'SnapshotExplain', 'SnapshotExplainQuery', 'SnapshotExplainJobResponse', 'SnapshotExplainSamplesResponse'
+    'SnapshotExplain', 'SnapshotExplainQuery', 'SnapshotExplainJobResponse', 'SnapshotExplainSamplesResponse',
+    'SnapshotTimeSeries', 'SnapshotTimeSeriesQuery', 'SnapshotTimeSeriesJobReponse'
     # 'snapshot', 'streaming', 'bulknews', 'taxonomy', 'Snapshot', 'SnapshotQuery',
     # 'StreamingInstance', 'Listener', 'Subscription', 'Taxonomy', 'tools',
     # 'SnapshotFiles', 'factiva_logger', 'get_factiva_logger', # 'JSONLFileHandler', 'BigQueryHandler', 'MongoDBHandler'
@@ -17,6 +18,7 @@ from .article_retrieval import ArticleRetrieval, UIArticle
 from .auth import UserKey, OAuthUser
 from .taxonomy import FactivaTaxonomy, FactivaTaxonomyCategories
 from .snapshot import SnapshotExplain, SnapshotExplainQuery, SnapshotExplainJobResponse, SnapshotExplainSamplesResponse
+from .snapshot import SnapshotTimeSeries, SnapshotTimeSeriesQuery, SnapshotTimeSeriesJobReponse
 # from .common.tools import SnapshotFiles
 # from .common.log import factiva_logger, get_factiva_logger
 # from .streaming import StreamingInstance, Listener, Subscription

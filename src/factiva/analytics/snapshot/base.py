@@ -49,7 +49,7 @@ class SnapshotBase():
         else:
             ret_val += f"{prefix}query: <NotRetrieved>\n"
         if self.job_response:
-            ret_val += f"{prefix}job_response: {self.job_response.__str__(detailed=False, prefix='  │  ├─')}"
+            ret_val += f"{prefix}job_response: {self.job_response.__str__(detailed=False, prefix='     ├─')}"
         else:
             ret_val += f"{prefix}job_response: <NotSubmitted>"
         return ret_val
@@ -173,7 +173,7 @@ class SnapshotBaseJobResponse():
 
     def __str__(self, detailed=True, prefix='  |-', root_prefix=''):
         ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
-        ret_val += f"{prefix}job_id: {self.job_id}\n"
-        ret_val += f"{prefix}job_link: {self.job_link}\n"
-        ret_val += f"{prefix}job_state: {self.job_state}\n"
+        ret_val += f"{prefix}job_id: {tools.print_property(self.job_id)}\n"
+        ret_val += f"{prefix}job_link: {tools.print_property(self.job_link)}\n"
+        ret_val += f"{prefix}job_state: {tools.print_property(self.job_state)}\n"
         return ret_val
