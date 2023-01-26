@@ -82,7 +82,7 @@ html_theme = 'furo'
 html_title = 'Factiva Analytics - Python Library'
 
 html_theme_options = {
-    'announcement': 'This library is still under development!',
+    'announcement': 'This library is under development!',
 }
 
 html_theme_options['footer_icons'] = [
