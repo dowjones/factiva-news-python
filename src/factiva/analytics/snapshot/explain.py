@@ -39,7 +39,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
         query=None,
         job_id=None
     ):
-        super().__init__(user_key=user_key)
+        super().__init__(user_key=user_key, query=query, job_id=job_id)
         self.__log = log.get_factiva_logger()
         self.__JOB_BASE_URL = f'{const.API_HOST}{const.API_SNAPSHOTS_BASEPATH}'
 
@@ -111,7 +111,7 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
 
         """
         self.__log.info('get_job_response Start')
-        # super().get_job_response_base()
+
         if (not self.job_response):
             raise RuntimeError('Job has not yet been submitted or Job ID was not set')
 
@@ -218,8 +218,8 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
                   ):
             if self.job_response.job_state not in const.API_JOB_EXPECTED_STATES:
                 raise RuntimeError('Unexpected job state')
-            if self.job_response.job_state == const.API_JOB_FAILED_STATE:
-                raise Exception('Job failed')
+            # if self.job_response.job_state == const.API_JOB_FAILED_STATE:
+            #     raise Exception('Job failed')
             time.sleep(const.API_JOB_ACTIVE_WAIT_SPACING)
             self.get_job_response()
         
