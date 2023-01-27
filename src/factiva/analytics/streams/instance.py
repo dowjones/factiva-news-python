@@ -4,7 +4,7 @@ from typing import List
 from ..common import req
 from .. import common, get_factiva_logger, factiva_logger, UserKey
 from .stream_response import StreamResponse
-from ..snapshot.bulknews import BulkNewsQuery
+from ..snapshots.bulknews import BulkNewsQuery
 from .subscription import Subscription
 
 

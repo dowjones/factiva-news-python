@@ -1,7 +1,7 @@
 """Implement query class definition."""
 from ..common import const
 from ..common.tools import validate_type, validate_field_options
-from factiva.analytics.snapshot.bulknews import BulkNewsQuery
+from factiva.analytics.snapshots.bulknews import BulkNewsQuery
 
 
 def validate_group_options(by_source, by_dimensions):
