@@ -101,7 +101,7 @@ class ArticleRetrieval():
 
             <class 'factiva.analytics.article_retrieval.article_retrieval.UIArticle'>
               |-an: WSJO000020221229eict000jh
-              |-headline: Europe Taps Tech's Power-Hungry Data Centers to Heat Homes; Rising energy prices and new regulations are contributing to an increase in projects to use excess heat to warm homes
+              |-headline: Europe Taps Tech's Power-Hungry Data Centers to Heat Homes.
               |-source_code: WSJO
               |-source_name: The Wall Street Journal Online
               |-publication_date: 2022-12-29

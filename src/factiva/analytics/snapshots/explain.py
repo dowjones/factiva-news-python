@@ -242,30 +242,27 @@ class SnapshotExplain(SnapshotBase): # TODO: Refactor when repeating code across
 
 class SnapshotExplainQuery(SnapshotBaseQuery):
     """
-    Snapshot Query for Explain operations class. Used only in the context of
-    SnapshotExplain, but can be transformed to other SnapshotQuery types when 
-    those are created using an instance of this class as parameter.
+    Query class used specifically for Snapshot Explain operations.
 
-    Parameters
+    Attributes
     ----------
     where : str
-        String containing the query WHERE statement.
-    includes : dict, optional
-        Collection of bulk values to be added to the selection criteria.
-        Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
-        column_name2: ['value1', 'value2', ...]}``.
-    excludes : dict, optional
-        Collection of bulk values to be removed from the selection criteria.
-        Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
-        column_name2: ['value1', 'value2', ...]}``.
-    include_list : dict, optional
-        Collection of column-List values to be added to the selection crieria
-        Python dictionary with the format ``{column_name1: ['listID1', 'listID2, ...],
-        column_name2: ['listID1', 'listID2', ...]}``.
-    exclude_list : dict, optional
-        Collection of bulk values to be removed from the selection criteria.
-        Python dictionary with the format ``{column_name1: ['ListID1', 'listID2, ...],
-        column_name2: ['listID1', 'listID2', ...]}``.
+        User representation for service authentication
+    includes : dict
+        Dictionary with a fixed list of codes to include
+    includes_list : dict
+        Dictionary with references to Lists for inclusion
+    excludes : dict
+        Dictionary with a fixed list of codes to exclude
+    excludes_list : dict
+        Dictionary with references to Lists for inclusion
+
+    Methods
+    -------
+    get_payload()
+        Returns a dict with the required format for a Snapshot
+        Extraction API request.
+        
     """
 
     def __init__(self,
@@ -274,6 +271,30 @@ class SnapshotExplainQuery(SnapshotBaseQuery):
                 include_lists: dict = None,
                 excludes: dict = None,
                 exclude_lists: dict = None):
+        """
+        Creates a new SnapshotExplainQuery instance.
+
+        Parameters
+        ----------
+        where : str
+            String containing the query WHERE statement.
+        includes : dict, optional
+            Collection of bulk values to be added to the selection criteria.
+            Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
+            column_name2: ['value1', 'value2', ...]}``.
+        excludes : dict, optional
+            Collection of bulk values to be removed from the selection criteria.
+            Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
+            column_name2: ['value1', 'value2', ...]}``.
+        include_list : dict, optional
+            Collection of column-List values to be added to the selection crieria
+            Python dictionary with the format ``{column_name1: ['listID1', 'listID2, ...],
+            column_name2: ['listID1', 'listID2', ...]}``.
+        exclude_list : dict, optional
+            Collection of bulk values to be removed from the selection criteria.
+            Python dictionary with the format ``{column_name1: ['ListID1', 'listID2, ...],
+            column_name2: ['listID1', 'listID2', ...]}``.
+        """
         super().__init__(where, includes, include_lists, excludes, exclude_lists)
 
 

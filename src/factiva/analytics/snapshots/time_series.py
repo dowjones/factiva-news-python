@@ -294,12 +294,15 @@ class SnapshotTimeSeriesJobReponse(SnapshotBaseJobResponse):
     """
     Snapshot Explain Job Response class. Essentially contains the volume
     of estimate documents.
-
     """
     data = None
     errors = None
     # Consider adding calculated values for start/end date and the number
     # of records
+
+
+    def __init__(self, job_id: str = None) -> None:
+        super().__init__(job_id)
 
 
     def __repr__(self):
