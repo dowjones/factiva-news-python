@@ -359,6 +359,10 @@ class SnapshotExplainSamplesResponse():
         self.num_samples = len(samples_list)
 
 
+    def __repr__(self):
+        return super().__repr__()
+        
+
     def __str__(self, detailed=True, prefix='  ├─', root_prefix='') -> None:
         ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}"
         ret_val += f"\n{prefix}num_samples: {tools.print_property(self.num_samples)}"

@@ -28,6 +28,9 @@ class SnapshotBase():
         if query and job_id:
             raise ValueError("The query and job_id parameters cannot be assigned simultaneously")
 
+        if (not query) and (not job_id):
+            raise ValueError("Paramters query or job id are required")
+
 
     def submit_job(self, payload=None):  # TODO: NEXT!
         pass
@@ -49,7 +52,7 @@ class SnapshotBase():
         else:
             ret_val += f"{prefix}query: <NotRetrieved>\n"
         if self.job_response:
-            ret_val += f"{prefix}job_response: {self.job_response.__str__(detailed=False, prefix='     ├─')}"
+            ret_val += f"{prefix}job_response: {self.job_response.__str__(detailed=False, prefix='  │  ├─')}"
         else:
             ret_val += f"{prefix}job_response: <NotSubmitted>"
         return ret_val
