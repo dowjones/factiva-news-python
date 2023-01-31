@@ -229,6 +229,29 @@ class UIArticle():
         else:
             self.relationships = {}
 
+
+    @property
+    def txt(self) -> str:
+        disp_txt = f"\n{self.headline}"
+        disp_txt += f"\n\n{self.source_name}, {self.publication_date}, {self.metadata['metrics']['word_count']} words\n\n"
+        disp_txt += ap.extract_body(self.content['body'][0], 'txt')
+        disp_txt += f"{ap.extract_txt(self.content['copyright'])}"
+        disp_txt += f"\nDocument identifier: {self.an}\n"
+        return disp_txt
+
+
+    @property
+    def html(self) -> str:
+        if 'logo' in self.content['sources'][0]:
+            disp_txt = f"\n<img src='{self.content['sources'][0]['logo']['size'][0]['uri']}'>"
+        disp_txt += f"\n<h1>{self.headline}<h1>"
+        disp_txt += f"\n<p style='dateline'>{self.source_name}, {self.publication_date}, {self.metadata['metrics']['word_count']} words</p>"
+        disp_txt += ap.extract_body(self.content['body'][0], 'html')
+        disp_txt += f"\n<p style='copyright'>{ap.extract_txt(self.content['copyright'])}</p>"
+        disp_txt += f"\n<p style='docid'>Document identifier: {self.an}</p>"
+        return disp_txt
+
+
     def __repr__(self):
         """Create string representation for this Class."""
         return self.__str__()
