@@ -24,8 +24,9 @@ setup(
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
     packages=['factiva.analytics', 'factiva.analytics.article_retrieval', 'factiva.analytics.auth',
-              'factiva.analytics.common', 'factiva.analytics.taxonomy' #, 'factiva.analytics.integration'
-            #   'factiva.analytics.snapshot', 'factiva.analytics.streaming', 'factiva.analytics.lists',
+              'factiva.analytics.common', 'factiva.analytics.taxonomy', 'factiva.analytics.snapshots'
+             #, 'factiva.analytics.integration'
+            #   , 'factiva.analytics.streams', 'factiva.analytics.lists',
               ],
     url='https://developer.dowjones.com/',
     project_urls={

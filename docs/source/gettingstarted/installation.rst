@@ -20,7 +20,7 @@ Alternatively it can be installed directly from GitHub by running:
 
 package guidelines establish that the ``main`` branch is also the latest official release.
 However, this method allows to install pre-release versions in any of the available branches
-in the repository.
+in the repository like ``dev``.
 
 
 Optional Packages
