@@ -21,11 +21,10 @@ sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/article_retrieva
 sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/auth'))
 sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/common'))
 sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/taxonomy'))
+sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/snapshots'))
 # sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/integration'))
 # sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/lists'))
-# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/snapshot'))
-# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/streaming'))
-
+# sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/streams'))
 # -- Project information -----------------------------------------------------
 
 current_year = date.today().year
