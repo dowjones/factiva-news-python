@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 from inspect import getframeinfo, stack
+from pathlib import Path
 from .config import LOGS_DEFAULT_FOLDER, FACTIVA_LOGLEVEL
 import datetime
 
@@ -23,7 +24,8 @@ class CustomFormatter(logging.Formatter):
 
 def get_factiva_logger():
     if not os.path.exists(LOGS_DEFAULT_FOLDER):
-        os.mkdir(LOGS_DEFAULT_FOLDER)
+        # os.mkdir(LOGS_DEFAULT_FOLDER)
+        Path(LOGS_DEFAULT_FOLDER).mkdir(parents=True, exist_ok=True)
     logger = logging.Logger(__name__)
     logger.setLevel(FACTIVA_LOGLEVEL)
     file_name = f'factiva-analytics-{datetime.datetime.now().strftime("%Y-%m-%d")}'

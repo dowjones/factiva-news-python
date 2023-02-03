@@ -1,5 +1,6 @@
 
 import os
+from . import const
 
 def load_environment_value(config_key, default=None) -> str:
     """Obtain a environmental variable."""
@@ -19,5 +20,5 @@ DOWNLOAD_DEFAULT_FOLDER = load_environment_value(
 LISTENER_FILES_DEFAULT_FOLDER = load_environment_value(
     'STREAM_FILES_DIR', os.path.join(os.getcwd(), 'listener'))
 LOGS_DEFAULT_FOLDER = load_environment_value(
-    'LOG_FILES_DIR', os.path.join(os.path.expanduser('~'), '.factiva'))
+    'LOG_FILES_DIR', os.path.join(os.path.expanduser('~'), const.LOGS_DEFAULT_PATH))
 

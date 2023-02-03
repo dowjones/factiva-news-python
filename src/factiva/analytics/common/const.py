@@ -2,6 +2,8 @@
 Constants for the Factiva Analytics package
 """
 
+LOGS_DEFAULT_PATH = '.factiva/logs'
+
 API_HOST = 'https://api.dowjones.com'
 API_ACCOUNT_OAUTH2_URL = 'https://accounts.dowjones.com/oauth2/v1/token'
 API_LATEST_VERSION = "2.0"
