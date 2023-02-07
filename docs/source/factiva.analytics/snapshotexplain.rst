@@ -7,26 +7,26 @@ random samples given a predefined selection criteria (query).
 SnapshotExplain
 ***************
 
-.. autoclass:: factiva.analytics.snapshot.explain.SnapshotExplain
+.. autoclass:: factiva.analytics.snapshots.explain.SnapshotExplain
    :members:
 
 
 SnapshotExplainQuery
 ********************
 
-.. autoclass:: factiva.analytics.snapshot.explain.SnapshotExplainQuery
+.. autoclass:: factiva.analytics.snapshots.explain.SnapshotExplainQuery
    :members:
 
 
 SnapshotExplainJobResponse
 **************************
 
-.. autoclass:: factiva.analytics.snapshot.explain.SnapshotExplainJobResponse
+.. autoclass:: factiva.analytics.snapshots.explain.SnapshotExplainJobResponse
    :members:
 
 
 SnapshotExplainSamplesResponse
 ******************************
 
-.. autoclass:: factiva.analytics.snapshot.explain.SnapshotExplainSamplesResponse
+.. autoclass:: factiva.analytics.snapshots.explain.SnapshotExplainSamplesResponse
    :members:

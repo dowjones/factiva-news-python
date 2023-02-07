@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.abspath('../../src/factiva/analytics/snapshots'))
 current_year = date.today().year
 project = 'Factiva Analytics'
 copyright = f'{current_year}, Dow Jones'
-author = 'Dow Jones'
+author = 'Dow Jones - Customer Solutions Engineering (CSE) Team'
 
 # The full version, including alpha/beta/rc tags
 release = __version__
