@@ -59,10 +59,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.9'
 
@@ -87,10 +87,10 @@ jobs:
       needs: [test]
       steps:
         - name : Checkout code
-          uses : actions/checkout@v2
+          uses : actions/checkout@v3
 
         - name: Set up Python
-          uses: actions/setup-python@v2
+          uses: actions/setup-python@v3
           with:
             python-version: '3.9'
 
@@ -102,7 +102,7 @@ jobs:
           run: |
             python setup.py bdist_wheel
             python setup.py sdist
-        - uses: actions/upload-artifact@v2
+        - uses: actions/upload-artifact@v3
           with:
             name: Wheel_library
             path: dist/
