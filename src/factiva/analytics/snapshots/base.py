@@ -26,20 +26,15 @@ class SnapshotBaseJobResponse():
 
 
 class SnapshotBaseQuery():
-    """
-    Snapshot base query to be inherited by each operation, so it can adapt its attributes
-    and functions to specific operation requirements.
-
-    Consider implementing a SQL validation functionality to ensure fields are valid. There's
-    sample projects doing something similar.
-    https://github.com/David-Wobrock/sqlvalidator
-
-    """
     where : str = None
     includes : list[str] = None
     include_lists: list[dict] = None
     excludes : list[str] = None
     exclude_lists : list[dict] = None
+
+    # TODO: Consider implementing a SQL validation functionality to ensure 
+    # fields are valid. There's sample projects doing something similar.
+    # https://github.com/David-Wobrock/sqlvalidator
 
 
     def __init__(
@@ -50,7 +45,6 @@ class SnapshotBaseQuery():
         excludes:dict=None,
         exclude_lists:dict=None
     ):
-        """Initialize class."""
         if isinstance(where, str):
             self.where = where
         elif config.load_environment_value('FACTIVA_WHERE', '') != '':
@@ -75,15 +69,6 @@ class SnapshotBaseQuery():
 
 
     def get_payload(self) -> dict:
-        """
-        Create the basic requesty payload to be used within Factiva Snapshots API
-        and Factiva Streams API.
-
-        Returns
-        -------
-        Dictionary containing the fields that where assigned to the query.
-
-        """
         query_dict = {
             "query": {
                 "where": self.where
@@ -146,7 +131,6 @@ class SnapshotBase():
         query=None,
         job_id=None
     ):
-        """Instantiate class."""
         if isinstance(user_key, UserKey):
             self.user_key = user_key
         else:

@@ -7,8 +7,234 @@ from .base import SnapshotBase, SnapshotBaseQuery, SnapshotBaseJobResponse
 from ..common import log, const, tools, req
 
 
-class SnapshotTimeSeries(SnapshotBase):
+class SnapshotTimeSeriesJobReponse(SnapshotBaseJobResponse):
+    """
+    Snapshot Explain Job Response class. Essentially contains the volume
+    of estimate documents.
 
+    Attributes
+    ----------
+    job_id : str
+        Explain Job ID with a format like ``abcd1234-ab12-ab12-ab12-abcdef123456``.
+    job_link : str
+        Unique URL referring to the job instance
+    job_state : str
+        Latest known job status. Value is self-explanatory.
+    data : pandas.DataFrame
+        Obtained Time-Series data from job execution
+    errors : list[dict]
+        Job execution errors returned by the API
+
+    """
+
+    data : pd.DataFrame = None
+    errors : list[dict] = None
+    # Consider adding calculated values for start/end date and the number
+    # of records
+
+
+    def __init__(self, job_id: str = None) -> None:
+        super().__init__(job_id)
+
+
+    def __repr__(self):
+        return super().__repr__()
+
+
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
+        ret_val = super().__str__(detailed, prefix, root_prefix)
+        ret_val += f"{prefix}data: {tools.print_property(self.data)}"
+        if self.errors:
+            ret_val += f"\n{prefix.replace('├', '└')}errors: [{len(self.errors)}]"
+            err_list = [f"\n{prefix[0:-1]}  |-{err['title']}: {err['detail']}" for err in self.errors]
+            for err in err_list:
+                ret_val += err
+        else:
+            ret_val += f"\n{prefix.replace('├', '└')}errors: <NoErrors>"
+        return ret_val
+
+
+
+class SnapshotTimeSeriesQuery(SnapshotBaseQuery):
+    """
+    Snapshot Query for TimeSeries operations class. Used only in the context of
+    SnapshotTimeSeries, but can be transformed to other SnapshotQuery types when 
+    those are created using an instance of this class as parameter.
+
+    Attributes
+    ----------
+    where : str
+        User representation for service authentication
+    includes : dict
+        Dictionary with a fixed list of codes to include
+    includes_list : dict
+        Dictionary with references to Lists for inclusion
+    excludes : dict
+        Dictionary with a fixed list of codes to exclude
+    excludes_list : dict
+        Dictionary with references to Lists for inclusion
+    frequency : str
+        Time unit used to aggregate values in the time-series calculation
+    date_field : str
+        Schema date-time field used to calculate the time-series dataset
+    group_dimensions : list[str]
+        List of fields to break-down aggregates per time period unit
+    top : str
+        Max entries per group_dimension per time period unit
+    """
+
+    frequency : str = None
+    date_field : str = None
+    group_dimensions : list[str] = None
+    top : int = None
+
+    def __init__(self,
+                where=None,
+                includes: dict = None,
+                include_lists: dict = None,
+                excludes: dict = None,
+                exclude_lists: dict = None,
+                frequency: str = const.API_MONTH_PERIOD,
+                date_field:str = const.API_PUBLICATION_DATETIME_FIELD,
+                group_dimensions: list = [],
+                top: int = 10):
+        """
+        Class constructor
+        
+        Parameters
+        ----------
+        where : str
+            String containing the query WHERE statement.
+        includes : dict, optional
+            Collection of bulk values to be added to the selection criteria.
+            Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
+            column_name2: ['value1', 'value2', ...]}``.
+        excludes : dict, optional
+            Collection of bulk values to be removed from the selection criteria.
+            Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
+            column_name2: ['value1', 'value2', ...]}``.
+        include_lists : dict, optional
+            Collection of column-List values to be added to the selection crieria
+            Python dictionary with the format ``{column_name1: ['listID1', 'listID2, ...],
+            column_name2: ['listID1', 'listID2', ...]}``.
+        exclude_lists : dict, optional
+            Collection of bulk values to be removed from the selection criteria.
+            Python dictionary with the format ``{column_name1: ['ListID1', 'listID2, ...],
+            column_name2: ['listID1', 'listID2', ...]}``.
+        frequency : str, optional
+            Date part to be used to group subtotals in the time-series dataset. Allowed values
+            are ``DAY``, ``MONTH`` (default) and ``YEAR``.
+        date_field : str, optional
+            Timestamp column that will be used to calculate the time-series dataset. It can be
+            any of the three values: ``publication_datetime`` (default), ``modification_datetime``,
+            and ``ingestion_datetime``.
+        group_dimensions : list[str], optional
+            List of fields that will be used to break-down subtotals for each period. This list can
+            have a maximum of 4 elements. Allowed values are ``['source_code', 'subject_codes', 
+            'region_codes', 'industry_codes', 'company_codes', 'person_codes', 'company_codes_about', 
+            'company_codes_relevance', 'company_codes_cusip', 'company_codes_isin', 
+            'company_codes_sedol', 'company_codes_ticker', 'company_codes_about_cusip', 
+            'company_codes_about_isin', 'company_codes_about_sedol', 'company_codes_about_ticker', 
+            'company_codes_relevance_cusip', 'company_codes_relevance_isin', 
+            'company_codes_relevance_sedol', 'company_codes_relevance_ticker']``
+        top : int, optional
+            Limits the dataset to return only the top X values for each dimension passed in the
+            ``group_dimensions`` parameter. Default 10.
+        """
+        super().__init__(where, includes, include_lists, excludes, exclude_lists)
+
+        tools.validate_type(frequency, str, "Unexpected value for frequency")
+        frequency = frequency.upper().strip()
+        tools.validate_field_options(frequency, const.API_DATETIME_PERIODS)
+        self.frequency = frequency
+
+        tools.validate_type(date_field, str, "Unexpected value for date_field")
+        date_field = date_field.lower().strip()
+        tools.validate_field_options(date_field, const.API_DATETIME_FIELDS)
+        self.date_field = date_field
+
+        if isinstance(group_dimensions, list):
+            self.group_dimensions = group_dimensions
+        # TODO: Validate values in the list group_dimensions are valid form the
+        #       list of all possible columns that can be used for this purpose
+
+        tools.validate_type(top, int, "Unexpected value for top")
+        if top >= 0:
+            self.top = top
+        else:
+            raise ValueError('Top value is not valid')
+
+
+    def get_payload(self) -> dict:
+        """
+        Create the basic request payload to be used within Snapshots Explain API
+        request.
+
+        Returns
+        -------
+        dict
+            Dictionary containing non-null query attributes.
+
+        """
+        payload = super().get_payload()
+
+        self.frequency = self.frequency.upper().strip()
+        tools.validate_field_options(self.frequency, const.API_DATETIME_PERIODS)
+        payload["query"].update({"frequency": self.frequency})
+
+        self.date_field = self.date_field.lower().strip()
+        tools.validate_field_options(self.date_field, const.API_DATETIME_FIELDS)
+        payload["query"].update({"date_field": self.date_field})
+
+        if(self.group_dimensions):
+            if(len(self.group_dimensions)<=4):
+                for option in self.group_dimensions:
+                    tools.validate_field_options(option, const.API_GROUP_DIMENSIONS_FIELDS)
+            else:
+                raise ValueError("The maximiun group_dimensions size is 4")
+        else:
+            self.group_dimensions = []
+        
+        payload["query"].update(
+            {"group_dimensions": self.group_dimensions})
+
+        payload["query"].update({"top": self.top})
+
+        return payload
+
+
+    def __repr__(self):
+        return super().__repr__()
+
+
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
+        ret_val = super().__str__(detailed, prefix, root_prefix)
+        ret_val = ret_val.replace('└─...', '├─...')
+        ret_val += f"\n{prefix}frequency: {tools.print_property(self.frequency)}"
+        ret_val += f"\n{prefix}date_field: {tools.print_property(self.date_field)}"
+        ret_val += f"\n{prefix}group_dimensions: {tools.print_property(self.group_dimensions)}"
+        ret_val += f"\n{prefix[0:-2]}└─top: {tools.print_property(self.top)}"
+        return ret_val
+
+
+
+class SnapshotTimeSeries(SnapshotBase):
+    """
+    Main class to interact with the Time Series service from Factiva Analytics.
+
+    Attributes
+    ----------
+    user_key : UserKey
+        User representation for service authentication
+    query : SnapshotExtractionQuery
+        Query object tailored for Extraction operations
+    job_response : SnapshotExtractionJobReponse
+        Object containing job status and execution details
+
+    """
+
+    query : SnapshotTimeSeriesQuery = None
+    job_response : SnapshotTimeSeriesJobReponse = None
 
     def __init__(
         self,
@@ -24,11 +250,17 @@ class SnapshotTimeSeries(SnapshotBase):
             self.__log.info(f'Creating SnapshotTimeSeries instance with JobID {job_id}')
             self.job_response = SnapshotTimeSeriesJobReponse(job_id)
             self.get_job_response()
-
-        if isinstance(query, SnapshotTimeSeriesQuery):
-            self.query = query
+        elif query:
+            if isinstance(query, SnapshotTimeSeriesQuery):
+                self.query = query
+            elif isinstance(query, str):
+                self.query = SnapshotTimeSeriesQuery(query)
+            else:
+                raise ValueError('Unexpected query type')
         else:
-            self.query = SnapshotTimeSeriesQuery(query)
+            self.query = SnapshotTimeSeriesQuery()
+        self.__log.info('SnapshotExtraction created OK')
+
 
 
     @log.factiva_logger
@@ -42,7 +274,8 @@ class SnapshotTimeSeries(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the submission was successful. An Exception otherwise.
+        bool
+            True if the submission was successful. An Exception otherwise.
 
         """
         self.__log.info('submit_job Start')
@@ -84,7 +317,8 @@ class SnapshotTimeSeries(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the get request was successful. An Exception otherwise.
+        bool
+            True if the get request was successful. An Exception otherwise.
 
         """
         self.__log.info('get_job_response Start')
@@ -128,7 +362,8 @@ class SnapshotTimeSeries(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the explain processing was successful. An Exception
+        bool
+            True if the explain processing was successful. An Exception
             otherwise.
 
         """
@@ -159,165 +394,3 @@ class SnapshotTimeSeries(SnapshotBase):
         ret_val = super().__str__(detailed, prefix, root_prefix)
         ret_val = ret_val.replace('├─job_response', '└─job_response')
         return ret_val
-    
-
-
-
-class SnapshotTimeSeriesQuery(SnapshotBaseQuery):
-    """
-    Snapshot Query for TimeSeries operations class. Used only in the context of
-    SnapshotTimeSeries, but can be transformed to other SnapshotQuery types when 
-    those are created using an instance of this class as parameter.
-
-    Parameters
-    ----------
-    where : str
-        String containing the query WHERE statement.
-    includes : dict, optional
-        Collection of bulk values to be added to the selection criteria.
-        Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
-        column_name2: ['value1', 'value2', ...]}``.
-    excludes : dict, optional
-        Collection of bulk values to be removed from the selection criteria.
-        Python dictionary with the format ``{column_name1: ['value1', 'value2, ...],
-        column_name2: ['value1', 'value2', ...]}``.
-    include_list : dict, optional
-        Collection of column-List values to be added to the selection crieria
-        Python dictionary with the format ``{column_name1: ['listID1', 'listID2, ...],
-        column_name2: ['listID1', 'listID2', ...]}``.
-    exclude_list : dict, optional
-        Collection of bulk values to be removed from the selection criteria.
-        Python dictionary with the format ``{column_name1: ['ListID1', 'listID2, ...],
-        column_name2: ['listID1', 'listID2', ...]}``.
-    frequency : str, optional
-        Date part to be used to group subtotals in the time-series dataset. Allowed values
-        are ``DAY``, ``MONTH`` (default) and ``YEAR``.
-    date_field : str, optional
-        Timestamp column that will be used to calculate the time-series dataset. It can be
-        any of the three values: ``publication_datetime`` (default), ``modification_datetime``,
-        and ``ingestion_datetime``.
-    group_dimensions : list, optional
-        List of fields that will be used to break-down subtotals for each period. This list can
-        have a maximum of 4 elements. Allowed values are ``['source_code', 'subject_codes', 
-        'region_codes', 'industry_codes', 'company_codes', 'person_codes', 'company_codes_about', 
-        'company_codes_relevance', 'company_codes_cusip', 'company_codes_isin', 
-        'company_codes_sedol', 'company_codes_ticker', 'company_codes_about_cusip', 
-        'company_codes_about_isin', 'company_codes_about_sedol', 'company_codes_about_ticker', 
-        'company_codes_relevance_cusip', 'company_codes_relevance_isin', 
-        'company_codes_relevance_sedol', 'company_codes_relevance_ticker']``
-    top : int, optional
-        Limits the dataset to return only the top X values for each dimension passed in the
-        ``group_dimensions`` parameter. Default 10.
-    """
-    frequency = None
-    date_field = None
-    group_dimensions = None
-    top = None
-
-    def __init__(self,
-                where=None,
-                includes: dict = None,
-                include_lists: dict = None,
-                excludes: dict = None,
-                exclude_lists: dict = None,
-                frequency: str = const.API_MONTH_PERIOD,
-                date_field:str = const.API_PUBLICATION_DATETIME_FIELD,
-                group_dimensions: list = [],
-                top: int = 10):
-        super().__init__(where, includes, include_lists, excludes, exclude_lists)
-
-        tools.validate_type(frequency, str, "Unexpected value for frequency")
-        frequency = frequency.upper().strip()
-        tools.validate_field_options(frequency, const.API_DATETIME_PERIODS)
-        self.frequency = frequency
-
-        tools.validate_type(date_field, str, "Unexpected value for date_field")
-        date_field = date_field.lower().strip()
-        tools.validate_field_options(date_field, const.API_DATETIME_FIELDS)
-        self.date_field = date_field
-
-        if isinstance(group_dimensions, list):
-            self.group_dimensions = group_dimensions
-        # TODO: Validate values in the list group_dimensions are valid form the
-        #       list of all possible columns that can be used for this purpose
-
-        tools.validate_type(top, int, "Unexpected value for top")
-        if top >= 0:
-            self.top = top
-        else:
-            raise ValueError('Top value is not valid')
-
-
-    def get_payload(self) -> dict:
-        payload = super().get_payload()
-
-        self.frequency = self.frequency.upper().strip()
-        tools.validate_field_options(self.frequency, const.API_DATETIME_PERIODS)
-        payload["query"].update({"frequency": self.frequency})
-
-        self.date_field = self.date_field.lower().strip()
-        tools.validate_field_options(self.date_field, const.API_DATETIME_FIELDS)
-        payload["query"].update({"date_field": self.date_field})
-
-        if(self.group_dimensions):
-            if(len(self.group_dimensions)<=4):
-                for option in self.group_dimensions:
-                    tools.validate_field_options(option, const.API_GROUP_DIMENSIONS_FIELDS)
-            else:
-                raise ValueError("The maximiun group_dimensions size is 4")
-        else:
-            self.group_dimensions = []
-        
-        payload["query"].update(
-            {"group_dimensions": self.group_dimensions})
-
-        payload["query"].update({"top": self.top})
-
-        return payload
-
-
-    def __repr__(self):
-        return super().__repr__()
-
-
-    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
-        ret_val = super().__str__(detailed, prefix, root_prefix)
-        ret_val = ret_val.replace('└─...', '├─...')
-        ret_val += f"\n{prefix}frequency: {tools.print_property(self.frequency)}"
-        ret_val += f"\n{prefix}date_field: {tools.print_property(self.date_field)}"
-        ret_val += f"\n{prefix}group_dimensions: {tools.print_property(self.group_dimensions)}"
-        ret_val += f"\n{prefix[0:-2]}└─top: {tools.print_property(self.top)}"
-        return ret_val
-
-
-class SnapshotTimeSeriesJobReponse(SnapshotBaseJobResponse):
-    """
-    Snapshot Explain Job Response class. Essentially contains the volume
-    of estimate documents.
-    """
-    data = None
-    errors = None
-    # Consider adding calculated values for start/end date and the number
-    # of records
-
-
-    def __init__(self, job_id: str = None) -> None:
-        super().__init__(job_id)
-
-
-    def __repr__(self):
-        return super().__repr__()
-
-
-    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
-        ret_val = super().__str__(detailed, prefix, root_prefix)
-        ret_val += f"{prefix}data: {tools.print_property(self.data)}"
-        if self.errors:
-            ret_val += f"\n{prefix.replace('├', '└')}errors: [{len(self.errors)}]"
-            err_list = [f"\n{prefix[0:-1]}  |-{err['title']}: {err['detail']}" for err in self.errors]
-            for err in err_list:
-                ret_val += err
-        else:
-            ret_val += f"\n{prefix.replace('├', '└')}errors: <NoErrors>"
-        return ret_val
-

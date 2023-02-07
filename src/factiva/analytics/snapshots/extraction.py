@@ -30,12 +30,6 @@ class SnapshotExtractionJobReponse(SnapshotBaseJobResponse):
         If the job is successful, this shows the list of files that can
         be downloaded with the selected content.
 
-    Methods
-    -------
-    get_payload()
-        Returns a dict with the required format for a Snapshot
-        Extraction API request.
-
     """
 
     errors : list[dict] = None
@@ -97,12 +91,6 @@ class SnapshotExtractionQuery(SnapshotBaseQuery):
     limit : int
         Max number of articles to extract
 
-    Methods
-    -------
-    get_payload()
-        Returns a dict with the required format for a Snapshot
-        Extraction API request.
-
     """
 
     file_format: str
@@ -161,6 +149,15 @@ class SnapshotExtractionQuery(SnapshotBaseQuery):
 
 
     def get_payload(self) -> dict:
+        """
+        Create the basic request payload to be used within a Snapshots Extraction API
+        request.
+
+        Returns
+        -------
+        Dictionary containing non-null query attributes.
+
+        """
         query_dict = super().get_payload()
 
         if self.limit > 0:
@@ -196,23 +193,6 @@ class SnapshotExtraction(SnapshotBase):
         Query object tailored for Extraction operations
     job_response : SnapshotExtractionJobReponse
         Object containing job status and execution details
-
-    Methods
-    -------
-    submit_job()
-        Sends a job request based on the value of ``user_key`` and
-        ``query``. Creates an initial instance of ``job_response``.
-    get_job_response()
-        Gets the latest job status from the server and updates the
-        ``job_response`` attribute properties.
-    download_files(path)
-        Download all extraction files to the specified location. If not provided
-        files are downloaded to the default location (Extraction short ID).
-    process_job(path)
-        Runs the full sequence of ``submit_job()``, ``get_job_response()`` and
-        ``download_files()``. It handles all intermediate stages and only ends
-        when the service reports that the job is done. It's an automation of
-        full job execution and the preferred method to be used in most cases.
 
     """
 
@@ -252,11 +232,14 @@ class SnapshotExtraction(SnapshotBase):
         elif query:
             if isinstance(query, SnapshotExtractionQuery):
                 self.query = query
-            else:
+            elif isinstance(query, str):
                 self.query = SnapshotExtractionQuery(query)
+            else:
+                raise ValueError('Unexpected query type')
         else:
             self.query = SnapshotExtractionQuery()
         self.__log.info('SnapshotExtraction created OK')
+
 
 
 # TODO: Next --> Test this!
@@ -271,7 +254,7 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the submission was successful. An Exception otherwise.
+        bool : True if the submission was successful. An Exception otherwise.
 
         Raises
         ------
@@ -318,7 +301,7 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the get request was successful. An Exception otherwise.
+        bool : True if the get request was successful. An Exception otherwise.
 
         Raises
         ------
@@ -373,7 +356,7 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the download was successful. An Exception otherwise.
+        bool : True if the download was successful. An Exception otherwise.
 
         Raises
         ------
@@ -411,7 +394,7 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if files were correctly downloaded, False if no files
+        bool : True if files were correctly downloaded, False if no files
             are available for download or the download failed.
 
         """
@@ -442,7 +425,7 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        Boolean : True if the extraction processing was successful. An Exception
+        bool : True if the extraction processing was successful. An Exception
             otherwise.
 
         """
