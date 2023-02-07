@@ -18,7 +18,7 @@ env:
   FACTIVA_SUBSCRIPTIONID: ${{secrets.FACTIVA_SUBSCRIPTIONID}}
   FACTIVA_LOGLEVEL: ${{vars.FACTIVA_LOGLEVEL}}
 
-  jobs:
+jobs:
 
   test:
     name: Test
