@@ -36,18 +36,18 @@ jobs:
 
       - name: Install latest PIP
         run: |
-          python -m pip install --upgrade pip >> $GITHUB_OUTPUT
+          python -m pip install --upgrade pip >> $GITHUB_STEP_SUMMARY
 
       - name: Install Dependencies
         run: |
-          python -m pip install pytest pytest-cov >> $GITHUB_OUTPUT
+          python -m pip install pytest pytest-cov >> $GITHUB_STEP_SUMMARY
 
       - name: Setup factiva-analytics <DEV> (this repo)
         run: |
-          python -m pip install -e . >> $GITHUB_OUTPUT
+          python -m pip install -e . >> $GITHUB_STEP_SUMMARY
 
       - name: pytest
-        run: pytest test/ >> $GITHUB_OUTPUT
+        run: pytest test/ >> $GITHUB_STEP_SUMMARY
 
   build:
       name: Build and Publish
@@ -66,12 +66,12 @@ jobs:
 
         - name: Install latest pip, setuptools, twine + wheel
           run: |
-            python -m pip install --upgrade pip setuptools wheel >> $GITHUB_OUTPUT
+            python -m pip install --upgrade pip setuptools wheel >> $GITHUB_STEP_SUMMARY
             
         - name: Build wheels
           run: |
-            python setup.py bdist_wheel >> $GITHUB_OUTPUT
-            python setup.py sdist >> $GITHUB_OUTPUT
+            python setup.py bdist_wheel >> $GITHUB_STEP_SUMMARY
+            python setup.py sdist >> $GITHUB_STEP_SUMMARY
 
         - name: Upload Artifact
           uses: actions/upload-artifact@v3
