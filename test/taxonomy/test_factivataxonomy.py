@@ -4,7 +4,7 @@ from factiva.analytics import FactivaTaxonomy, FactivaTaxonomyCategories, UserKe
 from factiva.analytics.common import config
 
 FACTIVA_USERKEY = config.load_environment_value("FACTIVA_USERKEY")
-SAVE_PATH = path = os.getcwd()
+SAVE_PATH = os.getcwd()
 
 def test_create_taxonomy_instance_env_user():
     t = FactivaTaxonomy()
