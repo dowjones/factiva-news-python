@@ -18,6 +18,8 @@ env:
   FACTIVA_SUBSCRIPTIONID: ${{secrets.FACTIVA_SUBSCRIPTIONID}}
   FACTIVA_LOGLEVEL: ${{vars.FACTIVA_LOGLEVEL}}
 
+  jobs:
+
   test:
     name: Test
     runs-on: ubuntu-latest
