@@ -1,7 +1,8 @@
 import pytest
 from factiva.analytics import SnapshotExtraction, UserKey, SnapshotExtractionQuery
-from factiva.analytics.common import config
+from factiva.analytics.common import config, const
 
+GITHUB_CI = config.load_environment_value('CI', False)
 ENVIRONMENT_USER_KEY = config.load_environment_value('FACTIVA_USERKEY')
 VALID_USER_KEY = config.load_environment_value('FACTIVA_USERKEY')
 ENVIRONMENT_WHERE_STATEMENT = config.load_environment_value('FACTIVA_WHERE')
@@ -75,28 +76,20 @@ def test_failed_where_and_jobid():
         assert isinstance(se, SnapshotExtraction)
 
 
+# Test operations sending requests to the API
+# These are only executed when running locally. For optimisation purposes
+# no API tests are executed in the CI/CD (GitHub Actions) environment.
 
-# def test_ideal_extraction_job():
-#     s = Snapshot(query=VALID_QUERY)
-#     assert s.user_key.key == ENVIRONMENT_USER_KEY
-#     assert s.query.get_base_query() == {'query': {'where': VALID_QUERY}}
-#     s.process_extraction()
-#     # Assert if files are downloaded to the local folder
-#     # potentially use os.listdir(".").__len__()
-
-
-# def test_invalid_query():
-#     s = Snapshot(query=INVALID_WHERE_STATEMENT)
-#     assert s.user_key.key == ENVIRONMENT_USER_KEY
-#     assert s.query.get_base_query() == {'query': {'where': INVALID_WHERE_STATEMENT}}
-#     with pytest.raises(ValueError, match=r'Invalid Query*'):
-#         s.process_extraction()
-
-
-# def test_download_files_custom_path():
-#     s = Snapshot(snapshot_id=VALID_SNAPSHOT_ID)
-#     assert s.user_key.key == ENVIRONMENT_USER_KEY
-#     assert s.last_extraction_job.files.count >= 1
-#     s.download_extraction_files(download_path='custom_folder')
-#     # Assert files were donwloaded to custom_folder
-#     # Delete custom_folder
+def test_job_envuser_envwhere():
+    if GITHUB_CI:
+        pytest.skip("Not to be tested in GitHub Actions")
+    sts = SnapshotExtraction()
+    assert isinstance(sts, SnapshotExtraction)
+    assert sts.process_job()
+    assert sts.job_response.job_state == const.API_JOB_DONE_STATE
+    assert isinstance(sts.job_response.job_id, str)
+    assert len(sts.job_response.job_id) == 64
+    assert sts.job_response.job_link.startswith(const.API_HOST)
+    assert len(sts.job_response.files) >= 1
+    assert (sts.job_response.errors == None)
+    assert len(sts.job_response.short_id) == 10

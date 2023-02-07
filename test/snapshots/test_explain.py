@@ -3,7 +3,7 @@ from factiva.analytics.common import config, const
 from factiva.analytics import SnapshotExplain, UserKey, SnapshotExplainQuery
 import pandas as pd
 
-GITHUB_CI_VAR = config.load_environment_value('CI', False)
+GITHUB_CI = config.load_environment_value('CI', False)
 ENVIRONMENT_USER_KEY = config.load_environment_value('FACTIVA_USERKEY')
 VALID_USER_KEY = config.load_environment_value('FACTIVA_USERKEY')
 ENVIRONMENT_WHERE_STATEMENT = config.load_environment_value('FACTIVA_WHERE')
@@ -74,9 +74,10 @@ def test_failed_where_and_jobid():
 # Test operations sending requests to the API
 # These are only executed when running locally. For optimisation purposes
 # no API tests are executed in the CI/CD (GitHub Actions) environment.
+
 def test_job_envwhere_samples():
-    if GITHUB_CI_VAR:
-        return pytest.skip('Not tested in the Github Actions ENV')
+    if GITHUB_CI:
+        pytest.skip("Not to be tested in GitHub Actions")
     se = SnapshotExplain()
     assert isinstance(se, SnapshotExplain)
     assert se.process_job()

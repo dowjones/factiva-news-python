@@ -1,7 +1,9 @@
 import pytest
+import pandas as pd
 from factiva.analytics import SnapshotTimeSeries, UserKey, SnapshotTimeSeriesQuery
 from factiva.analytics.common import config, const
 
+GITHUB_CI = config.load_environment_value('CI', False)
 ENVIRONMENT_USER_KEY = config.load_environment_value('FACTIVA_USERKEY')
 VALID_USER_KEY = config.load_environment_value('FACTIVA_USERKEY')
 ENVIRONMENT_WHERE_STATEMENT = config.load_environment_value('FACTIVA_WHERE')
@@ -89,37 +91,21 @@ def test_failed_where_and_jobid():
         assert isinstance(sts, SnapshotTimeSeries)
 
 
+# Test operations sending requests to the API
+# These are only executed when running locally. For optimisation purposes
+# no API tests are executed in the CI/CD (GitHub Actions) environment.
 
-# def test_analytics_job_V1():
-#     s = Snapshot(query=VALID_QUERY)
-#     assert s.user_key.key == ENVIRONMENT_USER_KEY
-#     s.query.group_by_source_code = False
-#     assert s.query.get_base_query() == {'query': {'where': VALID_QUERY}}
-#     s.process_analytics()
-#     data = s.last_analytics_job.data
-#     assert len(data) > 0
-#     assert data[data['publication_datetime'] == '2018-01'] is not None
-#     assert len(data.loc[data['region_codes']=="ALL_REGION_CODES"])>0
+def test_job_envuser_envwhere():
+    if GITHUB_CI:
+        pytest.skip("Not to be tested in GitHub Actions")
+    sts = SnapshotTimeSeries()
+    assert isinstance(sts, SnapshotTimeSeries)
+    assert sts.process_job()
+    assert sts.job_response.job_state == const.API_JOB_DONE_STATE
+    assert isinstance(sts.job_response.job_id, str)
+    assert len(sts.job_response.job_id) == 36
+    assert sts.job_response.job_link.startswith(const.API_HOST)
+    assert (sts.job_response.errors == None)
+    assert isinstance(sts.job_response.data, pd.DataFrame)
+    assert len(sts.job_response.data.columns) >= 2
 
-# def test_analytics_job_group_dimensions():
-#     s = Snapshot(query=VALID_QUERY)
-#     assert s.user_key.key == ENVIRONMENT_USER_KEY
-#     s.query.group_dimensions = ['region_codes', 'industry_codes']
-#     assert s.query.get_base_query() == {'query': {'where': VALID_QUERY}}
-#     s.process_analytics()
-#     data = s.last_analytics_job.data
-#     assert len(data.loc[data['region_codes']=="ALL_REGION_CODES"])==0
-
-# def test_analytics_job_no_group_dimensions():
-#     s = Snapshot(query=VALID_QUERY)
-#     assert s.user_key.key == ENVIRONMENT_USER_KEY
-#     assert s.query.get_base_query() == {'query': {'where': VALID_QUERY}}
-#     s.process_analytics()
-#     data = s.last_analytics_job.data
-#     assert len(data.loc[data['region_codes']=="ALL_REGION_CODES"])>0
-#     assert len(data.loc[data['industry_codes']=="ALL_INDUSTRY_CODES"])>0
-
-# def test_analytics_error():
-#     s = Snapshot(query=INVALID_WHERE_STATEMENT)
-#     with pytest.raises(ValueError, match=r'Bad Request*'):
-#         s.process_analytics()
