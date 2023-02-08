@@ -103,7 +103,7 @@ class SnapshotExtractionQuery(SnapshotBaseQuery):
                 excludes: dict = None,
                 exclude_lists: dict = None,
                 file_format: str = const.API_AVRO_FORMAT,
-                limit: int = 0):
+                limit: int = 0) -> None:
         """
         Creates a new SnapshotExtractionQuery instance.
 
@@ -155,7 +155,8 @@ class SnapshotExtractionQuery(SnapshotBaseQuery):
 
         Returns
         -------
-        Dictionary containing non-null query attributes.
+        dict
+            Dictionary containing non-null query attributes.
 
         """
         query_dict = super().get_payload()
@@ -200,7 +201,7 @@ class SnapshotExtraction(SnapshotBase):
     job_response: SnapshotExtractionJobReponse = None
 
     @log.factiva_logger
-    def __init__(self, user_key=None, query=None, job_id=None):
+    def __init__(self, user_key=None, query=None, job_id=None) -> None:
         """
         Creates a SnapshotExtraction instance.
 
@@ -226,7 +227,7 @@ class SnapshotExtraction(SnapshotBase):
         self.__log.info('creating SnapshotExtraction...')
 
         if job_id:
-            self.__log.info(f'Creating SnapshotTimeSeries instance with JobID {job_id}')
+            self.__log.info(f'Creating SnapshotExtraction instance with JobID {job_id}')
             self.job_response = SnapshotExtractionJobReponse(job_id, self.user_key)
             self.get_job_response()
         elif query:
@@ -241,8 +242,6 @@ class SnapshotExtraction(SnapshotBase):
         self.__log.info('SnapshotExtraction created OK')
 
 
-
-# TODO: Next --> Test this!
     @log.factiva_logger
     def submit_job(self):
         """
@@ -254,7 +253,8 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        bool : True if the submission was successful. An Exception otherwise.
+        bool
+            True if the submission was successful. An Exception otherwise.
 
         Raises
         ------
@@ -301,7 +301,8 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        bool : True if the get request was successful. An Exception otherwise.
+        bool
+            True if the get request was successful. An Exception otherwise.
 
         Raises
         ------
@@ -356,7 +357,8 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        bool : True if the download was successful. An Exception otherwise.
+        bool
+            True if the download was successful. An Exception otherwise.
 
         Raises
         ------
@@ -394,7 +396,8 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        bool : True if files were correctly downloaded, False if no files
+        bool
+            True if files were correctly downloaded, False if no files
             are available for download or the download failed.
 
         """
@@ -425,7 +428,8 @@ class SnapshotExtraction(SnapshotBase):
 
         Returns
         -------
-        bool : True if the extraction processing was successful. An Exception
+        bool
+            True if the extraction processing was successful. An Exception
             otherwise.
 
         """

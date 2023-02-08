@@ -8,7 +8,7 @@ from ..snapshots.bulknews import BulkNewsQuery
 from .subscription import Subscription
 
 
-class StreamingInstance:
+class StreamingInstance():
     """Represent a Streaming Instance in Factiva Analytics.
 
     Parameters
@@ -28,25 +28,6 @@ class StreamingInstance:
     user_key: Stream User
         constructor will asign a stream user which has the access
         to Pubsub client, authentication headers and urls
-
-    Auth method 1 (All required)
-    user_key: str
-        if the user_key is not passed
-        it can be created based on the api key param
-    user_stats: bool
-        if the user_key is not passed
-        it can be created based on the request info param
-
-    Auth method 2 (All required)
-    user_id: str
-        if the user_key is not passed
-        it can be created based on the user id param
-    client_id: str
-        if the user_key is not passed
-        it can be created based on the client id param
-    password: str
-        if the user_key is not passed
-        it can be created based on the password param
 
     Examples
     --------
@@ -554,3 +535,12 @@ class StreamingInstance:
 
         ret_val += '\n'.join(('{}{} = {}'.format(prefix, item, pprop[item]) for item in pprop))
         return ret_val
+
+
+
+
+class StreamsQuery():
+    pass
+
+class StreamingInstanceJobResults():
+    pass

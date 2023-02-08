@@ -7,11 +7,8 @@ __all__ = [
     'FactivaTaxonomy', 'FactivaTaxonomyCategories',
     'SnapshotExplain', 'SnapshotExplainQuery', 'SnapshotExplainJobResponse', 'SnapshotExplainSamplesResponse',
     'SnapshotTimeSeries', 'SnapshotTimeSeriesQuery', 'SnapshotTimeSeriesJobReponse',
-    'SnapshotExtraction', 'SnapshotExtractionQuery', 'SnapshotExtractionJobReponse'
-    # 'snapshot', 'streaming', 'bulknews', 'taxonomy', 'Snapshot', 'SnapshotQuery',
-    # 'StreamingInstance', 'Listener', 'Subscription', 'Taxonomy', 'tools',
-    # 'SnapshotFiles', 'factiva_logger', 'get_factiva_logger', # 'JSONLFileHandler', 'BigQueryHandler', 'MongoDBHandler'
-    # 'factiva_logger', 'get_factiva_logger', 'StreamResponse'
+    'SnapshotExtraction', 'SnapshotExtractionQuery', 'SnapshotExtractionJobReponse',
+    'StreamingInstance', 'StreamingQuery', 'StreamingSubscription'
 ]
 
 from .__version__ import __version__
@@ -21,11 +18,7 @@ from .taxonomy import FactivaTaxonomy, FactivaTaxonomyCategories
 from .snapshots import SnapshotExplain, SnapshotExplainQuery, SnapshotExplainJobResponse, SnapshotExplainSamplesResponse
 from .snapshots import SnapshotTimeSeries, SnapshotTimeSeriesQuery, SnapshotTimeSeriesJobReponse
 from .snapshots import SnapshotExtraction, SnapshotExtractionQuery, SnapshotExtractionJobReponse
-# from .common.tools import SnapshotFiles
-# from .common.log import factiva_logger, get_factiva_logger
-# from .streaming import StreamingInstance, Listener, Subscription
-# from .taxonomy import Taxonomy
-# from .streaming import StreamResponse
+from .streams import StreamingInstance, StreamingQuery, StreamingSubscription
 # from .tools import JSONLFileHandler, BigQueryHandler, MongoDBHandler
 
 version = __version__

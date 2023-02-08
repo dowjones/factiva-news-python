@@ -24,9 +24,10 @@ setup(
     # Warning: the folder 'factiva' should NOT have an __init__.py file to avoid conflicts with the same namespace across other packages
     package_dir={'': 'src'},
     packages=['factiva.analytics', 'factiva.analytics.article_retrieval', 'factiva.analytics.auth',
-              'factiva.analytics.common', 'factiva.analytics.taxonomy', 'factiva.analytics.snapshots'
+              'factiva.analytics.common', 'factiva.analytics.taxonomy', 'factiva.analytics.snapshots',
+              'factiva.analytics.streams'
              #, 'factiva.analytics.integration'
-            #   , 'factiva.analytics.streams', 'factiva.analytics.lists',
+            #   , 'factiva.analytics.lists',
               ],
     url='https://developer.dowjones.com/',
     project_urls={
@@ -57,11 +58,17 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     keywords='news, news aggregator, risk, compliance, nlp, alternative data, factiva, trading news, market movers',
-    python_requires='>=3.8',
+    # Required version conditioned by typed lists and Pandas
+    python_requires='>=3.8.4',
     install_requires=[
-        'requests', 'pandas', 'fastavro', 'google-cloud-core', 'google-cloud-pubsub'
+        'requests>=2.28.1',
+        'pandas>=1.5.2',
+        'fastavro>=1.7.0',
+        'google-cloud-core>=2.3.2',
+        'google-cloud-pubsub>=2.13.11'
     ],
     extras_require={
         "MongoDB": ["pymongo"],

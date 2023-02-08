@@ -3,9 +3,9 @@ from ..common import tools, config
 
 
 class SnapshotBaseJobResponse():
-    job_id : str = None
-    job_link : str = None
-    job_state : str = None
+    job_id: str = None
+    job_link: str = None
+    job_state: str = None
 
 
     def __init__(self, job_id:str=None) -> None:
@@ -26,11 +26,11 @@ class SnapshotBaseJobResponse():
 
 
 class SnapshotBaseQuery():
-    where : str = None
-    includes : list[str] = None
+    where: str = None
+    includes: list[str] = None
     include_lists: list[dict] = None
-    excludes : list[str] = None
-    exclude_lists : list[dict] = None
+    excludes: list[str] = None
+    exclude_lists: list[dict] = None
 
     # TODO: Consider implementing a SQL validation functionality to ensure 
     # fields are valid. There's sample projects doing something similar.
@@ -122,15 +122,15 @@ class SnapshotBase():
     __log = None
 
     user_key: UserKey = None
-    job_response : SnapshotBaseJobResponse = None
-    query : SnapshotBaseQuery = None
+    job_response: SnapshotBaseJobResponse = None
+    query: SnapshotBaseQuery = None
 
     def __init__(
         self,
         user_key=None,
         query=None,
         job_id=None
-    ):
+    ) -> None:
         if isinstance(user_key, UserKey):
             self.user_key = user_key
         else:
