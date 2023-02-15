@@ -5,11 +5,7 @@ Factiva Analytics APIs.
 """
 import json
 import pandas as pd
-from ..common import log
-from ..common import req
-from ..common import tools
-from ..common import const
-from ..common import config
+from ..common import log, req, tools, const, config
 
 
 class UserKey:
@@ -17,110 +13,116 @@ class UserKey:
     Class that represents an API user and can be instantiated based on the
     user-key value provided by the Dow Jones Developer Support team.
 
-    Parameters
-    ----------
-    key : str
-        String containing the 32-character long APi Key. If not provided, the
-        constructor will try to obtain its value from the ``FACTIVA_USERKEY``
-        environment variable.
-    stats : bool
-        Indicates if user data has to be pulled from the server at creation
-        time (``True``) or just create an instance with no stats data
-        (``False`` - default). This operation fills account detail properties
-        along with maximum, used and remaining values. It may take several 
-        seconds to complete.
-
-    Examples
-    --------
-    Creating a new UserKey instance providing the ``key`` string explicitly and
-    retrieving the latest account details:
-
-    .. code-block:: python
-
-        from factiva.analytics import UserKey
-        u = UserKey('abcd1234abcd1234abcd1234abcd1234', True)
-        print(u)
-
-    .. code-block::
-
-        <class 'factiva.analytics.UserKey'>
-        ├─key: ****************************1234
-        ├─cloud_token: <NotLoaded>
-        ├─account_name: AccName1234
-        ├─account_type: account_with_contract_limits
-        ├─active_product: DNA
-        ├─max_allowed_concurrent_extractions: 5
-        ├─max_allowed_extracted_documents: 200,000
-        ├─max_allowed_extractions: 3
-        ├─currently_running_extractions: 0
-        ├─total_downloaded_bytes: 7,253,890
-        ├─total_extracted_documents: 2,515
-        ├─total_extractions: 1
-        ├─total_stream_instances: 4
-        ├─total_stream_subscriptions: 1
-        ├─enabled_company_identifiers:
-        |  ├─[1]: sedol
-        |  ├─[3]: cusip
-        |  ├─[4]: isin
-        |  ├─[5]: ticker_exchange
-        ├─remaining_documents: 197,485
-        └─remaining_extractions: 2
-
-    Creating a new instance taking the key value from the ``FACTIVA_USERKEY``
-    environment varaible, and not requesting account statistics.
-
-    .. code-block:: python
-
-        from factiva.analytics import UserKey
-        u = UserKey()
-        print(u)
-
-    .. code-block::
-
-        <class 'factiva.analytics.UserKey'>
-        ├─key: ****************************1234
-        ├─cloud_token: <NotLoaded>
-        ├─account_name: <NotLoaded>
-        ├─account_type: <NotLoaded>
-        ├─active_product: <NotLoaded>
-        ├─max_allowed_concurrent_extractions: 0
-        ├─max_allowed_extracted_documents: 0
-        ├─max_allowed_extractions: 0
-        ├─currently_running_extractions: 0
-        ├─total_downloaded_bytes: 0
-        ├─total_extracted_documents: 0
-        ├─total_extractions: 0
-        ├─total_stream_instances: 0
-        ├─total_stream_subscriptions: 0
-        ├─enabled_company_identifiers:
-        │  └─<NotLoaded>
-        ├─remaining_documents: 0
-        └─remaining_extractions: 0
-
     """
 
     __API_ENDPOINT_BASEURL = f'{const.API_HOST}{const.API_ACCOUNT_BASEPATH}/'
     __API_CLOUD_TOKEN_URL = f'{const.API_HOST}{const.ALPHA_BASEPATH}{const.API_ACCOUNT_STREAM_CREDENTIALS_BASEPATH}'
     __log = None
     
-    key = ''
-    cloud_token = {}
-    account_name = ''
-    account_type = ''
-    active_product = ''
-    max_allowed_concurrent_extractions = 0
-    max_allowed_extracted_documents = 0
-    max_allowed_extractions = 0
-    currently_running_extractions = 0
-    total_downloaded_bytes = 0
-    total_extracted_documents = 0
-    total_extractions = 0
-    total_stream_instances = 0
-    total_stream_subscriptions = 0
-    enabled_company_identifiers = []
+    key: str = None
+    cloud_token: dict = None
+    account_name: str = None
+    account_type: str = None
+    active_product: str = None
+    max_allowed_concurrent_extractions: int = None
+    max_allowed_extracted_documents: int = None
+    max_allowed_extractions: int = None
+    currently_running_extractions: int = None
+    total_downloaded_bytes: int = None
+    total_extracted_documents: int = None
+    total_extractions: int = None
+    total_stream_instances: int = None
+    total_stream_subscriptions: int = None
+    enabled_company_identifiers: list = None
+    streams: pd.DataFrame = None
+    snapshots: pd.DataFrame = None
+
 
     def __init__(self, key=None, stats=False):
-        """Construct the instance of the class."""
+        """
+        Construct the instance of the class
+        
+        Parameters
+        ----------
+        key : str
+            String containing the 32-character long APi Key. If not provided, the
+            constructor will try to obtain its value from the ``FACTIVA_USERKEY``
+            environment variable.
+        stats : bool
+            Indicates if user data has to be pulled from the server at creation
+            time (``True``) or just create an instance with no stats data
+            (``False`` - default). This operation fills account detail properties
+            along with maximum, used and remaining values. It may take several 
+            seconds to complete.
+        
+        Examples
+        --------
+        Creating a new UserKey instance providing the ``key`` string explicitly and
+        retrieving the latest account details:
+
+        .. code-block:: python
+
+            from factiva.analytics import UserKey
+            u = UserKey('abcd1234abcd1234abcd1234abcd1234', True)
+            print(u)
+
+        .. code-block::
+
+            <class 'factiva.analytics.UserKey'>
+            ├─key: ****************************1234
+            ├─cloud_token: <NotLoaded>
+            ├─account_name: AccName1234
+            ├─account_type: account_with_contract_limits
+            ├─active_product: DNA
+            ├─max_allowed_concurrent_extractions: 5
+            ├─max_allowed_extracted_documents: 200,000
+            ├─max_allowed_extractions: 3
+            ├─currently_running_extractions: 0
+            ├─total_downloaded_bytes: 7,253,890
+            ├─total_extracted_documents: 2,515
+            ├─total_extractions: 1
+            ├─total_stream_instances: 4
+            ├─total_stream_subscriptions: 1
+            ├─enabled_company_identifiers:
+            |  ├─[1]: sedol
+            |  ├─[3]: cusip
+            |  ├─[4]: isin
+            |  ├─[5]: ticker_exchange
+            ├─remaining_documents: 197,485
+            └─remaining_extractions: 2
+
+        Creating a new instance taking the key value from the ``FACTIVA_USERKEY``
+        environment varaible, and not requesting account statistics.
+
+        .. code-block:: python
+
+            from factiva.analytics import UserKey
+            u = UserKey()
+            print(u)
+
+        .. code-block::
+
+            <class 'factiva.analytics.UserKey'>
+            ├─key: ****************************1234
+            ├─cloud_token: <NotLoaded>
+            ├─account_name: <NotLoaded>
+            ├─account_type: <NotLoaded>
+            ├─active_product: <NotLoaded>
+            ├─max_allowed_concurrent_extractions: 0
+            ├─max_allowed_extracted_documents: 0
+            ├─max_allowed_extractions: 0
+            ├─currently_running_extractions: 0
+            ├─total_downloaded_bytes: 0
+            ├─total_extracted_documents: 0
+            ├─total_extractions: 0
+            ├─total_stream_instances: 0
+            ├─total_stream_subscriptions: 0
+            ├─enabled_company_identifiers:
+            │  └─<NotLoaded>
+            ├─remaining_documents: 0
+            └─remaining_extractions: 0
+
+        """
         self.__log = log.get_factiva_logger()
         if key is None:
             try:
@@ -139,19 +141,21 @@ class UserKey:
         if stats is True:
             self.get_stats()
         else:
-            self.account_name = ''
-            self.account_type = ''
-            self.active_product = ''
-            self.max_allowed_concurrent_extractions = 0
-            self.max_allowed_extracted_documents = 0
-            self.max_allowed_extractions = 0
-            self.currently_running_extractions = 0
-            self.total_downloaded_bytes = 0
-            self.total_extracted_documents = 0
-            self.total_extractions = 0
-            self.total_stream_instances = 0
-            self.total_stream_subscriptions = 0
+            self.account_name = None
+            self.account_type = None
+            self.active_product = None
+            self.max_allowed_concurrent_extractions = None
+            self.max_allowed_extracted_documents = None
+            self.max_allowed_extractions = None
+            self.currently_running_extractions = None
+            self.total_downloaded_bytes = None
+            self.total_extracted_documents = None
+            self.total_extractions = None
+            self.total_stream_instances = None
+            self.total_stream_subscriptions = None
             self.enabled_company_identifiers = []
+            self.streams = []
+            self.snapshots = []
 
 
     @property
@@ -159,7 +163,9 @@ class UserKey:
         """
         Dynamic property that calculates the account's remaining extractions
         """
-        return self.max_allowed_extractions - self.total_extractions
+        if self.max_allowed_extractions:
+            return self.max_allowed_extractions - self.total_extractions
+        return None
 
 
     @property
@@ -167,7 +173,9 @@ class UserKey:
         """
         Dynamic property that calculates the account's remaining documents
         """
-        return self.max_allowed_extracted_documents - self.total_extracted_documents
+        if self.max_allowed_extracted_documents:
+            return self.max_allowed_extracted_documents - self.total_extracted_documents
+        return None
 
     # @property
     # def extractions_done(self):
@@ -578,14 +586,6 @@ class UserKey:
         raise RuntimeError("Unexpected api_user value")
 
 
-    def __print_property__(self, property_value) -> str:
-        if isinstance(property_value, int):
-            pval = f'{property_value:,d}'
-        else:
-            pval = property_value
-        return pval
-
-
     def __repr__(self):
         """Return a string representation of the object."""
         return self.__str__()
@@ -607,25 +607,26 @@ class UserKey:
         else:
             masked_token = tools.mask_string(self.cloud_token['private_key'][58:92], 12)
 
-        ret_val = f"{root_prefix}<'factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
-        ret_val += f'{prefix}key: {masked_key}\n'
+        ret_val = f"{root_prefix}<'factiva.analytics.{str(self.__class__).split('.')[-1]}"
+        ret_val += f'\n{prefix}key: {masked_key}'
 
         if detailed:
-            ret_val += f'{prefix}cloud_token: {masked_token}\n'
-            ret_val += f'{prefix}account_name: {self.account_name}\n' if self.account_name != '' else f'{prefix}account_name: <NotLoaded>\n'
-            ret_val += f'{prefix}account_type: {self.account_type}\n' if self.account_type != '' else f'{prefix}account_type: <NotLoaded>\n'
-            ret_val += f'{prefix}active_product: {self.active_product}\n' if self.active_product != '' else f'{prefix}active_product: <NotLoaded>\n'
-            ret_val += '\n'.join((f'{prefix}{item}: {self.__print_property__(pprop[item])}' for item in pprop))
+            ret_val += f'\n{prefix}cloud_token: {masked_token}'
+            ret_val += f"\n{prefix}account_name: {tools.print_property(self.account_name, '<NotLoaded>')}"
+            ret_val += f"\n{prefix}account_type: {tools.print_property(self.account_type, '<NotLoaded')}"
+            ret_val += f"\n{prefix}active_product: {tools.print_property(self.active_product, '<NotLoaded>')}\n"
+            ret_val += "\n".join((f"{prefix}{item}: {tools.print_property(pprop[item], '<NotLoaded>')}" for item in pprop))
             ret_val += f"\n{prefix}enabled_company_identifiers:"
-            ci_list = [f"\n{prefix.replace('├', '│')[0:-1]}  ├─[{ci['id']}]: {ci['name']}" for ci in self.enabled_company_identifiers]
-            if len(ci_list) >= 1:
+            if len(self.enabled_company_identifiers) >= 1:
+                ci_list = [f"\n{prefix.replace('├', '│')[0:-1]}  ├─[{ci['id']}]: {ci['name']}" for ci in self.enabled_company_identifiers]
                 ci_list.sort()
+                ci_list[-1] = ci_list[-1].replace('├', '└')
                 for ci in ci_list:
                     ret_val += ci
             else:
                 ret_val += f"\n{prefix.replace('├', '│')[0:-1]}  └─<NotLoaded>"
-            ret_val += f'\n{prefix}remaining_documents: {self.__print_property__(self.remaining_documents)}'
-            ret_val += f'\n{prefix[0:-2]}└─remaining_extractions: {self.__print_property__(self.remaining_extractions)}'
+            ret_val += f"\n{prefix}remaining_documents: {tools.print_property(self.remaining_documents, '<NotLoaded>')}"
+            ret_val += f"\n{prefix[0:-2]}└─remaining_extractions: {tools.print_property(self.remaining_extractions, '<NotLoaded>')}"
         else:
             ret_val += f'{prefix[0:-2]}└─...'
         return ret_val
