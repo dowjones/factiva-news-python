@@ -1,11 +1,25 @@
 """Multiple methods and other resources for the Factiva Analytics package."""
 
-import datetime
-import os
-import hashlib
+import os, datetime, hashlib
 import pandas as pd
 from dateutil import parser
-from .. import common
+from . import const
+
+
+def print_property(property_value, default='<NotSet>') -> str:
+    if isinstance(property_value, str):
+        pval = property_value
+    elif isinstance(property_value, int):
+        pval = f'{property_value:,d}'
+    elif isinstance(property_value, float):
+        pval = f'{property_value:,f}'
+    elif isinstance(property_value, list):
+        pval = f'<list> - [{len(property_value)}] elements'
+    elif isinstance(property_value, pd.DataFrame):
+        pval = f"<pandas.DataFrame> - [{property_value.shape[0]}] rows"
+    else:
+        pval = default
+    return pval
 
 
 def md5hash(text:str) -> str:
@@ -73,7 +87,7 @@ def format_timestamps(message: dict) -> dict:
     dict
         Dict with datetimes formated
     """
-    for fieldname in common.TIMESTAMP_FIELDS:
+    for fieldname in const.TIMESTAMP_FIELDS:
         if fieldname in message.keys():
             message[fieldname] = isots_to_tsms(message[fieldname])
     message["delivery_datetime"] = now_to_tsms()
@@ -91,7 +105,7 @@ def format_timestamps_mongodb(message: dict) -> dict:
     dict
         Dict with datetimes formated
     """
-    for fieldname in common.TIMESTAMP_FIELDS:
+    for fieldname in const.TIMESTAMP_FIELDS:
         if fieldname in message.keys():
             message[fieldname] = parser.parse(message[fieldname])
     message["delivery_datetime"] = parser.parse(
@@ -120,11 +134,11 @@ def format_multivalues(message: dict) -> dict:
     dict
         Dict with multivalues formated
     """
-    for fieldname in common.MULTIVALUE_FIELDS_SPACE:
+    for fieldname in const.MULTIVALUE_FIELDS_SPACE:
         if fieldname in message.keys():
             message[fieldname] = multivalue_to_list(message[fieldname],
                                                     sep=' ')
-    for fieldname in common.MULTIVALUE_FIELDS_COMMA:
+    for fieldname in const.MULTIVALUE_FIELDS_COMMA:
         if fieldname in message.keys():
             message[fieldname] = multivalue_to_list(message[fieldname])
     return message
@@ -168,17 +182,3 @@ def parse_field(field, field_name):
     raise ValueError(f'Unexpected value for {field_name}')
 
 
-def print_property(property_value, default='<NotSet>') -> str:
-    if isinstance(property_value, str):
-        pval = property_value
-    elif isinstance(property_value, int):
-        pval = f'{property_value:,d}'
-    elif isinstance(property_value, float):
-        pval = f'{property_value:,f}'
-    elif isinstance(property_value, list):
-        pval = f'<list> - [{len(property_value)}] elements'
-    elif isinstance(property_value, pd.DataFrame):
-        pval = f"<pandas.DataFrame> - [{property_value.shape[0]}] rows"
-    else:
-        pval = default
-    return pval
