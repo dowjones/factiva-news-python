@@ -7,16 +7,40 @@ from ..snapshots.base import SnapshotBaseQuery
 from ..common import log, const, req, config, tools
 
 
+
 class StreamingSubscription():
     id: str = None
+    short_id: str = None
+    user_key: UserKey = None
 
-    def __init__(self, id: str) -> None:
+    def __init__(self, id: str, user_key: UserKey or str = None) -> None:
         if len(id) == 76:
             self.id = id
         elif len(id) > 76:
             self.id = id.split('/')[-1]
         else:
             raise ValueError("Invalid subscription id.")
+
+        if isinstance(user_key, UserKey):
+            self.user_key = user_key
+        else:
+            self.user_key = UserKey(user_key)
+
+        self.short_id = self.id.split('-')[-1]
+
+
+    def __repr__(self):
+        return self.__str__()
+
+
+    def __str__(self, table=False, prefix='  ├─', root_prefix=''):
+        if not table:
+            ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}"
+            ret_val += f'{prefix}short_id: {self.short_id}'
+        else:
+            ret_val = f"{prefix}{self.short_id:>8}"
+        return ret_val
+
 
 
 class StreamingQuery(SnapshotBaseQuery):
@@ -70,19 +94,38 @@ class StreamingQuery(SnapshotBaseQuery):
         return query_dict
 
 
+    def __repr__(self):
+        return self.__str__()
+
+
+    def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
+        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
+        ret_val += f'{prefix}where: '
+        ret_val += (self.where[:77] + '...') if len(self.where) > 80 else self.where
+        # if detailed:
+        ret_val += f"\n{prefix}includes: "
+        ret_val += f"\n{prefix.replace('├', '│')[0:-1]}  └─{len(self.includes.keys())} conditions" if self.includes else "<NotSet>"
+        ret_val += f"\n{prefix.replace('├', '└')}excludes: "
+        ret_val += f"\n{prefix.replace('├', '│')[0:-1]}  └─{len(self.excludes.keys())} conditions" if self.excludes else "<NotSet>"
+        # else:
+        #     ret_val += f"\n{prefix.replace('├', '└')}..."
+        return ret_val
+
+
+
 class StreamingInstance():
 
     __JOB_BASE_URL = None
     __log = None
 
-    user_key: UserKey = None
-    query: StreamingQuery = None
     id: str = None
     short_id: str = None
+    user_key: UserKey = None
+    query: StreamingQuery = None
     status: str = None
     subscriptions: list[StreamingSubscription] = None
 
-    def __init__(self, user_key=None, query=None, id=None) -> None:
+    def __init__(self, id=None, query=None, user_key=None) -> None:
         self.__log = log.get_factiva_logger()
         self.__JOB_BASE_URL = f'{const.API_HOST}{const.API_STREAMS_BASEPATH}'
         self.status = 'NOT_CREATED'
@@ -93,6 +136,9 @@ class StreamingInstance():
             self.user_key = user_key
         else:
             self.user_key = UserKey(user_key)
+
+        if not self.user_key.cloud_token:
+            self.user_key.get_cloud_token()
 
         if query and id:
             raise ValueError("The query and id parameters cannot be assigned simultaneously")
@@ -165,7 +211,7 @@ class StreamingInstance():
             resp_subscriptions = resp_data['data']['relationships']['subscriptions']['data']
             self.subscriptions = []
             for sub in resp_subscriptions:
-                self.subscriptions.append(StreamingSubscription(sub['id']))
+                self.subscriptions.append(StreamingSubscription(sub['id'], self.user_key))
             while not (self.status in [const.API_JOB_CANCELLED_STATE,
                                        const.API_JOB_FAILED_STATE,
                                        const.API_JOB_RUNNING_STATE]):
@@ -221,7 +267,7 @@ class StreamingInstance():
             self.subscriptions = []
             resp_subscriptions = resp_data['data']['relationships']['subscriptions']['data']
             for sub in resp_subscriptions:
-                self.subscriptions.append(StreamingSubscription(sub['id']))
+                self.subscriptions.append(StreamingSubscription(sub['id'], self.user_key))
         else:
             raise RuntimeError(f'API request returned an unexpected HTTP status, with content [{response.text}]')
         
@@ -234,21 +280,28 @@ class StreamingInstance():
 
 
     def __str__(self, detailed=True, prefix='  ├─', root_prefix=''):
-        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}\n"
-        ret_val += f"{prefix}user_key: {self.user_key.__str__(detailed=False, prefix='  │  ├─')}"
+        ret_val = f"{root_prefix}<factiva.analytics.{str(self.__class__).split('.')[-1]}"
+        if self.id:
+            ret_val += f"\n{prefix}id: <Hidden>"
+            ret_val += f"\n{prefix}short_id: {tools.print_property(self.short_id)}"
+        else:
+            ret_val += f"\n{prefix}id: <NotCreated>"
+            ret_val += f"\n{prefix}short_id: <NotCreated>"
+        
+        ret_val += f"\n{prefix}user_key: {self.user_key.__str__(detailed=False, prefix='  │  ├─')}"
         
         if self.query:
             ret_val += f"\n{prefix}query: {self.query.__str__(detailed=False, prefix='  │  ├─')}"
         else:
             ret_val += f"\n{prefix}query: <NotRetrieved>"
 
-        if self.id:
-            ret_val += f"\n{prefix}short_id: {tools.print_property(self.short_id)}"
-        else:
-            ret_val += f"\n{prefix}short_id: <NotCreated>"
-
         if self.subscriptions:
-            ret_val += f"\n{prefix}subscriptions: {len(self.subscriptions)}"
+            ret_val += f"\n{prefix}subscriptions:"
+            n_sub = 1
+            for sub in self.subscriptions:
+                s_prefix = '  │  ├─' if n_sub < len(self.subscriptions) else '  │  └─'
+                ret_val += f"\n{sub.__str__(table=True, prefix=s_prefix)}"
+                n_sub += 1
         else:
             ret_val += f"\n{prefix}subscriptions: <NotCreated>"
 
