@@ -201,7 +201,7 @@ class SnapshotExtraction(SnapshotBase):
     job_response: SnapshotExtractionJobReponse = None
 
     @log.factiva_logger
-    def __init__(self, user_key=None, query=None, job_id=None) -> None:
+    def __init__(self, job_id=None, query=None, user_key=None) -> None:
         """
         Creates a SnapshotExtraction instance.
 
